@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+
+showcmds ()
+{
+
+	local cmd
+
+	local cmds=($(echo ${_active_script_files[@]} ${_active_function_files[@]} | tr ' ' \\n | sed -r 's,/.*/,,' | sort ))
+
+	for cmd in ${cmds[@]}
+	do
+		if [[ !  "${cmd:0:1}" = "_" ]]
+		then
+			if [[ ! "${cmd}" = "showcmds" ]]
+			then
+				${cmd} -h
+				echo ""
+			fi
+		fi
+
+	done
+}

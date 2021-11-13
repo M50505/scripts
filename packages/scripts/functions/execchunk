@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+execchunk ()
+{
+	_doc $1 20160729125024 "Runs a program with optional additional arguments against a large file list \(as in the result of find\)." && return 0
+
+	[[ $# -lt 2 ]] && return $(functionFailed "Usage: execchunk [<grep-option(s)>] <regexp> <listfile>")
+
+	local app=${1}
+	shift
+
+	if [[ "${1:0:1}" == "-" ]]
+	then
+		local options="${1}"
+		shift
+	fi
+
+	local listFile="$(fullpath ${1})"
+
+	local tempDir=${TEMP:-/tmp}/$(newTempFile)
+
+	local chunk
+
+	mkdir ${tempDir}
+
+	cd ${tempDir} 2> /dev/null
+
+	csplit -k -n 4 "${listFile}" 100 \{*\} > /dev/null 2>&1
+
+	cd - 2> /dev/null
+
+	for chunk in ${tempDir}/xx*
+	do
+		echo ${chunk} >&2
+		${app} ${options} $(<${chunk}) 2> /dev/null
+	done
+
+	rm -rf ${tempDir}
+
+}
+

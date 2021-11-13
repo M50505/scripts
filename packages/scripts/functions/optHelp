@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optHelp ()
+{
+	_doc $1 20160729125024 "This can be called internally or else by the developer's script to render the usage information." && return 0
+	if [[ -z "${PAGER}" ]]
+	then
+		if which less >/dev/null
+		then
+			PAGER=less
+		else
+			if which more >/dev/null
+			then
+				PAGER=more
+			else
+				PAGER=cat
+			fi
+		fi
+	fi
+	(echo -e ${_help} ; optUsage usage) | ${PAGER}
+}
+

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# $* - brief-description-here
+#
+# Author:              Martin Cribbins
+#                      BuzzClan LLC
+#	
+# Revision history:
+#
+# 2012-03-31    -  
+#	
+# 
+# Description:
+#
+# full-description-here
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd mark boolean false "A sample boolean option"
+#optParse $* 
+#optParseSuccess || exit 1
+
+deltaTime ()
+{
+	local begin=${1}
+	local end=${2}
+
+	local delta
+	local minute
+	local second
+	local millisecond
+
+	local beginMilliseconds
+	local endMilliseconds
+
+	local tail
+
+	((beginMilliseconds=${begin:9:3}+(1000*${begin:6:2})+(60000*${begin:3:2})+(3600000*${begin:0:2})))
+	((endMilliseconds=${end:9:3}+(1000*${end:6:2})+(60000*${end:3:2})+(3600000*${end:0:2})))
+	((delta=endMilliseconds-beginMilliseconds))	
+
+	echo ${beginMilliseconds}
+	echo ${endMilliseconds}
+	echo ${delta}
+	((offset=${#delta}-3))
+	echo ${delta:0:${offset}}.${delta:${offset}:3}
+
+}
+declare -fx deltaTime

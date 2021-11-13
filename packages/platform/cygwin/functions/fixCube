@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+fixCube ()
+{
+  _doc ${1} 20130819094600 "Corrects byte offsets in a reportng cube." && return 0
+	while [[ $# -gt 0 ]]
+	do
+		dd status=noxfer conv=notrunc,swab count=1 bs=4 if=$1 of=$1
+		shift
+	done
+}
+

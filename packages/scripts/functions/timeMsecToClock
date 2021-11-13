@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+timeMsecToClock ()
+{
+	_doc $1 20160729125024 "Converts milliseconds to clock time - HH:MM:SS.msec ." && return 0
+
+	[[ $# -lt 1 ]] && return $(functionFailed "You must specify a time in milliseconds.")
+
+	local timestring
+	local msec=${1}
+	local count
+	local digits
+	local zeros="000"
+
+	((count=${msec}/3600000))
+	digits="${count}00"
+	timestring+="${digits:0:2}:"
+	((msec-=${count}*3600000))
+
+	((count=${msec}/60000))
+	digits="${count}00"
+	timestring+="${digits:0:2}:"
+	((msec-=${count}*60000))
+
+	((count=${msec}/1000))
+	digits="${count}00"
+	timestring+="${digits:0:2}."
+	((msec-=${count}*1000))
+
+	digits="${zeros:0:3-${#msec}}${msec}"
+	timestring+="${digits:0:3}"
+
+	echo ${timestring}
+	timestring+="${msec}"
+
+}
+

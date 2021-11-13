@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optParseSuccess ()
+{
+	_doc $1 20160729125024 "Returns true (zero) if the parsing of all options succeeded." && return 0
+	if ${isParsedOK} 
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+

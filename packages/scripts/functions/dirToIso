@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+dirToIso ()
+{
+	_doc $1 20160729125024 "Recursively copies the specied directory into the specifed .ISO image file" && return 0
+
+	if [[ $# -lt 3 ]]
+	then
+		echo "You must specify -vol[umeID] <id> -iso <isoFile> file(s)"
+		return 1
+	fi
+
+	while [[ $# -gt 0 ]]
+	do
+		case $1 in
+			-vol*)
+				opts="${opts} -V $2"
+				shift 2
+			;;
+			-i*)
+				opts="${opts} -o $2"
+				shift 2
+			;;
+			-b*)
+				opts="${opts} -G $2"
+				shift 2
+			;;
+			-d*)
+				echoCmd="echo"
+				shift
+			;;
+			*)
+				break
+			;;
+		esac
+	done
+
+	files="$*"
+
+	${echoCmd} mkisofs -l -d -D -max-iso9660-filenames -L -no-iso-translate -allow-lowercase -allow-multidot ${opts} ${files}
+}
+

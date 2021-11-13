@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+pythonify ()
+{
+  _doc $1 20160729125024 "Prepends vim options to a Python script" && return 0
+
+	local editFlag=false
+	if [[ "${1}" == "-e" ]]
+	then
+		editFlag=true
+		shift
+	fi
+
+prependFile "${1}"  <<EOF  
+# vim:expandtab:tabstop=2:shiftwidth=2:nu
+"""
+TBD
+
+
+Author: Martin Cribbins
+$(date +%Y-%m-%d)  Baseline version.
+"""
+	
+EOF
+
+
+chmod +x "${1}"
+	${editFlag} && vim "${1}" 
+}
+
+
+

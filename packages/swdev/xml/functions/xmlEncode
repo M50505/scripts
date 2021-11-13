@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xmlEncode ()
+{
+	_doc $1 20160309224419 "Escapes all characters in the provided string that must be translated for use in XML documents." && return 0
+
+	local text="${*}"
+
+	text="${text//&/&amp;}"
+	text="${text//</&lt;}"
+	text="${text//>/&gt;}"
+	text="${text//\'/&apos;}"
+	text="${text//\"/&quot;}"
+
+	echo "${text}"
+}
+

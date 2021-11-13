@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+splitString ()
+{
+	_doc $1 20160729125024 "Splits the string specified in the first argument, using the delimiter in the second argument" && return 0
+	local delim="$IFS"
+	IFS="$2"
+	echo $1
+	IFS="${delim}"
+}
+

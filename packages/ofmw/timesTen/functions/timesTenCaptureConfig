@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+timesTenCaptureConfig ()
+{
+	_doc $1 20140424092635 "captures all of the TimesTen configurationand log files, as well as the OBIEE odbc.ini file, opmn.xml file, the diagnostic log, and directory listings of the datastore locations." && return 0
+
+	local tempDir=$(newTempFile)
+	local tarball=$(datedBackup ttCapture)
+
+	mkcd ${HOME}/${tempDir}
+
+	cp ${TT_CONFIG_DAEMON} .
+	cp ${TT_CONFIG_CONNECT} .
+	cp ${TT_CONFIG_ODBC} .
+	cp ${TT_LOG} .
+	cp ${TT_LOG_ERR} .
+	cp ${ODBCINI} .
+	cp ${OBIEE_CONFIG_OPMN} .
+	ls -lr ${TT_DATASTORE_DIR} > datastore.ls
+	
+	functionInfo "Capturing configuration and logs to ${HOME}/${tarball}.tgz" 
+	tar cvzf ${HOME}/${tarball}.tgz *
+
+	cd ${HOME}
+	rm -rf ${tempDir}
+
+}

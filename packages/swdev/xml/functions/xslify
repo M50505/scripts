@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xslify ()
+{
+	_doc $1 20160729125024 "Prepends an XSL header to the specified file, and edits the file if the -e option is provided" && return 0
+	local editFlag=false
+	if [[ "${1}" == "-e" ]]
+	then
+		editFlag=true
+		shift
+	fi
+
+#NOTE: 	Redirection to prependFile is used in lieu of a pipe
+#				to avoid the bash shell's compaints about importinf
+#				function definitions.
+eof="EOF"
+
+	prependFile "${1}" <<EOF
+#
+#	This is a sample of defining a special namespace to be
+#	able to match elements in some vendor's XML files - Oracle
+#	files are good examples of this.
+#
+
+#
+#	Define the namespace prefix if any, otherwise leave this as an
+#	empty string. A very shor environment variable name is used
+#	in an attempt to keep the here-file representation of the XSL
+#	stylesheet somewhat readable. This example uses "wl" as the prefix.
+#
+
+#
+#	Define the URL that is associated with the namespace here. Leave this
+#	as an empty string if no special namespace is used.
+#
+
+xmlFile="sample.xml"
+xslFile=\$(newTempFile)
+
+px="wl:"
+pxURL='xmlns:wl="http://xmlns.oracle.com/weblogic/domain"'
+
+cat<<${eof} > \${xslFile}
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- vim:tabstop=2:shiftwidth=2:nu:
+-->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" \${pxURL}>
+  <xsl:output omit-xml-declaration="yes" indent="no" method="text"/>
+	<xsl:param name="dummy">TESTxsl:param>
+	<xsl:template match="/">
+	  <xsl:call-template name="sample"/>
+	</xsl:template>
+
+  <xsl:template name="sample">
+		<!-- For each something or other ... -->
+		<xsl:for-each select="/\${px}thing1/\${px}thing2[\${px}sampleAttribute='Junk']">
+			<xsl:variable name="nodeName" select="upper-case(current()/\${px}Name)"/>
+			<xsl:for-each select="/\${px}thing/\${px}subthing[\${px}Kind='Server']">
+				<xsl:if test="starts-with(upper-case(\${px}ServerName),)">
+					<xsl:value-of select="upper-case(\${px}ServerName)"/>
+				</xsl:if> 
+			</xsl:for-each>
+	</xsl:template>
+</xsl:stylesheet>
+${eof}
+
+oraxsl \${xmlFile} \${xslFile}
+
+rm \${xslFile}
+EOF
+
+	${editFlag} && vim "${1}" 
+}

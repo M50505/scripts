@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+netFlushRules ()
+{
+	_doc $1 20140416171433 "flushes the non-system rules from the nsponds to the supplied netmask." && return 0
+
+	ip rule | sed -rn '
+/255|default|main\s*$/ {
+	d
+	n
+}
+
+{
+	s/^.+:/ip rule del/
+	p	
+}
+' | while read cmd
+	do
+		$(${cmd})
+	done
+}

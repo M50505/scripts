@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+_findScriptsFrameworkFunctionDirs ()
+{
+	local cwd="${PWD}"
+	cd ${MASTER_SCRIPTS_HOME}/packages
+	for i in ${_active_packages[@]}
+	do
+		#local prefix=$(basename $i)
+		#[[ -f ${i}/${prefix}Functions ]] && echo ${i}/${prefix}Functions
+		[[ -d ${i}/functions ]] && echo "${i}/functions"
+
+	done
+	cd "${cwd}"
+}
+

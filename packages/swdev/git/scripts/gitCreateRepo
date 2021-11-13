@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-07-10 - Initial version.
+#	
+_doc ${1} 20210710125553 "creates a new respository on the specified cloud Git provider, if it does not already exist. The Git provider is specified either as the first argument, otherwise it is obtained from the value of the GITPROVIDER environment variable." && exit 0
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+. ${HOME}/.gitsetup
+
+if [[ $# -gt 1 ]]
+then
+		gitProvider=${1}
+		shift
+else
+		gitProvider=${GIT_PROVIDER}
+fi
+
+gitProvider=$(toUpper ${gitProvider})
+
+if [[ -z ${gitProvider} ]]
+then
+	cat >&2 <<EOF
+The cloud Git provider cannot be determined.
+EOF
+	exit 1
+fi
+
+repo=${1}
+
+case ${gitProvider} in
+	GITHUB)
+		result=$(curl -s -u ${GIT_USER_GITHUB}:${GIT_API_KEY_GITHUB} --data "{\"name\":\"${repo}\",\"private\":\"true\"}" https://api.github.com/user/repos)
+
+		successID=$(echo ${result} | jq ".id")
+
+		if [[ ${successID} = null ]]
+		then
+			cat>&2 <<EOF
+Failed to create remote repository ${repo} for user ${GIT_USER_GITHUB} on ${gitProvider}:
+$(echo ${result} | jq ".message,.errors[0].message" | tr -d \" | tr \\n ' ')
+EOF
+		else
+			echo "Remote repository ${repo} created for user ${GIT_USER_GITHUB} on ${gitProvider}, cloning new empty repository."
+			git clone git@github.com:${GIT_USER_GITHUB}/${repo}.git
+		fi
+		;;
+esac
+

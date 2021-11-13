@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+showfunctions ()
+{
+	_doc $1 20160729125024 "Displays a summary of each declared shell function." && return 0
+
+	#local regexp="[0-9_a-z]+"
+	local fn
+
+	case ${1} in
+		-l)
+			if [[ $# -gt 1 ]]
+			then
+				for fn in $(_listManagedFunctions ${2})
+				do
+					${fn} -h
+					echo ""
+				done
+			else
+				_listManagedFunctions
+			fi
+			;;
+		-d)
+			for fn in $(_listManagedFunctions ${2})
+			do
+				echo "${fn} date $(_doc_timestamp=1 ${fn} -h)"
+			done
+			;;
+		-t)
+			for fn in $(_listManagedFunctions ${2})
+			do
+				echo "${fn} $(_doc_timestamp=1 ${fn} -h)"
+			done
+			;;
+		*)
+			for fn in $(_listManagedFunctions ${2})
+			do
+				${fn} -h
+				echo ""
+			done
+			;;
+	esac
+}
+

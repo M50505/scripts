@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlStopNM ()
+{
+	_doc $1 20140530182202 "Stops the NodeManager" && return 0
+
+	wlst <<EOF >/dev/null
+wlStopNM()
+
+EOF
+}

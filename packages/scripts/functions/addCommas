@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+addCommas ()
+{
+	_doc $1 20160729125024 "Takes an integer string and echos it back with commas embedded as needed." && return 0
+	if [[ $# -gt 0 ]]
+	then
+		local result
+		local num=$1
+		local offset
+
+		((offset=${#num} % 3))
+
+		if [[ ${offset} -gt 0 ]]
+		then
+			result="${num:0:${offset}},"
+			num=${num:${offset}}
+		fi
+
+
+		while [[ ${#num} -gt 0 ]]
+		do
+			result="${result}${num:0:3},"
+			num=${num:3}
+		done
+	fi
+
+	echo ${result:0:${#result}-1}
+}

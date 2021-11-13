@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+resolveHost ()
+{
+	_doc $1 20160729125024 "Returns true if the specified host reponds to ICMP pings, and if a hostname or FQDN is passed, DNS resolution is implicitly tested as well" && return 0
+	local fqdn=$1
+	local result
+	local status=1
+
+	if result=$(ping ${fqdn} 54 1)
+	then
+		status=0
+	fi
+
+	echo ${result} | sed -n "
+
+	/bytes from/ {
+	s/^.*bytes from /resolves to /
+	s/:.*$//
+	p
+}
+
+/unknown/ {
+c ${fqdn} is not defined in DNS
+	}
+
+	/0 packets received/ {
+	c ${fqdn} is not responding
+}"
+
+return ${status}
+
+}
+

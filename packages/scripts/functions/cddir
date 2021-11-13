@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+cddir ()
+{
+	_doc $1 20160819094847 "changes directory to the parent directory of the specified path" && return 0
+
+	cd $(dirname ${1})
+}
+

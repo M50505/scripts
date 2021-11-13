@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+nextFile ()
+{
+	_doc $1 20160729125024 "Returns the name of what should be the next file in the provided sequence of files, if the the sequence is of the form <text><number> or <number><text> . If no argument is specified, then nextFile returns and empty string. If a wildcard pattern is specified that does not expand into a series of file names, then nextFile strips the wildcard pattern of all '?' and '*' characters, and then appends 001 to the pattern, and echoes that string." && return 0
+
+	local files
+
+	if [[ $# -lt 1 ]]
+	then
+		files=($(echo *))
+	else
+		files=($*)
+	fi
+
+	local x=${files[${#files[*]}-1]}
+	local ext=${x#*.}
+	local next
+
+	[[ -n ${ext} ]] && ext=".${ext}"
+
+	((next=${x//[^0-9]/}+1))
+
+	echo ${next}${ext}
+
+}
+

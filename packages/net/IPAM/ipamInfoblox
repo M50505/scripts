@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2017-05-05 - Initial version.
+# 2017-05-12 - First version committed to Git.
+#	
+#curl "https://ipam.fmrco.com/wapi/v1.7.5/record?name=d59639b10a425960.fmrco.com" -k --user "cmpinfoblox_np:6u7BGKmv" 
+#curl  -k --user "cmpinfoblox_np:6u7BGKmv" -X -H "Content-Type: application/json" -d _return_fields=aliases -d name=d59639b10a425960.fmrco.com -X GET "https://ipam.fmrco.com/wapi/v1.7.5/record"
+
+
+USAGE="
+The $(basename ${0}) script is used as a utility and a test of the Infoblox RESTful
+DNS API (wapi).
+"
+_doc ${1} 20170505092029 "Tests RESTful API access to the DNS functions of Infoblox." && exit 0
+
+#
+#	The opt... functions are a part of the Scripts Framework written
+#	by the author. used to parse command line arguments into corresponding
+#	shell variables.
+#
+optInit
+optAdd host string "" "The hostname or FQDN to work on."
+optAdd ipAddress string "" "The IP address to work on."
+optAdd user string "cmpinfoblox_np" "The name of the access account."
+optAdd password string "6u7BGKmv" "The password of the access account."
+optAdd url string "https://ipam.fmrco.com/wapi/v1.7.5" "The Infoblox URL."
+optAdd recordType string "A" "Must be A, CNAME, or PTR."
+optAdd add boolean false "Adds a record."
+optAdd delete boolean false "Deletes a record."
+optAdd list boolean false "Lists all records of <type> for the specified host or IP address."
+
+optParse $*
+optParseSuccess || exit 1
+
+qurl="${url}/record:cname?name~:=${host}"
+curl -s -k --user "${user}:${password}" "${qurl}" 
+

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+jarx ()
+{
+	_doc $1 20160729125024 "jar wraps the underlying original jar utility, making it work with Cygwin file paths." && return 0
+
+	local options="${1}"
+	local newOptions
+	local files
+	local optionsCount=${#options}
+	local index=0
+	
+	while [[ $# -gt 0 ]]
+	do
+		if [[ ${1} =~ "/" ]]
+		then
+			newOptions+=" $(cygpath -m ${1})"
+		else
+			newOptions+=" ${1}"
+		fi
+
+		shift
+	done
+
+	command jar ${newOptions}
+
+
+}
+

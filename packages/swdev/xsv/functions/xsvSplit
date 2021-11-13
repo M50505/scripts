@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xsvSplit ()
+{
+	_doc $1 20140416183536 "splits a line contained in the first argument into fields based on the comma delimiter or the delimiter specified as the second argument." && return 0
+
+	local i line="${1}" delimiter=${2:-,}
+
+	line=${line//\\${delimiter}/_:_:_:_:_:_}
+	line="\"${line}\""
+	line=${line//${delimiter}/\"${delimiter}\"}
+	line=${line//\"${delimiter}\"/\" \"}
+	line=${line//\"${delimiter}/\" \"}
+	line=${line//${delimiter}\"/\" \"}
+	line=${line//\"\"/\"}
+	line=${line//_:_:_:_:_:_/${delimiter}}
+
+	xsvFields=(${line})
+
+	for((i=0;i<${#xsvFields[@]};i++))
+	do
+		xsvFields[${i}]=${xsvFields[${i}]:1:${#xsvFields[${i}]}-2}
+	done
+}

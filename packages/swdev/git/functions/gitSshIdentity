@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+gitSshIdentity ()
+{
+	if [[ $# -gt 0 ]]
+	then
+		local id_file="${HOME}/.ssh/id_rsa_${1}"
+		export GIT_SSH_COMMAND="ssh -i ${id_file}"
+	else
+		echo ${GIT_SSH_COMMAND##*_}
+	fi
+}
+declare -fx gitSshIdentity
+

@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optUsage ()
+{
+	_doc $1 20160729125024 "Writes a formatted display of the usage of the options" && return 0
+	isParsedOK=false
+
+	case "${1}" in
+		ambiguous)
+
+			if [[ ${#hits[@]} -eq 2 ]]
+			then
+				echo -e "Ambiguous option '--${opt}' - could be either of: \n"
+			else
+				echo -e "Ambiguous option '--${opt}' - could be any of: \n"
+			fi
+
+			for hitIndex in ${hits[@]}
+			do
+				optBuildLine ${hitIndex}
+				echo ""
+			done
+			;;
+
+		illegal)
+			echo -n "Unknown option '--${opt}', " 
+			optUsage 
+			;;
+
+		unset)
+			#echo -e "Option --${2} must be specified.\n"
+			echo -e "Option -${2} must be specified.\n"
+			;;
+
+		help)
+			optHelp
+			;;
+
+		*)
+			hitIndex=0
+			echo -e "Usage:\n"
+			while [[ ${hitIndex} -lt ${#options[@]} ]]
+			do
+				optBuildLine ${hitIndex}
+				echo ""
+				((hitIndex++))
+			done
+			;;
+
+	esac
+}
+

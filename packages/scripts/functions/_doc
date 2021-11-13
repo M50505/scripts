@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+_doc ()
+{
+	#
+	#	As this is the function that is used to make each function self-documenting, it cannot use itself
+	# for auto-documentation, which is why this function does not show up in calls to 'showfunctions'.
+	# 
+	# This function is actually ALWAYS called as the first action of any self-documenting function; if
+	# the first argument passed to the self-documenting function is '-h', then that is picked up by this
+	# function, which calls hangIndent to format the remaining args, and then returns 0.
+	#
+	#	If the first argument to this function is NOT '-h', then it returns -1 without doing anything, and
+	# the calling, self-documenting, function sees that the result was non-zero and cotinues to do it's
+	# own actual work.
+	#
+
+	local _DOC_INDENT=32
+	local cmdName
+
+	if [[ "${1}" = "-h" ]]
+	then
+		#echo "${2:0:4}-${2:4:2}-${2:6:2} ${2:8:2}:${2:10:2}:${2:12:2}"
+
+		shift 2
+
+		if [[ "${FUNCNAME[1]}" = "main" ]]
+		then
+			# This is script
+			cmdName="$(basename ${BASH_SOURCE[1]})"
+			hangIndent ${_DOC_INDENT} $(getColumns) ${cmdName} $*
+
+			exit 0
+		else
+			# This is a function
+			cmdName=${FUNCNAME[1]}
+			hangIndent ${_DOC_INDENT} $(getColumns) ${cmdName} $*
+
+			return 0
+		fi
+
+		echo ""
+	fi
+
+	return 1
+}

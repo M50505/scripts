@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+
+### BEGIN INIT INFO
+# Provides:          oradb
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Short description
+# Description:       Full description
+#                    and more description
+#
+### END INIT INFO
+
+DAEMON_ACCOUNT="oracle"
+
+. /lib/lsb/init-functions
+. /lib/scriptf/packages/LSB/LSBfunctions
+
+MUST_BE_ROOT=false
+
+# Process name
+NAME=oradb
+
+# pid file for the daemon
+PIDFILE=/var/run/${NAME}.pid
+
+STATUS=0
+
+export ORACLE_HOME="/u01/app/oracle/product/12.1.0.2/db_1"
+
+export PATH=$PATH:${ORACLE_HOME}/bin
+export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:=$LD_LIBRARY_PATH
+
+ORACLE_CDB="containe"
+ORACLE_PDB1="ofmw"
+ORACLE_STARTUP_LOG=${ORACLE_HOME}/startup.log
+ORACLE_SHUTDOWN_LOG=${ORACLE_HOME}/shutdown.log
+
+
+case ${action} in
+	start)
+		running=false
+
+		if areDependenciesRunning || ${forceFlag}
+		then
+
+			if ${cmd} ${cmdOpt} "dbstart ${ORACLE_CDB}" ${DAEMON_ACCOUNT}
+			then
+
+				if ${cmd} ${cmdOpt} "dbstart ${ORACLE_PDB1}" ${DAEMON_ACCOUNT}
+				then
+					running=true
+				fi
+			fi
+
+			if ${running}
+			then
+				if lsnrctl start
+				then
+					log_success_msg "Started ${NAME}" 
+				else
+					log_failure_msg "${NAME}: listener failed to start"
+				fi
+			else
+				log_failure_msg "${NAME}: Oracle database failed to start"
+				STATUS=1
+			fi
+		fi
+
+		;;
+
+	stop)
+		if areDependentsStopped || ${forceFlag}
+		then
+
+			${cmd} ${cmdOpt} "dbshut ${ORACLE_CDB}" ${DAEMON_ACCOUNT}
+			${cmd} ${cmdOpt} "dbshut ${ORACLE_PDB1}" ${DAEMON_ACCOUNT}
+
+			sleep 20
+
+			lsnrctl stop
+		fi
+	;;
+
+	status)
+		if ${cmd} ${cmdOpt} "lsnrctl status" ${DAEMON_ACCOUNT}
+		then
+			log_success_msg "${NAME} Process is running"
+		else
+			log_failure_msg "${NAME}: Oracle database is not running"
+			STATUS=1
+		fi
+	;;
+
+	restart)
+		${thisScrcipt} stop && sleep 2 && ${thisScript} start
+	;;
+
+	reload)
+		${thisScript} restart
+	;;
+
+	*)
+		echo "Usage: ${thisScript} {start|stop|restart|reload|status}"
+		STATUS=2
+	;;
+esac
+
+exit ${STATUS}

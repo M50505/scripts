@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xmlStripComments ()
+{
+	_doc $1 20160808083449 "strips the comments from a XML file." && return 0
+
+	xmlstarlet ed -d '//comment()' ${1}
+}
+

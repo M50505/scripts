@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh:expandtab
+#	
+# Author:             	Martin Cribbins
+#												Consulting BI Architect for Fidelity Investments
+# Revision history:
+#
+# 2015-12-02 - Initial version.
+# 2015-12-10 - Beta release.
+#	
+# oradbGenPSV retrieves the table name, column name, data type, and DDL comments
+# for tables or columns in the specified schema of an Oracle database, saving them
+# to a Pipe-Separated-Value (PSV) file.
+#
+
+_doc ${1} 20160711082640 "retrieves the table name, column name, data type, and DDL comments
+for tables or columns in the specified schema of an Oracle database, saving them
+to a Pipe-Separated-Value (PSV) file." && exit 0
+
+
+optInit
+optAdd tnsEntry string "CDEDWHLDRI1"  "The TNS service entry - typically from the TNSNAMES.ORA file - to use."
+optAdd schema string "CD_DATA_WH"  "The schema to use."
+optAdd account string "CDE_OBI_RPT"  "The account to use to connect."
+optAdd password string "Winter2016" "The password to use with the account."
+optAdd output string "" "The name of the file to save the metadata to - defaults to STDOUT."
+optAdd oracleHome string "${ORACLE_HOME}" "If required, the value of ORACLE_HOME may be overidden while the script executes, in order to accomodate environments such as OBIEE deployments."
+optAdd noheader boolean false "If specified, then the header row will be omitted."
+optAdd describe boolean false "If specified, then list the column layout and exit."
+optAdd sqlite boolean false "If specified, then a sqlite database will be created from the resulting PSV output. This will only occur if the PSV output is a file."
+
+optParse $* 
+optParseSuccess || exit 1
+
+[[ -n ${output} ]] && exec 1>${output}
+
+[[ -z ${account} ]] && read -p "Account: " password
+[[ -z ${password} ]] && read -s -p "Password: " password
+
+if ${describe}
+then
+	cat <<EOF
+# TABLE_OR_COLUMN|SCHEMA_NAME|TABLE_NAME|COLUMN_NAME|NEW_TABLE_NAME|NEW_COLUMN_NAME|SUBJECT_AREAS|ORIGINAL_DATATYPE|TARGET_DATATYPE|ITEM_TYPE|EXPR|DBA_COMMENT
+#
+# where:
+#
+#  1 TABLE_OR_COLUMN   indicates which type of data element is being described, a table or a column.
+#  2 SCHEMA_NAME       is the name of the Oracle DB user schema that hold the data element.
+#  3 TABLE_NAME        is the name of the table.
+#  4 COLUMN_NAME       if the element is a column, then this is the name of the column - otherwise it is empty.
+#  5 NEW_TABLE_NAME    is the new BMM table name for the element.
+#  6 NEW_COLUMN_NAME   is the new BMM column name for the element.
+#  7 SUBJECT_AREAS     is the comma-separated list of CDE Conceptual Model subject areas to which the table or column belongs.
+#  8 ORIGINAL_DATATYPE is the Oracle DB data type of the element.
+#  9 TARGET_DATATYPE   is the OBIEE Logical SQL data type to be recast to - otherwise no recasting if it is empty or the same as ORIGINAL_DATATYPE.
+# 10 ITEM_TYPE         if the element is a column, then this is the type of logical column to create in the BMM - it wil be one of:
+#     empty      - if the field is empty then this will simply be a logical column.
+#     MEASURE    - a logical column will be created along with the RPD metadata that defines it as a measure.
+#     CALCULATED - a logical column will be created, and the expression in the EXPR field will be used.
+# 11 EXPR              if the ITEM_TYPE is MEASURE, then this will be SUM, AVG, or COUNT. If ITEM_TYPE is CALCULATED, then this field contains
+#                      the expression to be used. If ITEM_TYPE is empty, then this field is ignored.
+# 12 DBA_COMMENT       is the Oracle DB metadata comment for this data element, sourced from the CDE Conceptual Mode. This comment is set into
+#                      the Description property of the resulting BMM item.
+#                      and added to the resulting BMM item's Description property, concatenated with any existing comment, separated by the tag: "BUSINESS::".
+#
+# The initial state of the generated PSV file will only have the TABLE/COLUMN,SCHEMA_NAME,TABLE_NAME,COLUMN_NAME,ORIGINAL_DATATYPE,
+# and DBA_COMMENT fields filled in. The COLUMN_NAME field will of course be empty for the TABLE elements, and the DBA_COMMENT field
+# may be empty. The second pass of processing the file will entail splitting any DBA_COMMENT field that contains text prefixed with
+# "BUSINESS::" , deleted from the DBA_COMMENT and then added into the BUSINESS_COMMENT field without the "BUSINESS::" prefix.
+#
+# The NEW_NAME, SUBJECT_AREAS, TARGET_DATATYPE, ITEM_TYPE, and EXPR fields will likely be filled in by separate rules-based tools.
+#
+EOF
+	exit
+fi
+
+normalizeNL ()
+{
+	tr -d -c '[:print:]' | sed -r "
+	{
+		s/##########/##########\n/
+		s/_____/\n/g
+		s/'/\&apos;/g
+		s/\"/\&quot;/g
+		s/</\&lt;/g
+		s/>/\&gt;/g
+		s/&/\&amp;/g
+	}"
+}
+
+tableHeader="TABLE_OR_COLUMN|SCHEMA_NAME|TABLE_NAME|COLUMN_NAME|NEW_TABLE_NAME|NEW_COLUMN_NAME|SUBJECT_AREAS|ORIGINAL_DATATYPE|TARGET_DATATYPE|ITEM_TYPE|EXPR|ISSUE_COMMENT|DBA_COMMENT|BUSINESS_COMMENT"
+
+${noheader} || echo "${tableHeader}"
+export LD_LIBRARY_PATH=${oracleHome}/lib:${LD_LIBRARY_PATH}
+ORACLE_HOME=${oracleHome} ${oracleHome}/bin/sqlplus -S ${account}@${tnsEntry}/${password} 2>/dev/null <<EOF | normalizeNL
+SET LINESIZE 32767
+SET NEWPAGE NONE
+SET PAGESIZE 0
+SET TRIMOUT ON
+SET ECHO OFF
+SET FEEDBACK OFF
+SET TERMOUT OFF
+#           1              2                  3           4                 5 6 7              8    9 10 11 12            13
+#SELECT 'TABLE|' || '${schema}|' ||   TABLE_NAME || '|' || ''            || '||||' || ''          || '|||||' ||   REGEXP_REPLACE(COMMENTS, 'CHR(10)','',1,0) || '|_____' FROM ALL_TAB_COMMENTS WHERE OWNER = '${schema}';
+SELECT 'TABLE|' || '${schema}|' ||   TABLE_NAME || '|' || ''            || '||||' || ''          || '|||||' ||   COMMENTS || '|_____' FROM ALL_TAB_COMMENTS WHERE OWNER = '${schema}';
+
+#SELECT 'COLUMN|' || '${schema}|' || A.TABLE_NAME || '|' || A.COLUMN_NAME || '||||' || A.DATA_TYPE || '|||||' || REGEXP_REPLACE(REGEXP_REPLACE(B.COMMENTS, '[^[:print:] ]', ''),'\|','') || '|_____' FROM ALL_TAB_COLUMNS A, ALL_COL_COMMENTS B WHERE A.OWNER = '${schema}' AND A.TABLE_NAME = B.TABLE_NAME AND A.COLUMN_NAME = B.COLUMN_NAME;
+SELECT 'COLUMN|' || '${schema}|' || A.TABLE_NAME || '|' || A.COLUMN_NAME || '||||' || A.DATA_TYPE || '|||||' || B.COMMENTS || '|_____' FROM ALL_TAB_COLUMNS A, ALL_COL_COMMENTS B WHERE A.OWNER = '${schema}' AND A.TABLE_NAME = B.TABLE_NAME AND A.COLUMN_NAME = B.COLUMN_NAME;
+EOF
+
+if [[ -n ${output} ]]
+then
+  ${sqlite} && xsvToSQLite -input ${output} -database CDE -table META
+fi

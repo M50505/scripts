@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optReset ()
+{
+	_doc $1 20160729125024 "This is an internally called function to return state variables to their initial values" && return 0
+	unset options
+	unset types
+	unset values
+	unset descriptions
+	#isParsedOK=true
+}
+

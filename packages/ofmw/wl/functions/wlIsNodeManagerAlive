@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlIsNodeManagerAlive ()
+{
+	_doc $1 20140530182202 "wlIsNodeManagerAlive returns true (return value of zero) if the NodeManager is alive.." && return 0
+
+  wlst <<EOF >/dev/null
+wlNMconnect()
+
+EOF
+}

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+csvFromNames ()
+{
+	_doc $1 20140416183536 "Takes a file of names, in the form of given name, whitespace, and then surname, and outputs a list in the form of surname, comma, given name, capitalizing the first letter of the given name and the surname." && return 0
+
+	sed -nr '/[a-zA-Z]/ {
+		s/^\s+//
+		s/.*/\L&/
+		s/,//g
+		s/\s+/ /g
+		s/\s+/ /g
+		s/(\S+)\s+(\S+)/\u\2,\u\1/
+		p
+	}' ${1}
+}

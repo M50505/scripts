@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# vim:expandtab:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+#                      
+#	
+# Revision history:
+#
+# 2016-10-02 - Initial version.
+#	
+
+### BEGIN INIT INFO
+# Provides:         	karaf
+# Required-Start:
+# Required-Stop:     
+# Default-Start:    	3 4 5
+# Default-Stop:     	0 1 6
+# Short-Description:	Start, stops, and interrogates the Apache Karaf container.
+# Description:      	Controls the Apache Karaf process.
+#
+### END INIT INFO
+
+DAEMON_ACCOUNT="osgi"
+
+export KARAF_HOME="/home/${DAEMON_ACCOUNT}/karaf"
+karafCommand="${KARAF_HOME}/bin/karaf"
+
+#. /lib/lsb/init-functions
+#. /lib/scriptf/packages/LSB/LSBfunctions
+
+MUST_BE_ROOT=false
+
+case ${action} in
+	start)
+
+	
+ 	 if isStartable
+		then
+			${cmd} ${cmdOpt} "${karafCommand} start"
+
+			${thisScript} status
+			STATUS=$?
+		else
+			STATUS=1
+		fi
+	;;
+
+	stop)
+
+		if isStoppable
+		then
+			${cmd} ${cmdOpt} "${karafCommand} stop"
+
+			logSuccessMessage "${NAME} is stopped"
+		else
+			STATUS=1
+		fi
+	;;
+
+	status)
+		${cmd} ${cmdOpt} "${KARAF_HOME}/bin/karaf status"
+	;;
+
+	restart)
+		${forceFlag} && forceRestart="force"
+
+		if ${thisScript} stop ${forceRestart}
+		then
+			sleep 2
+			
+			${thisScript} start ${forceRestart}
+		else
+			logFailureMessage "${NAME} Failed to restart"
+		fi
+	;;
+
+	*)
+		echo "Usage: ${0} {start|stop|restart|reload|status}"
+		STATUS=2
+	;;
+esac
+
+exit ${STATUS}

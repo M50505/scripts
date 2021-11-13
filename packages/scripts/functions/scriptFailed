@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+scriptFailed ()
+{
+	_doc $1 20160729125024 "displays the provided text on STDERR and then exits the calling script." && return 0
+
+	scriptWarning "${1}"
+
+	exit 1
+}

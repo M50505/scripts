@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+netFindUsedPortProcesses ()
+{
+	_doc $1 20140416171433 "netFindUsedPortProcesses lists the socket ports currently in use and their corresponding process IDs." && return 0
+#
+#	Now pipe netstat (all entries, no DNS resolution, TCP only, and list process info)
+#	through sed with the generated regular expression.
+#
+	local previousPID portList
+
+	[[ $# -lt 1 ]] && return $(functionFailed "You must specify a comma-separated list of one or more port numbers.")
+
+	lsof -P -i :${1} | sed -rn '2,$ {s/^\S+\s+//;s/\s[^:]+:([0-9]+).*$/ \1/;p}' | sort -n -k 1,2 | sort -u | \
+	while read -a fields
+	do
+		if [[ ${fields[0]} = ${previousPID} ]]
+		then
+			portList+=",${fields[1]}"
+		else
+			if [[ -n ${previousPID} ]]
+			then
+				echo "${portList} $(readlink /proc/${previousPID}/exe)"
+			fi
+
+			previousPID=${fields[0]}
+			portList=${fields[1]}
+		fi
+	done
+
+}
+

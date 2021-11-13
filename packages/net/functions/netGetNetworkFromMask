@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+netGetNetworkFromMask ()
+{
+	_doc $1 20140416171433 "echos the network definition that corresponds to the supplied netmask." && return 0
+
+	local i addrOctets maskOctects binAddr binMask mask decAddr
+
+	IFS=.
+	addrOctets=(${1})
+	maskOctets=(${2})
+
+	unset IFS
+
+	for((i=0;i<4;i++))
+	do
+		binAddr=$(echo "obase=2;${addrOctets[${i}]}+256" | bc)
+		binAddr=${binAddr:1}
+		binMask=$(echo "obase=2;${maskOctets[${i}]}" | bc | tr -d 0)
+		binAddr="${binAddr:0:${#binMask}}00000000"
+		binAddr="${binAddr:0:8}"
+		decAddr=$(echo "ibase=2;${binAddr}" | bc)
+
+		[[ -z ${decAddr} ]] && decAddr="0"
+
+		mask+=".${decAddr}"
+	done
+	
+	echo "${mask:1}"
+
+}

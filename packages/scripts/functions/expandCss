@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+expandCss ()
+{
+	_doc $1 20160729125024 "Unfolds a flattened .css file into human-readable form." && return 0
+
+	sed -r '
+		s/;([^}])/;\n  \1/g
+		s/;([}])/;\n}/g
+		s/[}][.]/}\n\n./g
+		s/([^#])[{]/\1	{\n  /g
+		s,/[*]([^/]+)[*]/,\n/*\n\1\n*/\n,g
+	' ${1}
+
+}
+
+

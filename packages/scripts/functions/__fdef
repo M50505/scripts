@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+__fdef ()
+{
+	# The sole purpose of this function is to indicate whether or not this collection
+	# of functions has been defined.
+
+	return 0
+}
+

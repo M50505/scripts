@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlst ()
+{
+	_doc $1 20160712092209 "Launches the WebLogic Scripting Tool in interactive mode" && return 0
+
+	${ORACLE_HOME}/common/bin/wlst.sh $*
+}

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+timesTenIsAlive ()
+{
+	_doc $1 20140424092635 "returns 0 if the TimesTen daemon is alive, otherwise 1 is returned." && return 0
+
+	ttstatus -nopretty > /dev/null 2>&1
+}

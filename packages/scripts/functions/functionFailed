@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+functionFailed ()
+{
+	_doc $1 20160729125024 "displays the provided text to STDERR and then exits with a status of 1." && return 0
+
+	functionWarning "${1}"
+
+	return 1
+}

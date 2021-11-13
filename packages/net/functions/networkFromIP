@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+networkFromIP ()
+{
+	_doc $1 20140416171433 "networkFromIP shows the dot-notated IP address for the network component of a specified IP address and number of bits." && return 0
+
+	local netmask=false
+
+	if [[ "${1}" = "-m" ]]
+	then
+		netmask=true
+		shift
+	fi
+
+	local mask="11111111"
+	local ip=${1}
+	local bits=${2}
+
+	IFS="."
+	local octets=(${ip})
+	unset IFS
+
+	mask="${mask:0:$((bits-$(($((bits/8))*8))))}00000000"
+	mask=${mask:0:8}
+
+	((octets[$((bits/8))]&=2#${mask}))
+
+	if ${netmask}
+	then
+		for((i=0;i<bits/8;i++))
+		do
+			octets[${i}]=255
+		done
+	fi
+
+	for((i=(bits/8)+1;i<${#octets[@]};i++))
+	do
+		octets[${i}]=0
+	done
+
+	echo "${octets[0]}.${octets[1]}.${octets[2]}.${octets[3]}"
+
+}

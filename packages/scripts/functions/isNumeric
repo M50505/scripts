@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+isNumeric ()
+{
+	_doc $1 20160729125024 "Returns true if the specified string represents a number, otherwise it returns false." && return 0
+	local testValue=$1
+	local x=${testValue:0:1};
+	[[ $x = 0 || $x = 1 || $x = 2 || $x = 3 || $x = 4 || $x = 5 || $x = 6 || $x = 7 || $x = 8 || $x = 9 ]]
+}
+

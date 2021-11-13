@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+gempub ()
+{
+	_doc $1 20170801113819 "build a gem from the specified .gemspec file, or else the .gemspec file in the current directory." && return 0
+
+	local projectRoot tokens gem allGems localGems gemFile gemSpecFile=${1:-*.gemspec}
+
+	if [[ $# -gt 0 && "${1}" = "-r" ]]
+	then
+		shift
+
+
+		projectRoot="${PWD}"
+
+		allGems=($(for dir in *
+		do
+
+			if [[ -f ${dir}/Gemfile ]]
+			then
+
+
+				sed -rn "
+/add_dependency|runtime_dependency/	{
+	s/^[^']+'//
+	s/^[^\"]+\"//
+
+	s/'.*$//
+	s/\".*$//
+	s/^/${dir} /
+	p
+}" ${dir}/*.gemspec
+			fi
+		done | tsort | tac ))
+
+		localGems=""
+
+		for gem in ${allGems[@]}
+		do
+			[[ -d ${gem} ]] && localGems+="${gem} "
+		done
+
+		if [[ "$1" == "-l" ]]
+		then
+			dvar localGems
+			return
+		fi
+
+
+		for g in ${localGems}
+		do
+
+			cd ${g}
+
+			echo ${g}
+
+			gempub
+
+			cd ${projectRoot}
+		done
+
+		return
+	fi
+
+	tokens=($(gem build ${gemSpecFile} | tr -d \\015))
+	gemFile=${tokens[-1]}
+
+	gem uninstall -x -a -I $(basename ${PWD})
+	#gem install ${gemFile}
+
+	result=($(gem install ${gemFile} | tee))
+
+
+	gem=${result[2]}
+	gem=${gem%$'\r'}
+
+	rm ${gemFile}
+	
+	tarList="$(find -name \*.cred)"
+	[[ -s ${tarList} ]] && tar cf - "${tarList}" | (cd ${RUBYGEMS_HOME}/${gem}; tar xvf -)
+}
+

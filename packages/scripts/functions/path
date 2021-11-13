@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+path ()
+{
+  _doc $1 20160729125024 "Appends, prepends, or deletes components of the PATH environment variable." && return 0
+
+	local opt=x
+
+	if [[ ${1:0:1} = "-" ]]
+	then
+		opt=${1:1:1}
+	fi
+
+	case ${opt} in
+		a)
+			PATH=${PATH}:${2}
+		;;
+		p)
+			PATH=${2}:${PATH}
+		;;
+		m)
+			path -d ${2%+*}
+			path -i ${2}
+		;;
+		*)
+			IFS=":"
+			local path=($PATH)
+			unset IFS
+
+			local newPath
+
+			for ((i=0;i<${#path[@]};i++))
+			do
+				case ${opt} in
+					d)
+						if [[ "${2}" != "${path[${i}]}" ]]
+						then
+							newPath="${newPath}:${path[${i}]}"
+						fi
+					;;
+					r)
+						[[ "${path[${i}]}" =~ "${2}" ]] || newPath="${newPath}:${path[${i}]}"
+					;;
+					i)
+						newPath="${newPath}:${path[${i}]}"
+
+						if [[ ${2#*+} -eq ${i} ]]
+						then
+							newPath="${newPath}:${2%+*}"
+						fi
+					;;
+					n)
+						dvar path[${i}]
+					;;
+					e)
+						echo "PATH=\${PATH}:${path[${i}]}"
+					;;
+					*)
+						echo ${path[${i}]}
+					;;
+				esac
+			done
+
+			case ${opt} in
+				i|d|r)
+					PATH=${newPath:1}
+				;;
+			esac
+		;;
+	esac
+}
+

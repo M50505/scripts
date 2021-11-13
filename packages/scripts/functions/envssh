@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+envssh ()
+{
+	_doc $1 20160729125024 "Executes ssh against one or more of the accounts derived from passing $1 to the getEnvTuple command" && return 0
+
+	local regexp="${1}"
+	shift
+
+	if [[ "${regexp}" = "-l" ]]
+	then
+		getEnvTuple -l
+		return
+	fi
+
+	local args="$*"
+
+	set -- $(getEnvTuple ${regexp})
+
+	while [[ $# -gt 0 ]]
+	do
+		ssh ${3}@${2} ${args}
+		shift 3
+	done
+}
+

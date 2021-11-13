@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#No _doc can be used for this function.
+
+optParse ()
+{
+	_doc $1 20160729125024 "Parses the command line and sets the values of the options" && return 0
+
+	local opt
+	local index
+	local target
+	local hits
+	local hitIndex
+	local indent=4
+	local optionWidth=32
+	local offsetWidth=44
+	local blanks="                                                                                     "
+	local msg
+	local line
+	local debug=false
+
+	if [[ "${1}" = "__" ]]
+	then
+		debug=true
+		shift
+	fi
+
+	while [[ $# -gt 0 ]]
+	do
+		if [[ "${1:0:1}" = "-" ]]
+		then
+			opt=$(toLower ${1##-})
+
+				ddvar opt
+
+			if [[ "${opt}" = "?" || "${opt}" = "help" ]]
+			then
+				optUsage help
+				optReset
+				return
+			fi
+
+			index=0
+			unset hits
+
+			while [[ ${index} -lt ${#options[@]} ]]
+			do
+				target=$(toLower ${options[((index))]})
+
+				ddvar index target 
+
+				if [[ ${target} != ${target#${opt}} ]]
+				then
+					hits[${#hits[@]}]=${index}
+					ddvar hits
+				fi
+
+				((index++))
+			done
+
+			if [[ ${#hits[@]} -eq 1 ]]
+			then
+				hitIndex=${hits[0]}
+
+				ddvar hitIndex
+
+				if [[ "${types[${hitIndex}]}" = "boolean" ]]
+				then
+					values[${hitIndex}]=true
+				else
+					values[${hitIndex}]=$2
+					shift
+				fi
+
+				ddvar values
+			elif [[ ${#hits[@]} -eq 0 ]]
+			then
+				optUsage illegal ${target}
+				optReset
+				isParsedOK=false
+				return 1
+			else
+				optUsage ambiguous ${target}
+				optReset
+				isParsedOK=false
+				return 1
+			fi
+		else
+			optRemainingArgs[${#optRemainingArgs[@]}]=$1
+			ddvar optRemainingArgs
+		fi
+
+		shift
+	done
+
+	index=0
+
+	while [[ ${index} -lt ${#options[@]} ]]
+	do
+		if [[ "${values[${index}]}" = "!" ]]
+		then
+			optUsage unset ${options[${index}]}
+			optReset
+			isParsedOK=false
+			break
+		fi
+
+		if [[ "${types[${index}]}" = "array" ]]
+		then
+			if [[ "${values[${index}]:0:1}" = "," ]]
+			then
+				values[${index}]="${values[${index}]:1}"
+			fi
+
+			eval "IFS=, ${options[${index}]}=(\${values[${index}]})"
+		else
+			eval ${options[${index}]}=${values[${index}]}
+		fi
+
+		if ${debug}
+		then
+			echo "${options[${index}]}=${values[${index}]}"
+		fi
+
+		((index++))
+	done
+
+	optReset
+
+}
+

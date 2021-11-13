@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+updateVariable ()
+{
+	_doc $1 20160729125024 "Updates the setting of an environment variable in a script file, if the variable is being set by that file, otherwise the assignment line is added to the end of the file. If '-e' is the first argument, then the assignment line is set/modified to use the export qualifier." && return 0
+
+	local result=""
+	local status=1
+	local file
+	local variable
+	local value
+	local assignment
+
+	local isExported=false
+
+	if [[ $# -gt 1 ]]
+	then
+		if [[ ${1} = "-e" ]]
+		then
+			isExported=true
+			shift
+		fi
+
+		if [[ $# -gt 2 ]]
+		then
+			variable=${1}
+			value=${2}
+			file=${3}
+
+			assignment="${variable}=${value}"
+
+			if ${isExported}
+			then
+				assignment="export ${assignment}"
+			fi
+
+			if [[ -f ${file} ]]
+			then
+				if grep "^[^#]*${variable}=" ${file} > /dev/null
+				then
+					sed -ri "/^[^#]*${variable}=/ {s,^.*,${assignment},}" ${file}
+				else
+					echo "${assignment}" >> ${file}
+				fi	
+
+				status=0
+			fi
+		fi
+	fi
+
+	return ${status}
+}
+

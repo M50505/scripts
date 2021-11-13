@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+restoreWhatCorporateDestroyed ()
+{
+	_doc $1 20160729125024 "restores the last backup of pinned tasks and IE bookmarks, that was created by the backupWhatCorporateDestroys command." && return 0
+
+	cd ~/AppData/Roaming/Microsoft/Internet\ Explorer/
+	tar xzf /p/Data/whatCorporateDestroys/QuickLaunch.tgz
+	cd -
+
+	cp /p/Data/whatCorporateDestroys/.bashrc ${HOME}
+	cp /p/Data/whatCorporateDestroys/.bash_profile ${HOME}
+
+	REG DELETE 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband' /F
+	REG IMPORT p:/Data/whatCorporateDestroys/pinned-items.reg
+
+	CMD /C TASKKILL /f /im explorer.exe
+	CMD /C START explorer.exe
+}
+

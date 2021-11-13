@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+clipPastePrompt ()
+{
+	_doc $1 20170525134250 "returns the content of the clipboard, otherwise prompts for the value and returns then entered value. If provided, the argument to this function is the prompt to be shown." && return 0
+
+	local content="$(clipPaste)" 
+
+	if [[ -z ${content} ]]
+	then
+		read -p "${1:-Enter the value}: " content
+	fi
+
+	echo "${content}"
+}
+

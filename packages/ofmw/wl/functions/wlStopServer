@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlStopServer ()
+{
+	_doc $1 20140530182202 "" && return 0
+
+	[[ $# -gt 0 ]] || return $(functionFailed "Usage: wlStopServer <name>")
+
+  local server
+	local servers=(${*})
+
+	if [[ "$(toUpper ${servers[0]})" = "CLUSTER" ]]
+	then
+    servers=($(wlGetManagedServers) $(wlGetAdminServer))
+  fi
+
+  for server in ${servers[@]}
+  do
+    wlst <<EOF 
+
+try:
+  wlNMconnect()
+except Exception,e:
+  dumpStack()
+  scriptFailed("Failed to connect to the NodeManager: " + str(e))
+
+try:
+  nmKill('${server}')
+except Exception,e:
+  dumpStack()
+  scriptFailed("Failed to stop the ${server}: " + str(e))
+
+
+EOF
+  done
+
+}

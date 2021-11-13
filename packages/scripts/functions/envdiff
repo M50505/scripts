@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+envdiff ()
+{
+	_doc $1 20160729125024 "Executes sshdiff against one or more of the accounts derived from passing $1 to the getEnvTuple command" && return 0
+
+	local tuple=($(getEnvTuple ${1}))
+	sshdiff ${tuple[2]}@${tuple[1]} "${2}"
+}
+

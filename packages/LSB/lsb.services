@@ -1,0 +1,262 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# init-functions - add-on functions for LSB init scripts
+#
+# Author:              Martin Cribbins
+#                      
+#	
+# Revision history:
+#
+# 2013-06-14    -  
+#	
+# Description:		These functions extend the capabilities of standard
+#									LSB-compliant Linux init functions, by adding the
+#									ability to determine the status of service which the
+#									current init script depends upon, as well as the status
+#									of services that depend upon the current init script.
+#
+#									A key feature of init scripts that use these functions
+#									is the ability to have both the root account use the
+#									init script/service, as well as the DAEMON_ACCOUNT; quite
+#									often an operating account needs access to the same
+#									functionality in a service script as is provided to the
+#									system: a typical example is an Oracle database, where
+#									it is desirable to start and stop the database with
+#									system startup/shutdown, while DBAs need to be able to
+#									SSH onto the system as the DAEMON_ACCOUNT and start and
+#									stop the database as well.
+#
+#									Also included here are key variables for sourcing to
+#									the consuming script, convenience functions for such
+#									things as generating correclty pluralized words in
+#									order to provide better log messages.
+#
+#									NOTE: this file must be sourced immediately following
+#												the sourcing of the /lib/lsb/init-functions file
+#
+
+#
+# Capture the name of the account that is running the current init
+# script. This drives the setting of the command prefix and command
+# prefix option.
+#
+currentUser=$(id | sed -r 's/uid=[0-9]+\(//;s/\).*$//')
+
+#
+# The command prefix: if the current account is root, then the su
+# command is used to run whatever acctual commands as the DAEMON_ACCOUNT.
+# If the USE_DAEMON_ACCOUNT_ENV flag is true, then cmd becomes "su -"
+#
+if ${USE_DAEMON_ACCOUNT}
+then
+	cmd="su -"
+else
+	cmd="su"
+fi
+
+#
+# The command prefix option: if the su command is in use, then the --command
+# options is required.
+#
+cmdOpt="--command"
+
+#
+# Change the value of the command prefix and the command prefix option
+# to be "no-ops" if the current account is in fact the DAEMON_ACCOUNT,
+# as it will not require (and must not use) the su command.
+#
+if [[ "${currentUser}" = "${DAEMON_ACCOUNT}" ]]
+then
+	DAEMON_ACCOUNT=""
+	cmd="bash"
+	cmdOpt="-c"
+fi
+
+#
+# The NAME variable is the LSB init script standard for the working name
+# of a script; this should always agree with the initialization comment
+# "Provides:"; therefore this section sets the NAME variable from the
+# "Provides:" command.
+#
+NAME=($(sed -rn '/^\s*#\s*Provides:/ {s/^.*Provides:\s*//;p}' ${0}))
+
+#
+# Derive the name of the pid file for the service
+#
+PIDFILE=/var/run/${NAME}.pid
+
+#
+# Start with the exit status being SUCCESS, i.e. 0
+#
+STATUS=0
+
+#
+# The requiredRunning (dependencies) and requiredStopped (dependents) arrays hold the names of 
+# of other services that must be taken into account when starting or stopping the init script
+# that uses these functions. These arrays are populated from the LSB-standard commentary
+# at the beginning of any such service/init script.
+#
+requiredRunning=($(sed -rn '/^\s*#\s*Required-Start:/ {s/^.*Required-Start:\s*//;p}' ${0}))
+requiredStopped=($(sed -rn '/^\s*#\s*Required-Stop:/ {s/^.*Required-Stop:\s*//;p}' ${0}))
+
+#
+# Capture the action passed to the service/init script that is using these
+# functions. This allows the positional parameters to be shifted, so that any
+# subsequent options or arguments start at ${1}
+#
+action="${1}"
+shift
+
+#
+# Captures whether or not the init script that uses these functions is being
+# instructed to start or stop regardless of the status of dependencies or dependents.
+#
+if [[ "${1}" = "force" ]]
+then
+	forceFlag=true
+	shift	
+else
+	forceFlag=false
+fi
+
+#
+# Captures the full path of the init script
+#
+thisScript=${BASH_SOURCE[${#BASH_SOURCE[@]}-1]}
+
+#
+# If at least one dependency is not running then this
+# function returns FALSE (1), otherwise if all dependencies
+# are running then TRUE (0) is resturned.
+#
+
+#
+#	These are the wrapper functions for the LSB logging functions -  the
+#	purpose of these is to ensure that not only will the traditional colored
+#	messages go to the console, but that the content of the messages will
+#	also go to sylog (and therefore most likely /var/log/messages).
+#
+logSuccessMessage ()
+{
+	local message="$*"
+	log_success_msg ${message}
+	logger -i -t ${NAME} -p daemon.info "${message}"
+}
+logWarningMessage ()
+{
+	local message="$*"
+	log_warning_msg ${message}
+	logger -i -t ${NAME} -p daemon.warning "${message}"
+}
+logFailureMessage ()
+{
+	local message="$*"
+	log_failure_msg ${message}
+	logger -i -t ${NAME} -p daemon.err "${message}"
+}
+areDependenciesRunning ()
+{
+	local svc
+
+	for svc in ${requiredRunning[@]}
+	do
+		service ${svc} status >/dev/null || return 1
+	done
+
+	return 0
+}
+
+#
+# If at least one dependent is not stopped, then this
+# functions returns FALSE (1), otherwise if all dependents
+# are stopped then TRUE (0) is returned.
+#
+areDependentsStopped ()
+{
+	local svc
+
+	for svc in ${requiredStopped[@]}
+	do
+		service ${svc} status >/dev/null && return 1
+	done
+
+	return 0
+}
+
+#
+# Returns TRUE (0) if the current account is the root account
+#
+isRoot ()
+{
+	if [[ "${currentUser}" = "root" ]]
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+
+#
+# Returns TRUE (0) if the current account is not the root account
+#
+isNotRoot ()
+{
+	if [[ "${currentUser}" = "root" ]]
+	then
+		return 1
+	else
+		return 0
+	fi
+}
+#
+# Simplified test for the service to see if it can start
+#
+isStartable ()
+{
+	local status=0
+
+	if ${MUST_BE_ROOT} && isNotRoot 
+	then
+		log_failure_msg "${NAME}: Only root can run this service"
+		status=1
+	elif ! areDependenciesRunning 
+	then
+		if ! ${forceFlag}
+		then
+			count=${#requiredRunning[@]}
+			echo "Cannot start ${NAME} until $(plural this ${count}) $(plural service ${count}) $(plural is ${count}) running:"
+			log_failure_msg "${requiredRunning[@]}"
+			STATUS=1
+		fi
+	fi
+
+
+	return ${status}
+}
+
+#
+# Simplified test for the service to see if it can stop
+#
+isStoppable ()
+{
+	local status=0
+
+	if ${MUST_BE_ROOT} && isNotRoot 
+	then
+		log_failure_msg "${NAME}: Only root can stop this service. "
+		status=1
+	elif ! areDependentsStopped
+	then
+		if ! ${forceFlag}
+		then
+			count=${#requiredStopped[@]}
+			echo "Cannot stop ${NAME} until $(plural this ${count}) $(plural service ${count}) $(plural is ${count}) stopped:"
+			log_failure_msg "${requiredStopped[@]}"
+			STATUS=1
+		fi
+	fi
+
+
+	return ${status}
+}

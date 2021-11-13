@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+sshx ()
+{
+	_doc $1 20160729125024 "Launches X-Windows using startx, on the local machine prior to running ssh, which is run with the -X port-forawrding option." && return 0
+
+	pgrep xinit || startx &
+	DISPLAY=192.167.90.1:0.0 ssh -CY $*
+}
+

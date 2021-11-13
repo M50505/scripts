@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+mvnToUrl ()
+{
+	_doc $1 20161221102944 "Converts the specified file path to a Maven URL." && return 0
+
+	local artifactFile=$(basename ${1})
+	local artifactVersion=$(basename $(dirname ${1}))
+	local artifactId=$(basename $(dirname $(dirname ${1})))
+	local groupId=$(dirname $(dirname $(dirname ${1})))
+	groupId=${groupId#${M2_REPO}/}
+	groupId=${groupId//\//.}
+
+	case ${artifactFile} in
+		*-features.xml)
+			echo "mvn:${groupId}/${artifactId}/${artifactVersion}/xml/features"
+			;;
+		*)
+			echo "mvn:${groupId}/${artifactId}/${artifactVersion}/${artifactFile}"
+			;;
+	esac
+}
+

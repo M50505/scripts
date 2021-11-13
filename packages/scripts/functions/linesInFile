@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+linesInFile ()
+{
+	_doc $1 20160729125024 "This is a convenience function, returning only the line count from the wc command" && return 0
+	set -- $(wc -l "${1}")
+	echo ${1}
+}
+

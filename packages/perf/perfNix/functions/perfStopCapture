@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+perfStopCapture ()
+{
+	_doc $1 20140424163206 "Stops the capturing of performance data in the latest observation of the current experiment." && return 0
+
+	local result=""
+	local status=1
+	local jobFile=$(perfGetPath)/jobs
+
+	if [[ -s ${jobFile} ]]
+	then
+		kill $(<${jobFile})
+		rm ${jobFile}
+		status=0
+	fi
+
+	return ${status}
+}
+

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlGetNodeManagerPort ()
+{
+	_doc $1 20140530182202 "wlGetNodeManagerPort gets the port on which the NodeManager is listening." && return 0;
+
+	local params=($(wlGetNodeManagerParams))
+	echo ${params[1]}
+}

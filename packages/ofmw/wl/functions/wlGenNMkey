@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlGenNMkey ()
+{
+	_doc $1 20140530182202 "Generates the user key file that is needed in order to communicate with the NodeManager via WLST or Java, wirhout having to specify a username and password." && return 0
+
+	if [[ $# -lt 2 ]]
+	then
+		echo "Usage: wlGenNMkey <username> <password>"
+		return 1
+	fi
+
+	if [[ -z ${WL_NM_PORT} || -z ${WL_NM_USER_CONFIG_FILE} || -z ${WL_NM_USER_KEY_FILE} ]]
+	then
+		return $(functionFailed "One or more of the following environment variables is not
+		set - please correct this and then try again.")
+	fi
+
+	java weblogic.Admin -adminurl t3://localhost:${WL_NM_PORT} -username ${1} -password ${2} -userconfigfile ${WL_NM_USER_CONFIG_FILE} -userkeyfile ${WL_NM_USER_KEY_FILE} -STOREUSERCONFIG
+}

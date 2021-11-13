@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+jarcat ()
+{
+	_doc $1 20160730110906 "lists the manifest of JAR file, if -l is specified then lists the classes, if -s is specified then lists the service component OSGI definition file." && return 0
+
+	local option="${1}"
+
+	case ${option} in
+		-l)
+			shift
+			unzip -l "${1}"
+			;;
+		-s)
+			shift
+			serviceFile=$(jarcat "${1}" | sed -rn '/Service-Component:/ {s/Service-Component:\s*//;p}')
+			unzip -p "${1}" "${serviceFile}"
+			;;
+		-m)
+			shift
+			metadataFile=$(jarcat -l "${1}" | sed -rn '/OSGI-INF\/metatype\/.+[.]xml/ {s,^.*OSGI-INF,OSGI-INF,;p}')
+			unzip -p "${1}" "${metadataFile}"
+			;;
+		*)
+			unzip -p "${1}" META-INF/MANIFEST.MF | sed -nr '
+/^\S/ {
+	x
+	p
+}
+
+/^\s/ {
+	s/\s//
+	H
+	x
+	s/\n//g
+	x
+	n
+}
+
+$  {
+	x
+	p
+}
+'
+			;;
+	esac
+}
+

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+toLower ()
+{
+  _doc $1 20160729125024 "Converts the passed string to all lower case." && return 0
+	if [[ $# -gt 0 ]]
+	then
+		echo "$*" | tr '[A-Z]' '[a-z]'
+	else
+		tr '[A-Z]' '[a-z]'
+	fi
+}
+

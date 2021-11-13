@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlFindMBeans ()
+{
+	_doc $1 20140619105942 "Uses the provided pattern to find WebLogic MBeans, no pattern finds all." && return 0
+
+	local query="*:*"
+  local pretty=""
+
+
+	while [[ $# -gt 0 ]]
+  do
+    if [[ "${1}" = "-p" ]]
+    then
+      pretty="-pretty"
+    else
+		  query="${1}"
+    fi
+
+    shift
+
+  done
+	
+	echo java weblogic.Admin -username weblogic -password welcome1 -url t3://localhost:7002 QUERY ${pretty} -pattern "${query}"
+	     java weblogic.Admin -username weblogic -password welcome1 -url t3://localhost:7002 QUERY ${pretty} -pattern "${query}"
+}

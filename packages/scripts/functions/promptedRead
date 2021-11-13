@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+promptedRead ()
+{
+	_doc $1 20160729125024 "Keeps prompting for an answer, with an optionally specified default value, until the read is satisfied." && return 0
+
+	local result=""
+	local status=1
+	local default=""
+	local prompt
+
+	if [[ $# -gt 0 ]]
+	then
+		prompt="${1}"
+
+		if [[ $# -gt 1 ]]
+		then
+			default="${2}"
+			prompt="${prompt} [${default}]"
+		fi
+
+		prompt="${prompt} : "
+
+		while [[ -z ${result} ]]
+		do
+			read -p "${prompt}" result
+
+			if [[ -z ${result} && ! -z ${default} ]]
+			then
+				result="${default}"
+			fi
+		done
+
+		status=0
+	fi
+
+	echo "${result}"
+
+	return ${status}
+}
+

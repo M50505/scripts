@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+fileWithDatedBackup ()
+{
+	_doc $1 20160729125024 "Echos back the name of the specified file, after copying the file to \<filename\>.YYYYMMDDHHSS" && return 0
+
+	if [[ -f "${1}" ]]
+	then
+		cp "${1}" "${1}.$(date +%Y%m%d%H%M%S)"
+	fi
+
+	echo "${1}"
+}
+

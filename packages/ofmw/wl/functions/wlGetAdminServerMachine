@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlGetAdminServerMachine ()
+{
+  _doc $1 20140530182202 "Get the machine name of the WebLogic domain administrative server." && return 0
+
+	xslFile=$(newTempFile)
+
+	cat <<EOF > ${xslFile}
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wl="http://xmlns.oracle.com/weblogic/domain" version="1.0" >
+	<xsl:output method="text"/>
+	<xsl:template match="/">
+		<xsl:for-each select="/wl:domain/wl:server[wl:name='AdminServer']">
+			<xsl:value-of select="wl:machine"/>
+			<xsl:value-of select="'&#10;'"/>
+		</xsl:for-each>
+	</xsl:template>
+</xsl:stylesheet>
+EOF
+
+	oraxsl ${WL_DOMAIN}/config/config.xml ${xslFile}
+
+	rm ${xslFile}
+}
+

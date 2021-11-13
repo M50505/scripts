@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+gradleNewJava ()
+{
+	_doc $1 20150915172747 "Creates a new Gradle project with wrappers and the traditional Maven directory struture. This function assumes that you are in the directory within which the new project is to be created." && return 0
+
+	gradle init
+	mkdir -p src/main/java src/test/java
+}
+

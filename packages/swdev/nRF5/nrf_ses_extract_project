@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2017-11-17 - Initial version.
+#
+
+_doc ${1} 20171117154047 "Extracts a Nordic SDK SEGGER Embedded Studio-based example project to a stand-alone form." && exit 0
+
+optInit
+optAdd source string ""  "The path to the source project file, or the directory which contains the source project."
+optAdd destination string ""  "The destination directory to create."
+optParse $*
+optParseSuccess || exit 1
+
+buildMacrosXpath="solution/project/configuration[@Name='Common']/@macros"
+solutionNameXpath="solution/@Name"
+projectNameXpath="solution/project/@Name"
+
+
+if [[ -f ${source} ]]
+then
+  projectFile=${source}
+  projectDir=$(dirname ${projectFIle})
+elif [[ -d ${source} ]]
+then
+  projectDir=${source}
+	projectFiles=(${projectDir}/*.emProject)
+
+	if [[ "${projectFiles}" = "${projectDir}/*.emProject" ]]
+	then
+		scriptFailed "No project was specified, and no *.emProject project file can be found in the current directory"
+	fi
+
+	projectFile="${projectFiles[0]}"
+elif [[ -d ${SDK}/examples/${source} ]]
+then
+	projectDir=${SDK}/examples/${source}
+	projectFiles=(${projectDir}/*.emProject)
+
+	if [[ "${projectFiles}" = "${projectDir}/*.emProject" ]]
+	then
+		scriptFailed "No project was specified, and no *.emProject project file can be found in the current directory"
+	fi
+
+	projectFile="${projectFiles[0]}"
+
+fi
+
+if [[ -z ${destination} ]]
+then
+	if [[ ${source//\// } =~ ([^ ]+)' pca10040' ]]
+	then
+		destination=${PROJECTS_HOME}/${BASH_REMATCH[1]}
+	else
+		scriptFailed "The destination was not specified, and it cannot be derived from the source."
+	fi
+fi
+
+newProjectName=$(basename ${destination})
+newProjectFile="${newProjectName}.emProject"
+
+if [[ ! -d ${destination} ]]
+then
+ mkdir -p ${destination}
+fi
+
+cd ${destination}
+
+cp ${projectFile} ${newProjectName}.emProject
+cp ${projectDir}/../config/sdk_config.h .
+
+projectFiles=(${projectDir}/*.emProject)
+
+if [[ "${projectFiles}" = "${projectDir}/*.emProject" ]]
+then
+	scriptFailed "No project was specified, and no *.emProject project file can be found in the current directory"
+fi
+
+projectFile="${projectFiles[0]}"
+
+if [[ "${projectFiles}" = "${projectDir}/*.emProject" ]]
+then
+	scriptFailed "No project was specified, and no *.emProject project file can be found in the current directory"
+fi
+
+projectFile="${projectFiles[0]}"
+cp ${projectDir}/flash_placement.xml .
+
+cFiles=(${projectDir}/../../../*.c)
+hFiles=(${projectDir}/../../../*.h)
+
+[[ "${cFiles}" != "${projectDir}/../../../*.c" ]] && cp ${projectDir}/../../../*.c .
+[[ "${hFiles}" != "${projectDir}/../../../*.h" ]] && cp ${projectDir}/../../../*.h .
+
+[[ -d ${projectDir}/../../../config ]] && cp ${projectDir}/../../../config/* .
+
+projectFile=$(basename ${projectFile})
+
+sed -r -i 's,../../../../../../../components,$(SDK_COMP),g' ${newProjectFile}
+sed -r -i 's,../../../../../../components,$(SDK_COMP),g' ${newProjectFile}
+sed -r -i 's,../../../../../../../,$(SDK)/,g' ${newProjectFile}
+sed -r -i 's,../../../../../../,$(SDK)/,g' ${newProjectFile}
+sed -r -i 's,../../../config\;,,g' ${newProjectFile}
+sed -r -i 's,../config([/;]),.\1,g' ${newProjectFile}
+#sed -r -i 's,../../../main.c,main.c,' ${newProjectFile}
+sed -r -i 's,../../../([^.]+).c,\1.c,' ${newProjectFile}
+
+buildMacros=$(nrf_project_get_attribute "${buildMacrosXpath}" ${newProjectFile})
+
+if [[  ! ${buildMacros} =~ SDK= ]]
+then
+  buildMacros+=";SDK=${SDK};SDK_COMP=${SDK_COMP}"
+
+  nrf_project_update_attribute "${buildMacrosXpath}" ${buildMacros} ${newProjectFile}
+fi
+
+nrf_project_update_attribute "${solutionNameXpath}" ${newProjectName} ${newProjectFile}
+nrf_project_update_attribute "${projectNameXpath}" ${newProjectName} ${newProjectFile}
+

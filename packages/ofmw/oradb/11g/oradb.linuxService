@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+
+### BEGIN INIT INFO
+# Provides:          oradb
+# Required-Start:    shmalloc
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Short description
+# Description:       Full description
+#                    and more description
+#
+### END INIT INFO
+
+DAEMON_ACCOUNT="oracle"
+
+. /lib/lsb/init-functions
+. /lib/scriptf/init-functions
+
+# Process name
+NAME=oradb
+
+# pid file for the daemon
+PIDFILE=/var/run/${NAME}.pid
+
+STATUS=0
+
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export PATH=$PATH:${ORACLE_HOME}/bin
+export LD_LIBRARY_PATH=${ORACLE_HOME}/lib:=$LD_LIBRARY_PATH
+
+ORACLE_INSTANCE="ofmw"
+ORACLE_STARTUP_LOG=${ORACLE_HOME}/startup.log
+ORACLE_SHUTDOWN_LOG=${ORACLE_HOME}/shutdown.log
+
+
+case ${action} in
+	start)
+		running=false
+
+		if areDependenciesRunning || ${forceFlag}
+		then
+			if ${cmd} ${cmdOpt} "dbstart ${ORACLE_HOME}" ${DAEMON_ACCOUNT}
+			then
+				if egrep -q 'warm started' ${ORACLE_STARTUP_LOG}
+				then
+					if ${cmd} ${cmdOpt} "lsnrctl status" ${DAEMON_ACCOUNT}
+					then
+						running=true
+					fi
+				fi
+			fi
+
+			if ${running}
+			then
+				log_success_msg "Started ${NAME}" 
+			else
+				log_failure_msg "${NAME}: Oracle database failed to start"
+				STATUS=1
+			fi
+		else
+			count=${#requiredRunning[@]}
+			log_failure_msg "Cannot start ${NAME} until $(plural this ${count}) $(plural service ${count}) $(plural is ${count}) running: ${requiredRunning[@]}"
+			STATUS=1
+		fi
+	;;
+
+	stop)
+		if areDependentsStopped || ${forceFlag}
+		then
+			running=true
+
+			if ${cmd} ${cmdOpt} "dbshut ${ORACLE_HOME}" ${DAEMON_ACCOUNT}
+			then
+				if egrep -q "Database instance \"${ORACLE_INSTANCE}\" shut down" ${ORACLE_SHUTDOWN_LOG}
+				then
+					running=false
+				fi
+			fi
+
+			if ${running}
+			then
+				log_failure_msg "${NAME}: Oracle database failed to stop"
+				STATUS=1
+			else
+				log_success_msg "${NAME}: Oracle database is shutdown" 
+			fi
+		else
+			count=${#requiredStopped[@]}
+			log_failure_msg "Cannot stop ${NAME} until $(plural this ${count}) $(plural service ${count}) $(plural is ${count}) stopped: ${requiredRunning[@]}"
+			STATUS=1
+		fi
+	;;
+
+	status)
+		if ${cmd} ${cmdOpt} "lsnrctl status" ${DAEMON_ACCOUNT}
+		then
+			log_success_msg "${NAME} Process is running"
+		else
+			log_failure_msg "${NAME}: Oracle database is not running"
+			STATUS=1
+		fi
+	;;
+
+	restart)
+		${thisScrcipt} stop && sleep 2 && ${thisScript} start
+	;;
+
+	reload)
+		${thisScript} restart
+	;;
+
+	*)
+		echo "Usage: ${thisScript} {start|stop|restart|reload|status}"
+		STATUS=2
+	;;
+esac
+
+exit ${STATUS}

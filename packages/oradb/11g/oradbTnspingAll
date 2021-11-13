@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# oradbTnspingAll - Use TNSPING to ping all service entries in the active tnsnames.ora file
+#
+# Author:              Martin Cribbins
+#                      
+#	
+# Revision history:
+#
+# 2011-09-19    -  Baseline
+#	
+# 
+_doc $1 20111005112359 "oradbTnspingAll Uses TNSPING to ping all service entries in the active tnsnames.ora file." && exit 0
+
+SLEEP_INTERVAL=10
+
+listSIDs ()
+{
+	sed -rn '/^\s*[a-z0-9A-Z_]+\s*[=]/ {
+		s/^\s*([a-z0-9A-Z_]+).*$/\1/
+		p
+	}' ${ORACLE_HOME}/network/admin/tnsnames.ora | sort -u
+}
+
+myTnsping ()
+{
+	echo -n "${1}|" > ${1}.log
+	tnsping ${1} >> ${1}.log 2>&1
+}
+
+tmpDir=$(newTempFile)
+
+mcd ${tmpDir}
+
+for sid in $(listSIDs)
+do
+
+	echo "${sid} "
+
+	myTnsping ${sid} &
+
+done
+
+myJobs=($(jobs))
+
+while [[ ${#myJobs[@]} -gt 0 ]]
+do
+echo "myJobs=${myJobs[@]}"
+	sleep ${SLEEP_INTERVAL}
+	myJobs=($(jobs))
+done
+
+

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+perfSetExperiment ()
+{
+	_doc $1 20110722145708 "Sets the current experiment to the specified name, and the observation to 0, if the specified experiment exists, and a success status (0) is returned, otherwise a failure status (1) is returned."  && return 0
+
+	local status=1
+
+	if [[ $# -gt 0 ]]
+	then
+		if [[ -f "${CURRENT_EXPERIMENT_REFERENCE_FILE}" && -d "${EXPERIMENTS_HOME}/${1}" ]]
+		then
+			echo "${1} 0" > "${CURRENT_EXPERIMENT_REFERENCE_FILE}" 
+				status=0
+		fi
+	fi
+
+	return ${status}
+}
+

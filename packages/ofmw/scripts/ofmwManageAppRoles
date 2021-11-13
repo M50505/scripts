@@ -1,0 +1,346 @@
+#!/usr/bin/env bash
+# vim:expandtab:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+#                      
+#	
+# Revision history:
+#
+# 2014-02-24 -  Initial version.
+# 2014-04-09 -  Updated to use xsvGetFile as a single-point
+#               method of getting the input.
+#	2014-04-10 -  Bullet-proffed, using grep to filter out
+#               and OBIEE builtin roles.
+#
+# NOTE: This script uses WLST here-files, which are Python
+#       code and therefore are very sensitive to indentation
+#       and the difference between tabs and spaces. Take
+#       note of the vim option above: expandtabs which ensures
+#       that tab characters will not be used for indentation.
+#       
+
+_doc ${1} 20160712195353 "ofmwManageAppRoles " && exit 0
+
+optInit
+
+optAdd stripe string "obi"  "The application stripe for which roles are being managed."
+optAdd input string ""  "The path of the CSV file, Excel file, or SharePoint List URL which contains the mapping of group names to roles names."
+optAdd username string "" "If the input option specifies a SharePoint URL, then this is the name of an account that is privileged to access the List."
+optAdd password string "" "If the input option specifies a SharePoint URL, this is the password of the SharePoint account." 
+optAdd add boolean false "Add a role or roles taken from the specified file or URL."
+optAdd map boolean false "Maps the users, groups or other roles to roles taken from the specified file or URL."
+optAdd delete boolean false "Delete a role or roles taken from the specified file or URL."
+optAdd delimiter string "," "The character used to delimit fields in the input file."
+optAdd list boolean false "List the roles that are defined in the application stripe."
+optAdd roleIndex number "0" "The zero-based index of the role name."
+optAdd memberIndex number "1" "The zero-based index of the member."
+optAdd categoryIndex number "2" "The zero-based index of the category."
+optAdd saveWLST boolean false "If specified, then save the temporary Python/Jython/WLST file."
+optAdd display boolean false "If specified, then display the file format for each option."
+optParse $* 
+optParseSuccess || exit 1
+
+#
+# On any error condition, the temporary source
+# CSV file will probably already exist, so
+# remove it, display the error message, and then exit.
+#
+cleanup ()
+{
+  rm -f ${sourceFile}
+  scriptFailed "${1}"
+}
+
+#
+# The desired actions must be specified - check to see
+# that it is specified.
+#
+! ${list} && ! ${add} && ! ${delete} && ! ${map} && cleanup "One of -list, -add, -delete, or -map must be specified."
+
+if ${display}
+then
+  cat <<EOF
+-add:
+  role-name,ignored,ignored
+
+-delete:
+  role-name,ignored,ignored
+  
+-map:
+  role-name,role/group/user-name,ROLE/GROUP/USER
+
+EOF
+
+  exit
+fi
+#
+# If the -list option is specified, then simply display all of the
+# mapped roles.
+#
+if ${list}
+then
+  tempPy=$(newTempFile).py
+
+	cat <<EOF > ${tempPy}
+try:
+  wlAdminConnect()
+except Exception,e:
+  printlnErr("Failed to connect to the AdminServer: " + str(e))
+
+listAppRoles("${stripe}")
+
+disconnect()
+EOF
+	wlst ${tempPy} #| sed -r 's/^.+Principal\s+Name\s+:\s+([^,]+),.+Display\s+Name\s+:\s+([^,]+),.*$/\1 \2/;s/\s+null//'
+  [[ ${saveWLST} ]] || rm ${tempPy}
+
+	exit
+fi
+
+[[ -n ${input} ]] || cleanup "-input <source> must be specified for either -add, -delete, or -map."
+
+#
+# The WLST script will require an actual CSV file for its
+# input - a temporary CSV file will be created from the
+# filtered output of xsvGetFile.
+#
+sourceFile=$(newTempFile)
+
+#
+# Begin to buid the options for the xsvGetFile command.
+#
+options="-input ${input}"
+
+#
+# If a URL for a SharePoint list is what's been specified
+# as the input, then a username and password may be needed ...
+#
+[[ -n ${username} ]] && options+=" -username ${username}"
+[[ -n ${password} ]] && options+=" -password ${password}"
+
+#
+# Now launch xsvGetFile to ensure that no matter where the
+# role mapping information comes from, the CSV-fomatted
+# content will be sent to STDOUT.
+#
+# The CSV content is piped through grep to ensure that we
+# NEVER allow the preconfigured roles to be spcified for
+# the scripted mapping adjustment: things just will not
+# go well if any of these roles are touched.
+#
+xsvGetFile ${options} | grep -P -i -v '^BISystem|^BIAdmin|^BIAuthor|^BIConsum' > ${sourceFile} || cleanup "Failed to obtain/convert the input."
+
+egrep  -v '[-#_,:alnum:]' ${sourceFile} > /dev/null && scriptFailed "There are illegal characters in the input CSV file; if this came from SharePoint, then please ensure that the URL ends with asCSV.aspx, NOT allItems.aspx"
+
+#
+# Now check to see that 
+#
+# At this point a scrubbed, safe source CSV file is ready -
+# check the first row of the file to ensure that each
+# required column for the specified action is present, and
+# if so, then determine which column corresponds to which
+# attribute (role, membership, type).
+#
+
+#
+# Read the first record of the source CSV file.
+#
+IFS=,
+read -a fields < ${sourceFile}
+unset IFS
+
+#
+# Now for each field/column determine which attribute
+# is represented by that column. Temporarily set the
+# shell to ignore case for the tests.
+#
+
+#
+# Restore the prior setting of nocasematch.
+#
+${oldCaseMatch}
+
+#
+# Now ensure that the first row of the input CSV
+# file is commented out for the sake of the WLST script.
+#
+#sed -i -r '1,1 {s/^/#/}' ${sourceFile}
+
+#less ${sourceFile}
+#rm ${sourceFile}
+#exit
+#
+# If the action is to add roles, then check
+# that we know which column contains the role
+# names, and if so then submit the input to the
+# WLST script.
+#
+if ${add}
+then
+  [[ ${roleIndex} -gt -1 ]] || cleanup "No column of the ${input} input was found to specify role names."
+
+  tempPy=$(newTempFile).py
+
+	cat <<EOF > ${tempPy}
+try:
+  wlAdminConnect()
+except Exception,e:
+  printlnErr("Failed to connect to the AdminServer: " + str(e))
+
+try:
+  input = open("${sourceFile}")
+except Exception,e:
+  printlnErr("Failed to open the file ${sourceFile}: " + str(e))
+  exit()
+
+for text in input:
+  try:
+    println("Record: " + text)
+    off = text.find("#")
+    if off > -1:
+      text=text[:off]
+    text = text.strip()
+    if len(text) == 0 or text.isspace():
+      printlnErr("Zero-length record encountered.")
+      continue
+    fields=text.split("${delimiter}")
+    role=fields[${roleIndex}].strip()
+    if len(role) == 0:
+      printlnErr("Zero-length role encountered.")
+      continue
+    println("Creating role " + role)
+    createAppRole("${stripe}",role)
+  except Exception,e:
+    println("Failed to create the role " + role + " for the ${stripe} application stripe: " + str(e))
+
+disconnect()
+EOF
+  wlst ${tempPy}
+
+  [[ ${saveWLST} ]] || rm ${tempPy}
+	exit
+fi
+
+#
+# If the action is to delete roles, then check
+# that we know which column contains the role
+# names, and if so then submit the input to the
+# WLST script.
+#
+if ${delete}
+then
+  [[ ${roleIndex} -gt -1 ]] || cleanup "No column of the ${input} input was found to specify role names."
+
+  tempPy=$(newTempFile).py
+
+	cat <<EOF > ${tempPy}
+try:
+  wlAdminConnect()
+except Exception,e:
+  println("Failed to connect to the AdminServer: " + str(e))
+
+try:
+  input = open("${sourceFile}")
+except Exception,e:
+  println("Failed to open the file ${sourceFile}: " + str(e))
+  exit()
+
+for text in input:
+  try:
+    off = text.find("#")
+    if off > -1:
+      text=text[:off]
+    text = text.strip()
+    if len(text) == 0 or text.isspace():
+      continue
+    fields=text.split("${delimiter}")
+    if len(fields) < 3:
+      continue
+    role=fields[${roleIndex}].strip()
+    if len(role) == 0:
+      continue
+    println("Deleting role >>>" + role + "<<<")
+    deleteAppRole("${stripe}",role)
+  except Exception,e:
+    println("Failed to delete the role " + role + " for the ${stripe} application stripe: " + str(e))
+
+disconnect()
+EOF
+
+  wlst ${tempPy}
+
+  [[ ${saveWLST} ]] || rm ${tempPy}
+	exit
+fi
+
+#
+# If the action is to map users, groups or other
+# roles to roles, then check that we know which
+# column contains the role name, the member name,
+# and the type of member being mapped. If all of
+# the required columns are presentm then submit
+# the input to the WLST script.
+#
+if ${map}
+then
+  [[ ${roleIndex} -gt -1 ]] || cleanup "No column of the ${input} input was found to specify role names."
+  [[ ${memberIndex} -gt -1 ]] || cleanup "No column of the ${input} input was found to specify the names of members to be mapped."
+  [[ ${categoryIndex} -gt -1 ]] || cleanup "No column of the ${input} input was found to specify the type of each member to be mapped."
+
+  tempPy=$(newTempFile).py
+
+	cat <<EOF > ${tempPy}
+try:
+  wlAdminConnect()
+except Exception,e:
+  println("Failed to connect to the AdminServer: " + str(e))
+
+try:
+  mapFile = open("${sourceFile}")
+except Exception,e:
+  println("Failed to open the file ${sourceFile}: " + str(e))
+  exit()
+
+for text in mapFile:
+  try:
+    off = text.find("#")
+    if off > -1:
+      text=text[:off]
+    text = text.strip()
+    if len(text) == 0:
+      continue
+    fields = text.split("${delimiter}")
+    if len(fields) < 3:
+      continue
+    role=fields[${roleIndex}].strip()
+    if len(role) == 0:
+      continue
+    member=fields[${memberIndex}].strip()
+    if len(member) == 0:
+      continue
+    memberType=fields[${categoryIndex}].upper().strip()
+    if len(memberType) == 0:
+      continue
+    memberClass=""
+    if memberType == "GROUP":
+      memberClass="weblogic.security.principal.WLSGroupImpl"
+    elif memberType == "ROLE":
+      memberClass="oracle.security.jps.service.policystore.ApplicationRole"
+    elif memberType == "USER":
+      memberClass="weblogic.security.principal.WLSUserImpl"
+    else:
+      continue
+    println("Mapping the " + memberType + " " + member + " to the " + role + " role")
+    grantAppRole("${stripe}",role,memberClass,member)
+  except Exception,e:
+    println("Failed to map the " + memberType + " " + member + " to the " + role + " role: " + str(e))
+
+disconnect()
+EOF
+
+  wlst ${tempPy}
+
+  [[ ${saveWLST} ]] || rm ${tempPy}
+	exit
+fi
+

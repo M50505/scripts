@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+cryptoE ()
+{
+	_doc $1 20140322160604 "encrypts the provided string to STDOUT according to GPG AE256, or else using the framework and alogrithm specified." && return 0
+	local phraseFile=$(newTempFile)
+	cryptoGetPhrase > ${phraseFile}
+
+	set -- $(echo "${1}" | gpg --cipher-algo AES256 --symmetric --armor --passphrase-fd 3 3<${phraseFile} 2>/dev/null)
+
+	shift 7
+
+	echo "${1}${2}${3}"
+
+	rm ${phraseFile}
+
+}

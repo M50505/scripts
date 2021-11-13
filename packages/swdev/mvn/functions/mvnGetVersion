@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+mvnGetVersion ()
+{
+	_doc $1 20161206152015 "Displays the project version from the specified pom.xml to STDOUT." && return 0
+
+	local tmpXSL=$(newTempFile)
+
+	cat <<EOF > ${tmpXSL}
+<?xml version="1.0"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pom="http://maven.apache.org/POM/4.0.0" xmlns:exslt="http://exslt.org/common" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:_="http://maven.apache.org/POM/4.0.0" xmlns:DEFAULT="http://maven.apache.org/POM/4.0.0" version="1.0" extension-element-prefixes="exslt">
+  <xsl:output omit-xml-declaration="yes" indent="no"/>
+  <xsl:template match="/">
+	  <xsl:value-of select="pom:project/pom:version"/>
+  </xsl:template>
+</xsl:stylesheet>
+EOF
+
+	xsl ${tmpXSL} ${1}/pom.xml
+	rm ${tmpXSL}
+}

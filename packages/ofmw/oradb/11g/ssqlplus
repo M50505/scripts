@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# $* - brief-description-here
+#
+# Author:              Martin Cribbins
+#                      
+#	
+# Revision history:
+#
+# 2013-05-09    -  
+#	
+# 
+# Description:
+#
+# full-description-here
+#
+
+_doc ${1} 20151119094840 "checkSA " && exit 0
+
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd mark boolean false "A sample boolean option"
+#optParse $* 
+#optParseSuccess || exit 1
+
+#ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+#LD_LIBRARY_PATH=${ORACLE_HOME}/lib:${LD_LIBRARY_PATH}
+
+rlwrap -c sqlplus  $*

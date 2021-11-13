@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+fullpath ()
+{
+	_doc $1 20160729125024 "Returns the full absolute path to the specified file, directory, or directory/file" && return 0
+
+	if [[ "${1:0:1}" == "/" ]]
+	then
+		echo "${1}"
+	else
+		local path="${PWD}/${1}"
+		echo "${path}" | sed -r 's,(^/.+)(/[^/]+/[.][.])(.*$),\1\3,'
+	fi
+
+
+}
+

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xmlfo ()
+{
+	local tmp=$(newTempFile)
+	xmlstarlet fo $(cygpath -m ${1}) > ${tmp}
+
+	if xmlval ${tmp}
+	then
+		mv ${tmp} ${1}
+	else
+		rm -f ${tmp}
+	fi
+}

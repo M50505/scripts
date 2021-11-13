@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+ext2ext ()
+{
+	_doc $1 20160729125024 "Given two specified file name extensions - old and new - this function renames each file having the old extension to the same file name with the new extension" && return 0
+	local src=${1#.}
+	local dst=${2#.}
+
+	for i in *.${src}
+	do
+		mv ${i} ${i%${src}}${dst}
+	done
+}
+

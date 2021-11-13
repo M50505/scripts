@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+gittag ()
+{
+	_doc $1 20170525133155 "Sets (or resets) the specified tag and then issues a commit specifically for the purpose of capturing the tag." && return 0
+
+	git tag -f ${1} -m "Added/updated tag ${1}"
+	git push --force origin ${1}
+}

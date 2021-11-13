@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlGetNodeManagerType ()
+{
+	_doc $1 20140530182202 "wlGetNodeManagerPort gets the protocol type (Plain, SSL, SSH, RSH) used by the NodeManager." && return 0;
+
+	local params=($(wlGetNodeManagerParams))
+	echo ${params[2]}
+}

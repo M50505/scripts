@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+netmaskFromIP ()
+{
+	_doc $1 20140416171433 "takes an IP address and a number of bits, and returns the netmask." && return 0
+
+	networkFromIP -m ${1} ${2}
+}
+

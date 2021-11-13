@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xsvMapfile ()
+{
+	_doc $1 20140416183536 "acts as a stand-in for the Bash 4.x mapfile function, or else calls mapfile if the curent Bash shell is version 4 or greater." && return 0
+
+	if [[ ${BASH_VERSION:0:1} -gt 3 ]]
+	then
+		mapfile $*
+		return
+	fi
+
+	local count=100000 index=0 discard=0 remove=false line array
+
+	while [[ $# -gt 1 ]]
+	do
+		case ${1} in
+			-n)
+			  count=${2}
+				shift 2
+				;;
+			-O)
+				index=${2}
+				shift 2
+				;;
+			-s)
+				discard=${2}
+				shift 2
+				;;
+			-t)
+				remove=true
+				shift
+				;;
+		esac
+	done
+
+	array=${1}
+
+	i=0
+
+	while read line
+	do
+		if [[ ${discard} -eq 0 ]]
+		then
+			if ${remove}
+			then
+				line=${line%\n}
+			fi
+
+			eval ${array}[${i}]="'${line}'"
+			((i++))
+
+		else
+			((discard--))
+		fi
+	done
+}

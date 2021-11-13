@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+jsify ()
+{
+	_doc $1 20160729125024 "jsify creates/modifies the specified file to begin with a vim comment for JavaScript." && return 0
+
+	local editFlag=false
+	if [[ "${1}" == "-e" ]]
+	then
+		editFlag=true
+		shift
+	fi
+
+#NOTE: 	Redirection to prependFile is used in lieu of a pipe
+#				to avoid the bash shell's complaints about importing
+#				function definitions.
+
+prependFile "${1}"  <<EOF  
+# vim:tabstop=2:shiftwidth=2:nu:filetype=javascript
+EOF
+
+
+	${editFlag} && vim "${1}" 
+}

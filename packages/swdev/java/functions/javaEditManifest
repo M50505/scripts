@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+javaEditManifest ()
+{
+	_doc $1 20160730110906 "edits the manifest of JAR file in place." && return 0
+
+	local absoluteJARpath="$(cygpath -m $(fullpath ${1}))"
+	local tempManifestDir=$(newTempFile)_MF
+
+	mkdir -p ${tempManifestDir}/META-INF
+
+	javaListManifest ${1} > ${tempManifestDir}/META-INF/MANIFEST.MF
+	vim ${tempManifestDir}/META-INF/MANIFEST.MF
+
+	cd ${tempManifestDir}
+
+	zip -u ${absoluteJARpath} META-INF/MANIFEST.MF
+
+	cd -
+	rm -rf ${tempManifestDir}
+}
+

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlGetNodeManagerParams ()
+{
+	_doc $1 20140530182202 "wlGetNodeManagerParams returns a whitespace-delimited list of the NodeManager's listening address, port, and protocol type." && return 0;
+
+	local machine=$(wlGetAdminServerMachine);
+	local xslFile=$(newTempFile)
+
+	cat  > ${xslFile} <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wl="http://xmlns.oracle.com/weblogic/domain" version="1.0" >
+	<xsl:output method="text"/>
+	<xsl:template match="/">
+		<xsl:for-each select="/wl:domain/wl:machine[wl:name='${machine}']">
+			<xsl:value-of select="wl:node-manager/wl:listen-address"/>
+			<xsl:value-of select="' '"/>
+			<xsl:value-of select="wl:node-manager/wl:listen-port"/>
+			<xsl:value-of select="' '"/>
+			<xsl:value-of select="wl:node-manager/wl:nm-type"/>
+			<xsl:value-of select="'&#10;'"/>
+		</xsl:for-each>
+	</xsl:template>
+</xsl:stylesheet>
+EOF
+
+	local params=($(oraxsl ${WL_DOMAIN}/config/config.xml ${xslFile}));
+
+	if [[ ${#params[@]} -lt 3 ]]
+	then
+		params[2]="Plain";
+	fi
+
+	echo ${params[@]};
+	rm ${xslFile}
+}

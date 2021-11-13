@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlStartNM ()
+{
+	_doc $1 20140530182202 "Starts the NodeManager" && return 0
+
+	wlst <<EOF >/dev/null
+wlStartNM()
+
+EOF
+}

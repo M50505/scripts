@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+saxon ()
+{
+	local xsl="${1}"
+	local xml="${2}"
+
+	shift 2
+
+	local saxonHome="${SAXON_HOME}"
+	[[ "$(uname -o)" = "Cygwin" ]] && saxonHome="$(cygpath -m ${saxonHome})"
+
+	java -Xmx5g -Xms2g -XX:-OmitStackTraceInFastThrow -XX:SoftRefLRUPolicyMSPerMB=10  -Dsun.java2d.noddraw=true -Dsun.awt.nopixfmt=true -Dsun.java2d.dpiaware=true -Dsun.awt.keepWorkingSetOnMinimize=true -jar ${saxonHome}/saxon9ee.jar --licenseFileLocation:${saxonHome}/saxon-license.lic "-xsl:${xsl}" "-s:${xml}" $*
+}
+

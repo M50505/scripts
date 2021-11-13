@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+statusMessage ()
+{
+  _doc $1 20160729125024 "Simply echoes out the specified text. This function is designed to give the \
+	calling script greater readability by using pairs of calls to progressMessage and then statusMessage." && return 0
+	echo ${1}
+}
+

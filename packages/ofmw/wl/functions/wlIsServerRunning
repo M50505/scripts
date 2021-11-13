@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlIsServerRunning ()
+{
+	_doc $1 20140530182202 "Returns 0 if the specified server instance is running, otherwise 1 is returned." && return 0
+
+	[[ $# -gt 0 ]] || return $(functionFailed "Usage: wlIsServerRunning <name>")
+
+	local serverList=(${*}) servers server
+
+	if [[ "$(toUpper ${serverList[0]})" = "CLUSTER" ]]
+	then
+    serverList=($(wlGetManagedServers))
+  fi
+
+  for server in ${serverList[@]}
+  do
+    servers+=",\"${server}\""
+  done
+
+  servers=${servers:1}
+
+	wlst <<EOF > /dev/null
+status=0
+
+try:
+  wlNMconnect()
+except Exception,e:
+  scriptFailed("Failed to connect to the NodeManager: " + str(e))
+
+servers=[${servers}]
+
+for server in servers:
+  if nmServerStatus(server) != 'RUNNING':
+    status=status+1
+
+exit(exitcode=status)
+
+EOF
+
+}

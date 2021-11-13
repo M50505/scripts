@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+logDelta ()
+{
+	_doc $1 20160729125024 "Computes the time delta, in seconds, between two log records." && return 0
+
+	if [[ $# -gt 0 ]]
+	then
+		fields="$*"
+	else
+		fields="$(xpaste)"
+	fi
+
+	[[ -z ${fields} ]] && return $(functionFailed "No records provided.")
+
+	local times=($(echo "${fields}" | sed -rn "
+	/[0-2][0-9][:][0-5][0-9][:][0-5][0-9]/	{
+	s/^.*([0-2][0-9][:][0-5][0-9][:][0-5][0-9])([.][0-9][0-9][0-9])?.*$/\1\2/
+		p
+	}
+	"))
+
+	[[ ${#times[@]} -lt 2 ]] && return $(functionFailed "Need at least two timetamped records.")
+
+	local delta
+	times=($(timeClockToMsec ${times[@]}))
+	((delta=${times[1]}-${times[0]}))
+	timeMsecToClock ${delta}
+
+}

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wvi ()
+{
+  _doc $1 20160729125024 "Uses  vim (vi) to edit the specified command, by using 'wtf' to located the command script." && return 0
+
+	local commandPath
+	if commandPath=$(wtf ${1})
+	then
+		if file -b ${commandPath} | grep text 2>/dev/null >&2
+		then
+			vim ${commandPath}
+		else
+			echo "${commandPath} is not a text file."
+		fi
+	else
+		echo "${1} cannot be found."
+	fi
+}
+

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+randpct ()
+{
+	_doc $1 20160729125024 "Returns a random percentage" && return 0
+	local R
+	((R=$RANDOM/328))
+	echo ${R}
+}
+

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+csvToSQLddl ()
+{
+	_doc $1 20140416183536 "csvToSQLddl generates the SQL CREATE TABLE statement (with only varchar columns) to create a table that would receive imported CSV that matches the headings provide." && return 0
+
+	local tableName="CSV"
+
+	if [[ $# -gt 1 ]]
+	then
+		tableName="${1}"
+		shift
+	fi
+	
+	IFS=","
+	local fields=(${1})
+	local field
+	unset IFS
+
+	echo "CREATE TABLE ${tableName} ("
+
+	for field in ${fields[@]}
+	do
+		echo "  ${field} VARCHAR(32),"
+	done
+
+	echo ");"
+
+}
+

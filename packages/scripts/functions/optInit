@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optInit ()
+{
+	_doc $1 20160729125024 "These are the option parsing functions, all contained within one master function - optInit. __optInit 'sets the stage' for the other command line option handling function, clearing any residual trailing arguments from prior calls, and declaring the utlity variables (options,values, etc.) as function-local to keep them out of the way of the calling script." && return 0
+
+	local options
+	local types
+	local values
+	local descriptions
+	local isParsedOK=true
+	local _help=""
+	unset optRemainingArgs
+}
+

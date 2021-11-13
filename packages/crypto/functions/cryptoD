@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+cryptoD ()
+{
+	_doc $1 20140322161740 "decrypts the provided string to STDOUT according to GPG AE256, or else using the framework and alogrithm specified." && return 0
+
+	local phraseFile=$(newTempFile)
+	cryptoGetPhrase > ${phraseFile}
+
+	cat <<EOF | gpg --batch --passphrase-fd 3 --decrypt 3<${phraseFile} 2>/dev/null
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v1.4.5 (GNU/Linux)
+
+${1}
+-----END PGP MESSAGE-----
+EOF
+
+	rm ${phraseFile}
+}
+

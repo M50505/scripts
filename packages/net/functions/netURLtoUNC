@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+netURLtoUNC ()
+{
+	_doc $1 20140416171514 "converts a URL to a UNC path" && return 0
+
+	[[ $# -gt 0 ]] || return $(functionFailed "You must specify a URL.")
+
+	local url="${1}"
+
+	url="$(urldecode ${url})"
+	url="${url#http://}"
+	url="\\\\${url//\//\\}"
+
+	echo "${url}"
+
+
+}
+

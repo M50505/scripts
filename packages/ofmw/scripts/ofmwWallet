@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+#                      
+#	
+# Revision history:
+#
+# 2014-02-18 - Initial version.
+#	
+
+_doc ${1} 20160802133625 "Performs import/export, query, update, create, and delete operations on the Trsut store (cwallet.sso) for the current OFMW infrastructure." && exit 0
+
+optInit
+optAdd import string ""  "Import the wallet contents from a properties file."
+optAdd list boolean false "List the contents of the store."
+optAdd delete string "" "Deletes the entry for the specified key."
+optAdd create string "" "Creates the specified entry using the supplied key=value argument."
+optAdd update string "" "Updates the specified entry using the supplied key=value argument."
+optAdd query string "" "Queries the wallet for the value associated with the specified key."
+optAdd value string "" "For the create option, the value to be assigned to the key."
+optParse $* 
+optParseSuccess || exit 1
+
+
+
+wallet="${WL_DOMAIN}/config/fmwconfig/cwallet.sso"
+
+if ${list}
+then
+	for alias in $(mkstore -nologo -wrl "${wallet}" -list | tail -n+2)
+	do
+		mkstore -nologo -wrl "${wallet}" -viewEntry "${alias}"
+	done
+
+	exit
+fi
+
+if [[ -n ${query} ]]
+then
+	mkstore -nologo -wrl "${wallet}" -viewEntry "${query}" | sed -r 's/^.+\s*=\s*//'
+	exit
+fi
+
+
+if [[ -n ${import} ]]
+then
+	IFS='|'
+	sed -r 's/\s+=\s+/|' ${import} | \
+	while read -a fields
+	do
+		dvar fields
+	done
+
+	exit
+fi
+
+if [[ -n ${create} ]]
+then
+	mkstore -nologo -wrl "${wallet}" -createEntry "${create}" "${value}"
+	exit
+fi
+
+#mkstore -nologo -wrl "${wallet}" -deleteEntry "oracle.bi.enterprise@#3#@scheduler.schema"

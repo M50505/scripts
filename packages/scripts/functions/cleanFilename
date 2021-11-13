@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+cleanFilename ()
+{
+	_doc $1 20160729125024 "Cleans up a file name, changing parenthesis, back slashes, forward slashes, and periods into underscores" && return 0
+	sed '{
+	s,[/)( ;:%,],_,g
+	s,__,_,g
+	s,_$,,
+	s,_\([.+]\),\1,g
+	s,\([.+]\)_,\1,g
+	s/[.]/_/g
+	s/^\s+//
+}'
+}
+

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+netFindUsedPorts ()
+{
+	_doc $1 20140416171433 "netFindUsedPorts lists the socket ports currently in use." && return 0
+#
+#	Now pipe netstat (all entries, no DNS resolution, TCP only, and list process info)
+#	through sed with the generated regular expression.
+#
+	netFindUsedPortProcesses $* | sed -r '
+	s/\s.*//
+	s/^.+://
+' | sort -n -u
+}
+

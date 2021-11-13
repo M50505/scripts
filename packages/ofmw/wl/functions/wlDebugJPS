@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlDebugJPS ()
+{
+	_doc $1 20140530182202 "Placeholder to capture the java system properties to set for WLS startup to debug JPS issues." && return 0
+
+	cat <<EOF
+-Djava.security.debug=access,failure -Djps.authz=true -Djps.auth.debug=true -Djps.auth.debug.verbose=true -Djps.combiner.optimize.lazyeval=true
+EOF
+}

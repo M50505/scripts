@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlIsAdminServerRunning ()
+{
+	_doc $1 20140530182202 "Returns 0 if the AdminServer is running, otherwise 1 is returned." && return 0
+	wlIsServerRunning "AdminServer"
+}

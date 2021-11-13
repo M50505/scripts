@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+csvNamesToAccount ()
+{
+	_doc $1 20140416183536 "Takes a file of names, in the form of surname, comma, given name, and outputs a typical computer account name in the form of the lowercaselist concatenation of the first letter of the given name and the entire surname. If -a is specified, then the account name is appended to the CSV record." && return 0
+
+	if [[ "${1}" = "-a" ]]
+	then
+		shift
+		sed -r "{
+			h
+			s/([^,]+),([A-Za-z])([^,]+)/\l\2\L\1/
+			s/[^a-z]//g
+			s/^/,/
+			H
+			x
+			s/\n//g	
+		}" ${1}
+	else
+		sed -r "{
+			h
+			s/([^,]+),([A-Za-z])([^,]+)/\l\2\L\1/
+			s/[^a-z]//g
+		}" ${1}
+	fi
+
+}
+

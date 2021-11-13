@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+perfGetExperiment ()
+{
+	_doc $1 20110721155620 "Returns the name of the current experiment, if there is one, otherwise an empty string." && return 0
+
+	local tokens
+	local result=""
+	local status=1
+
+	if [[ -f "${CURRENT_EXPERIMENT_REFERENCE_FILE}" ]]
+	then
+		tokens=($(<${CURRENT_EXPERIMENT_REFERENCE_FILE}))
+
+		if [[ ${#tokens[@]} -gt 0 ]]
+		then
+			result="${tokens[0]}"
+			status=0
+		fi
+	fi
+
+	echo "${result}"
+	return ${status}
+}
+
+

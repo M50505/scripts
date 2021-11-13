@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlGetServers ()
+{
+  _doc $1 20140530182202 "is designed to work with or without any running AdminServer instance - returns the name of the AdminServer (always the first field) followed by the name of each managed server instance." && return 0
+
+	local xslFile=${TEMP:-${TMP:-/tmp}}/$(newTempFile)
+  
+  local servers
+  local i
+
+	cat <<EOF > ${xslFile}
+<?xml version="1.0"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wl="http://xmlns.oracle.com/weblogic/domain" version="1.0" >
+  <xsl:output method="text"/>
+  <xsl:template match="/wl:domain">
+    <xsl:value-of select="wl:admin-server-name"/>
+    <xsl:for-each select="/wl:domain/wl:server">
+      <xsl:value-of select="concat(' ',wl:name)"/>
+    </xsl:for-each>
+	</xsl:template> 
+</xsl:stylesheet>
+EOF
+
+	servers=($(oraxsl  ${WL_DOMAIN}/config/config.xml ${xslFile}))
+  
+  echo -n "${servers[0]} "
+
+  for((i=1;i<${#servers[*]};i++))
+  do
+    [[ "${servers[${i}]}" = "${servers[0]}" ]] || echo -n "${servers[${i}]} "
+  done
+
+  echo ""
+	rm ${xslFile}
+}
+

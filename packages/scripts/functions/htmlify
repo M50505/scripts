@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+htmlify ()
+{
+	_doc $1 20160729125024 "Prepends vim options and then wraps the specified file in an HTML html-head-title-meta-head-body wrapper" && return 0
+	local editFlag=false
+	if [[ "${1}" == "-e" ]]
+	then
+		editFlag=true
+		shift
+	fi
+
+	#NOTE: 	Redirection to prependFile is used in lieu of a pipe
+	#				to avoid the bash shell's compaints about importinf
+	#				function definitions.
+	prependFile "${1}" <<EOF
+	<!--
+	vim:tabstop=2:shiftwidth=2:nu:filetype=html
+	-->
+	<html>
+	<meta></meta>
+	<title></title>
+	<head></head>
+	<body>
+EOF
+
+	cat <<EOF >> "${1}"
+	</body>
+	</html>
+EOF
+	${editFlag} && vim "${1}" 
+}
+

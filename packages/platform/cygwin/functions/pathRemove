@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+pathRemove ()
+{
+	_doc $1 20150906170950 "Translate the specified absolute path into Windows form and then remove it from the system PATH variable." && return 0
+
+	local i
+	local oldPathElement="$(cygpath -w ${1})"
+	local newPath
+	local oldIFS="${IFS}"
+	IFS=";"
+	local path=($(regtool get /machine/SYSTEM/CurrentControlSet/Control/Session\ Manager/Environment/Path))
+	IFS="${oldIFS}"
+
+	for i in "${path[@]}"
+	do
+		if [[ "${i}" != "${oldPathElement}" ]]
+		then
+			newPath+=";${i}"
+		fi
+	done
+
+	newPath=${newPath:1}
+	regtool set /machine/SYSTEM/CurrentControlSet/Control/Session\ Manager/Environment/Path "${newPath}"
+
+}
+

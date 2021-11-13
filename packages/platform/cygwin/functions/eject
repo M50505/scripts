@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+eject ()
+{
+	_doc $1 20130819094600 "Ejects the specified USB drive." && return 0
+
+	local result=""
+	local status=1
+
+	if [[ $# -gt 0 ]]
+	then
+
+		/k/opt/Toolkit/USB_Disk_Eject.exe /removeletter ${1} /showeject
+		status=0
+	fi
+
+	return ${status}
+}
+

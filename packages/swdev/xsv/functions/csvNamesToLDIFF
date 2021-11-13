@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+csvNamesToLDIFF ()
+{
+	_doc $1 20140416183536 "Generates simple LDIFF from a CSV-delimited list of surname, given name, and account name." && return 0
+
+	local rootDN="OU=people,DC=world,DC=org"
+	local csvpat="([^,]+),([^,]+),([^,]+)"
+	if [[ "${1}" = "-r" ]]
+	then
+		rootDN="${2}"
+		shift 2
+	fi
+
+	sed -rn "/[A-Za-z]/ {
+		h
+
+		s/${csvpat}/dn: CN=\3,${rootDN}/
+		p
+		g
+
+		s/.*/objectClass: top/
+		p
+
+		s/.*/objectClass: person/
+		p
+
+		s/.*/objectClass: organizationalPerson/
+		p
+
+		s/.*/objectClass: user/
+		p
+		g
+
+		s/${csvpat}/cn: \3/
+		p
+		g
+
+		s/${csvpat}/sAMAccountName: \3/
+		p
+		g
+
+		s/${csvpat}/sn: \1/
+		p
+		g
+
+		s/${csvpat}/givenName: \2/
+		p
+		g
+
+		s/${csvpat}/mail: \3@demo.local/
+		p
+		g
+
+		s/.*/userAccountControl: 66080/
+		p
+		g
+
+		s/${csvpat}/displayName: \2 \1\n/
+		p
+		g
+
+
+
+	}" ${1} 
+}

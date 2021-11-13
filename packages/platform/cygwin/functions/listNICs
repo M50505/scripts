@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+listNICs ()
+{
+  _doc ${1} 20130819094600 "Lists all NICs on the current Windows machine." && return 0
+	reg query 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Network' /s /v Name |\
+   	sed -nr '/\\Connection/ {
+			s/HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Network\\[{][^}]+[}]\\[{]//
+			s/[}].*$//
+			N
+			s/\n//
+			s/\s+Name\s+REG_SZ\s+/ /
+			p
+	}'
+}
+

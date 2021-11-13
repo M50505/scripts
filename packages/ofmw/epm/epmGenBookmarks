@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+#                      
+#	
+# Revision history:
+#
+# 2014-01-31 - Initial version.
+#	
+
+_doc ${1} 20140202121155 "generates an EPM bookmark HTML file for importing into either IE or Firefox." && exit 0
+
+optInit
+optAdd portAdmin number "7001"  "The WebLogic AdminServer port."
+optAdd portEAS number "19000"  "The EAS Console and workspace port."
+optAdd heading string ""  "The heading title/bookmark folder under which all environment bookmark folders will be kept."
+optAdd domain string ""  "The DNS domain for all of the specified hosts."
+optAdd environments string ! "The chain of environments and their hosts, in the form: ENV1=host1:host2,ENV2=host3:host4:host5 ..."
+optAdd outputFile string "" "The file to save the bookmarks to."
+optAdd addIcon boolean false "Add the favorites icon alongside each URL (wehere possible)."
+optParse $* 
+optParseSuccess || exit 1
+
+icon ()
+{
+
+	local url="${1}"
+
+	if ${addIcon}
+	then
+			echo "ICON_URI=\"${url}/favicon.ico\""
+	fi
+}
+
+if [[ -n ${domain} ]]
+then
+	if [[ ! "${domain:0:1}" = "." ]]
+	then
+		domain=".${domain}"
+	fi
+fi
+
+if [[ -n ${outputFile} ]]
+then
+	> ${outputFile}
+	outputFile=">> ${outputFile}"
+fi
+
+timestamp=$(date +%s)
+
+eval cat <<EOF ${outputFile}
+  <DT><H3 ADD_DATE="${timestamp}" FOLDED>EPM</H3>
+  <DL><p>
+EOF
+
+for env in ${environments[@]}
+do
+	IFS==
+	fields=(${env})
+	name=${fields[0]}
+
+	IFS=:
+	hosts=(${fields[1]})
+
+	eval cat <<EOF ${outputFile}
+    <DT><H3 ADD_DATE="${timestamp}">${name}</H3>
+		<DL><p>
+EOF
+
+	HR=""
+	for host in ${hosts[@]}
+	do
+		hostName=$(toLower ${host})
+		hostLabel=$(toUpper ${host})
+
+		url="http://${hostName}${domain}:${portEAS}/easconsole"
+		iconAttr="$(icon ${url})"
+		cat <<EOF ${outputFile}
+		  ${HR}
+			<DT><A ADD_DATE="${timestamp}" LAST_VISIT="${timestamp}" LAST_MODIFIED="${timestamp}" HREF="${url}" ${iconAttr}>${hostLabel} EAS Console</A>
+EOF
+
+		url="http://${hostName}${domain}:${portEAS}/workspace/index.jsp"
+		iconAttr="$(icon ${url})"
+		cat <<EOF ${outputFile}
+		  ${HR}
+			<DT><A ADD_DATE="${timestamp}" LAST_VISIT="${timestamp}" LAST_MODIFIED="${timestamp}" HREF="${url}" ${iconAttr}>${hostLabel} Workspace</A>
+EOF
+
+		url="http://${hostName}${domain}:${portAdmin}/console"
+		iconAttr="$(icon ${url})"
+		cat <<EOF ${outputFile}
+			<DT><A ADD_DATE="${timestamp}" LAST_VISIT="${timestamp}" LAST_MODIFIED="${timestamp}" HREF="${url}" ${iconAttr}>${hostLabel} WL Admin Console</A>
+EOF
+
+		url="http://${hostName}${loadBalancerDomain}/Logon.aspx"
+		iconAttr="$(icon ${url})"
+		cat <<EOF ${outputFile}
+			<DT><A ADD_DATE="${timestamp}" LAST_VISIT="${timestamp}" LAST_MODIFIED="${timestamp}" HREF="${url}" ${iconAttr}>${hostLabel} Load-balanced User Access</A>
+EOF
+		HR="<HR>"
+	done
+
+	eval cat <<EOF ${outputFile}
+  	</DL><p>
+EOF
+done
+
+eval cat <<EOF ${outputFile}
+	</DL><p>
+EOF

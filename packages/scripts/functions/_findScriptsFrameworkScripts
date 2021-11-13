@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+_findScriptsFrameworkScripts ()
+{
+	local cwd="${PWD}"
+	cd ${MASTER_SCRIPTS_HOME}/packages
+	find ${_active_packages[@]} -type f -a ! -iname \*\.\* -a ! -name \*Functions -a ! -name \*-init -a ! -wholename \*-data/\* -a -perm /111 | sort -u
+	cd "${cwd}"
+}

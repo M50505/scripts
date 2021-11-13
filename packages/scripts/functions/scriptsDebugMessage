@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+scriptsDebugMessage ()
+{
+	_doc $1 20160729125024 "Emits the text passed as arguments to STDOUT if the SCRIPTS_DEBUG environment variable is not empty." && return 0
+
+	local status=1
+
+	if [[ $# -gt 0 && ! -z ${SCRIPTS_DEBUG} ]]
+	then
+		echo "${*}"
+		status=0
+	fi
+
+
+	return ${status}
+}
+

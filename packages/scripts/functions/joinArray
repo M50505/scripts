@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+joinArray ()
+{
+	_doc $1 20160729125024 "Concatenates all of the tokens within the quoted first argument into a single string, with the tokens delimited by the character specified in the second argument" && return 0
+	local string="${1}"
+
+	echo ${string// /${2}}
+}
+

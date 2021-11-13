@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+lpad ()
+{
+	_doc $1 20160729125024 "Returns the provided string, left-padded with spaces to the specified number of characters" && return 0
+	local pad="                                                       "
+	local indentFlag=false
+
+	if [[ "${1}" = "-i" ]]
+	then
+		indentFlag=true
+		shift
+	fi
+
+	local target=$1
+	local width=$2
+
+	if ${indentFlag}
+	then
+		pad="${pad:0:${width}}"
+		echo "${pad}${target}"
+	else
+		pad="${pad:0:${width}}${target}"
+		echo "${pad:${#target}}"
+	fi
+
+}
+

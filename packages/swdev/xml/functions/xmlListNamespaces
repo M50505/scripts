@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xmlListNamespaces ()
+{
+	_doc $1 20160729125024 "lists the namespaces in one or more XML files." && return 0
+
+	while [[ $# -gt 0 ]]
+	do
+		xmls el -a $(cygpath -m ${1})  | sed -rn '/@xmlns/ {s/^.+@xmlns://;p}'
+		shift
+	done
+
+}
+

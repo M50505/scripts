@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+setRemoteKey ()
+{
+	_doc $1 20160729125024 "Using the same syntax as the ssh command, copies the local public key to the remote account." && return 0
+	if [[ -f ~/.ssh/id_dsa.pub ]]
+	then
+		ssh $* "mkdir .ssh 2> /dev/null;chmod 700 .ssh 2>/dev/null;cat >> .ssh/authorized_keys;chmod 700 .ssh/authorized_keys" < ~/.ssh/id_dsa.pub
+	fi
+	if [[ -f ~/.ssh/id_rsa.pub ]]
+	then
+		ssh $* "mkdir .ssh 2> /dev/null;chmod 700 .ssh 2>/dev/null;cat >> .ssh/authorized_keys;chmod 700 .ssh/authorized_keys" < ~/.ssh/id_rsa.pub
+	fi
+}
+

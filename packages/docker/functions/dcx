@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-07-02 - Initial version.
+#	
+dcx ()
+{
+	_doc ${1} 20210702153244 "testing things out" && return 0
+	echo "should not get here."
+}

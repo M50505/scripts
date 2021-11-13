@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+#                      
+#	
+# Revision history:
+#
+# 2010-08-16    -  
+#	
+# 
+# Description:
+#
+# full-description-here
+	
+_doc $1 20110822182957 "tnsshow Shows all Oracle DB TNS service name entries in either local or LDAP-based directories." && exit 0
+
+evalVariable () {
+	sed -rn "
+	/$1/	{
+		s/^.*[.]//
+		s/\s+//g
+		p
+	}
+
+	/$1\s*=\s*[(]/	{
+		s/^.*[.]//
+		s/\s+//g
+		s/,/ /g
+		p
+	}" $2
+}
+
+	
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd mark boolean false "A sample boolean option"
+#optParse $*
+#optParseSuccess || exit 1
+#
+[[ -z "$ORACLE_HOME" ]] && failWithMessage "ORACLE_HOME is unset, therefore the sqlnet.ora file cannot be located."
+[[ -f "$ORACLE_HOME/network/admin/sqlnet.ora" ]] || failWithMessage "ORACLE_HOME is set, but the sqlnet.ora file cannot be located."
+
+ldapFlag=false
+tnsFlag=false
+
+sqlnetOra=$ORACLE_HOME/network/admin/sqlnet.ora
+ldapOra=$ORACLE_HOME/network/admin/ldap.ora
+tnsnamesOra=$ORACLE_HOME/network/admin/tnsnames.ora
+
+if [[ -f ${ldapOra} ]]
+then
+	ldapFlag=true
+fi
+
+if [[ -f ${tnsnamesOra} ]]
+then
+	tnsFlag=true
+fi
+
+if ! ${ldapFlag} && ! ${tnsFlag}
+then
+	failWithMessage "Neither LDAP for tnsname.ora are are present - SID/Service Name resolution is not possible."
+fi
+
+if ${ldapFlag}
+then
+	eval $(evalVariable DIRECTORY_PATH ${sqlnetOra})
+
+	#for i in ${DIRECTORY_PATH[@]}
+	#do
+	#	echo ${i}
+	#done
+
+
+
+	eval $(evalVariable DIRECTORY_SERVERS ${ldapOra})
+	eval $(evalVariable DEFAULT_ADMIN_CONTEXT ${ldapOra})
+	eval $(evalVariable DIRECTORY_SERVER_TYPE ${ldapOra})
+
+	#for i in ${DIRECTORY_SERVERS[@]}
+	#do
+	#	echo ${i}
+	#done
+	#
+	#echo DEFAULT_ADMIN_CONTEXT=${DEFAULT_ADMIN_CONTEXT}
+	#echo DIRECTORY_SERVER_TYPE=${DIRECTORY_SERVER_TYPE}
+
+	if [[ $# -gt 0 ]]
+	then
+		regexpCmd="grep -i $1"
+	else
+		regexpCmd="cat"
+	fi
+
+	ldapsearch -h ${DIRECTORY_SERVERS[0]%:*} -x -b ${DEFAULT_ADMIN_CONTEXT} -s sub "(objectClass=orclNetService)" cn orclnetdescstring | \
+	sed -rn '
+/cn:/	{
+	s/^.*:\s*//
+	h
+}
+
+/orclnetdescstring:/ {
+	s/^.*:\s*//
+	x
+	G
+	s/\n//g
+	h
+}
+
+/^\s/	{
+	s/^\s*//
+	x
+	G
+	s/\n//g
+	h
+}
+
+/^$/	{
+	x
+	s/\n//g
+	s/\s/	/
+	p
+	}' | ${regexpCmd}
+
+fi

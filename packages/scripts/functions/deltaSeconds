@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+deltaSeconds ()
+{
+	_doc $1 20160729125024 "Computes the difference between the second time argument and the first." && return 0
+
+	local begin=${1}
+	local end=${2}
+
+	local delta
+
+	local beginMilliseconds
+	local endMilliseconds
+
+
+	((beginMilliseconds=${begin:9:3}+(1000*${begin:6:2})+(60000*${begin:3:2})+(3600000*${begin:0:2})))
+	((endMilliseconds=${end:9:3}+(1000*${end:6:2})+(60000*${end:3:2})+(3600000*${end:0:2})))
+	((delta=endMilliseconds-beginMilliseconds))	
+
+	((offset=${#delta}-3))
+
+	echo ${delta:0:${offset}}.${delta:${offset}:3}
+
+}
+
+

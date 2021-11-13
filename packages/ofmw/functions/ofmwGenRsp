@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+ofmwGenRsp ()
+{
+	_doc $1 20140617163510 "generates the mbeans and auth files for EM-supported OFMW product components" && return 0
+
+	#	These variables have been setup by the
+	#	xsvGenRsp script and are available to
+	#	this function:
+	#
+	#	Indices into the comma-separated fields 
+	#
+	#	ATTRIBUTE_INDEX						- the attribute name.
+	#	CONFIG_FILE_INDEX					- the configuration file name.
+	#	CONFIG_SECTION_INDEX			- the name of the section within the configuration file.
+	#	BEGIN_HOSTS_INDEX					- the first host column.
+	#
+	#	records										- the array of lines/records, one for each attribute.
+	#	hosts											-	the array of host names.
+	#	envs											-	the array of environment names - the indices of this array match the indices of the hosts array.
+	#	hostCount									-	convenience/performance variable that holds the number of hosts.
+	#	responseDirectory					- the directory where the response file(s) will be created.
+	#	delimiter									- the field delimiter character.
+	#
+
+	local extensions=(auth mbean)	# The file extensions/type that this function generates.
+	local targetExtension				# Hoding variable while cycling through extensions.
+	local isExtensionMatched		#	For testing on each cycle if an extension/type is matched.
+
+	local sections=(MBEAN NONE)	# The sections that this function handles.
+	local previousSections section	#	Holds the previous and current config file section name on the current cycle.
+	local currentSections				#	Array holding the current section of each host-environment pair, used to know when to write a section tag.
+	local host env i j					# holding and iteration variables.
+
+	local attribute							#	Holds the attribute name on the current cycle.
+	local ext										#	holds thew config file extension o nthe current cycle.
+	local file									#	The derived path of the config file using host, env, ext, and responseDirectory.
+
+	IFS="${delimiter}"
+
+	for((i=0;i<${#hosts[@]};i++))
+	do
+		for((j=0;j<${#extensions[@]};j++))
+		do
+			file="${responseDirectory}/$(toUpper ${hosts[i]})_$(toUpper ${envs[i]}).${extensions[j]}"
+			> ${file}
+		done
+
+		currentSections[i]=""
+		previousSections[i]=""
+	done
+
+	for targetSection in ${sections[@]}
+	do
+		for((i=0;i<${#records[@]};i++))
+		do
+			fields=(${records[i]})
+
+			[[ ${#fields[@]} -lt 1 ]] && continue
+
+			attribute=${fields[ATTRIBUTE_INDEX]}
+
+			[[ "${attribute}" = "ENVIRONMENT" ]] && continue
+			[[ "${attribute}" = "HOST" ]] && continue
+
+			section=${fields[CONFIG_SECTION_INDEX]}
+
+			[[ "${section}" = "${targetSection}" || ${section} =~ ^/oracle ]] || continue
+
+			ext=$(toLower ${fields[CONFIG_FILE_INDEX]})
+
+			isExtensionMatched=false
+
+			for targetExtension in ${extensions[@]}
+			do
+				if [[ "${ext}" = "${targetExtension}" ]]
+				then
+					isExtensionMatched=true
+					break
+				fi
+			done
+
+			${isExtensionMatched} || continue
+
+			for((j=0;j<hostCount;j++))
+			do
+				file="${responseDirectory}/$(toUpper ${hosts[j]})_$(toUpper ${envs[j]}).${ext}"
+
+				if [[ "${previousSections[j]}" != "${section}" ]]
+				then
+					[[ "${section}" != "NONE" ]] && echo "${section}" >> ${file}
+					previousSections[j]=${section}
+				fi
+
+				echo "${attribute}=${fields[BEGIN_HOSTS_INDEX+j]}" >> ${file}
+			done
+		done
+	done
+
+	unset IFS
+}

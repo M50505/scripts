@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+
+#
+#	These functions are from Martin Cribbins' collection
+#
+	_doc $1 20120420131338 "perfWinBlgToCsv dumps the content of a Windows ETW performance counter binary log file in CSV format." && exit 0
+
+newTempFile ()
+{
+	#_doc $1 20110430120442 Returns a the name of a unique temporary file && return 0
+	echo "__${RANDOM}$(date +%S%N).tmp__"
+}
+
+failWithMessage ()
+{
+	echo $*
+
+	if [[ "${#FUNCNAME[@]}" -gt 2 ]]
+	then
+		return 1
+	else
+		exit 1
+	fi
+}
+
+#
+#	If no argument is given for this script, 
+# then display an error message and then exit.
+#
+
+[[ $# -lt 1 ]] && failWithMessage "You must specify the name of the binary log file."
+
+#
+#	Create a temporary file in which to place the
+# output from relog; unfortunately relog does not
+# handle sending content to STDOUT, so we must specify
+# a temporary file to receive the contents.
+#
+
+tempFile=$(newTempFile)
+
+#
+#	Set the name of the output CSV file to correspond to
+# the name of the input binary log file. For example,
+# if the name of the input binary log file is
+# perfcap_02151345.blg then the CSV file name will be
+# perfcap_02151345.csv
+#
+
+csvFile=${1%.blg}.csv
+
+#
+#	Run relog against the specified binary log file. The
+# extranneous status information is discarded by redirecting STDOUT
+# to /dev/null
+#
+
+relog ${1} -f csv -o ${tempFile} >/dev/null
+
+#
+#	Use the nl command to add sequential numbers to what will be the
+# first column, in right-justified, zero-padded form, starting at the value
+# of 2. The sed command will then handle the resulting output.
+#
+# Forthe nl command:
+#
+#	-n rz					indicates right-justified zero-padded format
+#
+# -s ,					specifies that a comma is the field delimiter to follow
+#								the generated number
+#
+# -w 1					set the width of the number field to one character, so that
+#								the resulting output will have no whitespace in front of it.
+#
+# -v -2					start the numbering at minus 2 as the content offered to the
+#								sed command will have two header lines, The numberng will be
+#								such that the header line (which will be kept) has a number 
+#								column showing "-1", and the very first data line will be
+#								numbered "0". The sed command will translate the "-1" number
+#								value in the header line to the word "Seconds", thereby
+#								maintaining a meaningful collection of column names.
+#
+#
+
+nl -n rz -s , -w 1 -v -1  ${tempFile} | \
+sed -r '																					#Run sed in extended regular expression mode
+1	{																								#This clause (set of actions) will only be
+																									# applied to the first line of the input - 
+																									# this line is the header line that we want to
+																									# retain.
+
+	s/[^,]+,"/Seconds,/															#Translate the -1," into Seconds,
+
+	s/\\\\[^\\]+\\//g																#Remove the machinename prefix (\\machine\) from each field
+	s/\\/-/g																				#Translate backslahses to hyphensfor simpler sed processing
+	s/"//g																					#Remove all occurences of the double-quote
+																									#Shorten the following well-known counter names
+
+	s/System-Processor Queue Length/System CPU Queue Length/
+	s/Processor[(]_Total[)]-% Processor Time/CPU Total Util/
+	s/Processor[(]([^)]+)[)]-% Processor Time/CPU \1 Util/g
+	s/-% Processor Time/ CPU Util/g
+	s/Memory-Commit Limit/Commit Limit/
+	s/Memory-% Committed Bytes In Use/Commited Bytes Used/
+	s/Memory-Committed Bytes/Commited Bytes/
+	s/Process\(//g
+	s/\)//g
+	s/-Private Bytes/ PBytes/g
+	s/-ID Process/ PID/g
+	s,-IO Data Bytes/sec, IO Bytes/sec,g
+
+	s/\s+/_/g
+}
+
+{																									#This clause has no "address" qualifier in front of the
+																									# open curly brace, therefore the clause will apply to
+																									# EVERY remaining line, meaning that it will be applied
+																									#	to each data line.
+
+	s/"//g																					#Delete all instances of the double-quote character.
+
+	s/,[^,]+//																			#Delete the second column - this is the column that WAS
+																									# the first column output by the relog command: the date
+																									# and time stamp. The nl command prefixed each line with
+																									# a new sequential number column, hence the date/time
+																									# column becamethe second column. We do NOT want the
+																									# date/time stamp, only the sequential seconds.
+
+
+	s/\s+,/0,/g
+	s/,\s+$/,0/g
+}
+' > ${csvFile}																		#Direct the out of the sed command tothe CSV file.
+
+rm ${tempFile}																		#Remove the temporary file.

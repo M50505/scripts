@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+cryptoClearPhrase ()
+{
+	_doc $1 20140322151946 "clears the passphrase special environment variable" && return 0
+
+	_c_r_y_p_t_o_p_h_r_a_s_e_=""
+}

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+iplist ()
+{
+	_doc $1 20130819100055 "iplist Lists the IP address, default gateway, and MAC address of each enabled NIC." && return 0
+
+
+	ipconfig /all | sed -rn '
+/\S:$/ {
+	s/://
+	h
+	n
+}
+
+/Physical Address/ {
+	s/^.*:\s+/,/
+	H
+	n
+}
+
+/IPv4 Address/ {
+	s/^.*:\s+/,/
+	s/[(]Preferred.*$//
+	H
+	n
+}
+
+/Default Gateway/ {
+	s/^.*:\s+/,/
+	H
+	x
+	s/\n//g
+	p
+}
+'
+	return
+
+}
+

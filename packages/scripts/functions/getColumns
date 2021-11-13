@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+getColumns ()
+{
+	_doc $1 20160827110326 "uses the stty command to return the number of columns in the current display." && return 0
+
+	local columns=80
+	local tokens=($(stty -a))
+	local tokenCount=${#tokens[*]}
+	local token
+	for ((i=0; i< tokenCount; i++))
+	do
+		token="${tokens[${i}]}"
+		token="${token%;*}"
+		if [[ "${token}" = "columns" ]]
+		then
+			columns=${tokens[i-1]}
+			break
+		fi
+	done
+	echo ${columns}
+}
+

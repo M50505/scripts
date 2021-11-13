@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optAdd ()
+{
+	_doc $1 20160729125024 "Add an option declaration of the following form: optAdd <option-name> <option-type> <default-value-or-!> <description> where: <option-name> is the full name of the option. When the option name is used at runtime, it may be abbreviated to the point that it is is still distinguishable from other options.  <option-type> The variable type: boolean, string, int, or float <default-value-or-!> The default value, or else an exclamation point to indicate that the option must be specified on the command line. <description> The description of the option. This will be displayed if the optUsage() function is called." && return 0
+
+	options[${#options[@]}]=$1
+	types[${#types[@]}]=$2
+	values[${#values[@]}]=$3
+	descriptions[${#descriptions[@]}]="${4}"
+
+}
+

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+netListPorts ()
+{
+
+	_doc $1 20140416171433 "netListPorts lists the ports in a specified file in a fashion that will work with the other port-finding commands." && return 0
+
+	local list delimiter=" "
+
+	if [[ $# -gt 0 && -f ${1} ]]
+	then
+		if [[ $# -gt 1 ]]
+		then
+			delimiter="${2}"
+		fi
+		list=$(sed -rn "
+/^\s*[A-Za-z].+=/ {
+	s/^.+=\s*//
+	H
+}
+
+$ {
+	x
+	s/\n/${delimiter}/g
+	p
+}" ${1})
+		echo ${list:1}
+	fi
+}
+

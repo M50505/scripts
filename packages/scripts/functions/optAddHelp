@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optAddHelp ()
+{
+	_doc $1 20160729125024 "This is called internally to build the usage display" && return 0
+	local buf
+	while read buf
+	do
+		_help+="${buf}\n"
+	done
+}
+

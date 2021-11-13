@@ -1,0 +1,175 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2017-11-17 - Initial version.
+#	
+
+_doc ${1} 20171117154047 "repeatedly runs the SEGGER emBuild command against the specified project and configuration to build a list of user include directories into a copy of the project file." && exit 0
+
+optInit
+optAdd project string ""  "The name of the project, which is used to derive the *.emProject file name. If not specified then first lexicographically located *.emProject file in the current working directory is used."
+optAdd configuration string ""  "The name of the configuration to build."
+optParse $* 
+optParseSuccess || exit 1
+
+#####################################
+#
+# Globals, to keep functions more readable.
+#
+#####################################
+newProjectFile=""
+targetConfiguration=""
+userIncludePathXpath=""
+buildMacrosXpath=""
+
+updateGlobals ()
+{
+  targetConfiguration="${1}"
+  newProjectFile="${2}"
+  userIncludePathXpath="/solution/project/configuration[@Name=\"${targetConfiguration}\"]/@c_user_include_directories"
+  buildMacrosXpath="/solution/project/configuration[@Name=\"${targetConfiguration}\"]/@macros"
+}
+
+updateProjectAttribute ()
+{
+  local xpath="${1}"
+  local newValue="${2}"
+
+  xmlstarlet ed --inplace --update ${xpath} -v "${newValue}" "${newProjectFile}"
+
+
+}
+
+getProjectAttribute ()
+{
+  local xpath="${1}"
+  xmlstarlet sel -t -m ${xpath} -v .  ${newProjectFile}
+}
+
+updateUserIncludes ()
+{
+  local prefix="${1}"
+  local headerFile="${2}"
+  local headerDir="$(dirname ${headerFile})"
+  local includePath="$(getProjectAttribute ${userIncludePathXpath});\$(${prefix})/${headerDir}"
+
+  echo "includePath=${includePath}"
+  updateProjectAttribute "${userIncludePathXpath}" "${includePath}"
+}
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+if [[ -z ${project} ]]
+then
+	projectFiles=(*.emProject)
+	
+	if [[ "${projectFiles}" = "*.emProject" ]]
+	then
+		scriptFailed "No project was specified, and no *.emProject project file can be found in the current directory"
+	fi
+
+	projectFile="${projectFiles[0]}"
+
+else
+	projectFile="${project%.emProject}.emProject"
+fi
+
+[[ -f "${projectFile}" ]] || scriptFailed "Cannot find the project file ${projectFile}"
+
+configurations=($(xmlstarlet sel -t -m /solution/project/configuration -v @Name -n ${projectFile}))
+
+if [[ -z ${configuration} ]]
+then
+  configuration=${configurations[0]}
+elif ! hasValue configurations ${configuration}
+then
+  configList=${configurations[@]}
+  configList=${configList// /, }
+
+  echo "The specified configuration '${configuration}' is not one of the configurations ( ${configList} ) in this project. "
+  exit 1
+fi
+
+newProjectFile="${projectFile}.new"
+
+
+#
+# Update the globals to match this processing
+#
+updateGlobals ${configuration} ${newProjectFile}
+
+
+if [[ ! -f ${newProjectFile} ]]
+then
+	cp ${projectFile} ${newProjectFile}
+fi
+
+
+regexpHeaderNotFound='^.+fatal error: ([^:]+[.]h): No such file'
+regexpDefinitionNotFound=" error: ‘([^']+)’ undeclared"
+
+result="0"
+previousResult="1"
+
+
+buildMacros[${#buildMacros[@]}]="\$(SDK)=${SDK}"
+buildMacros[${#buildMacros[@]}]="\$(SDK_COMP)=${SDK_COMP}"
+
+projectDir="${PWD}"
+
+
+buildMacros="$(getProjectAttribute ${buildMacrosXpath})"
+buildMacros+=";SDK=${SDK}"
+buildMacros+=";SDK_COMP=${SDK_COMP}"
+
+updateProjectAttribute "${buildMacrosXpath}" "${buildMacros[@]}"
+
+while [[ "${result}" != "${previousResult}" ]]
+do
+
+  previousResult="${result}"
+  result=$(emBuild -echo -verbose -config ${targetConfiguration} ${newProjectFile} 2>&1)
+
+	if [[ ${result} =~ ${regexpHeaderNotFound} ]]
+	then
+		headerFile=${BASH_REMATCH[1]}
+
+		cd ${SDK_COMP}
+		prefix=SDK_COMP
+		candidates=($(find * -name "${headerFile}"))
+
+		if [[ ${#candidates[@]} -eq 0 ]]
+		then
+			cd ${SDK}
+			prefix=SDK
+			candidates=($(find * -name "${headerFile}"))
+		fi
+
+
+    cd ${projectDir}
+
+		if [[ ${#candidates[@]} -gt 1 ]]
+		then
+			cat <<EOF
+More than one instance of ${headerFile} has been found; you will need to copy
+the correct version of the file to this directory, and then run this script again.
+EOF
+			exit 1
+		fi
+
+		updateUserIncludes ${prefix} "${candidates[0]}" "${targetConfiguration}" "${newProjectFile}"
+
+	elif [[ ${result} =~ ${regexpDefinitionNotFound} ]]
+	then
+		echo noop
+	else
+		echo "No matches"
+	fi
+
+done
+
+echo "The iterative project file update process is completed."

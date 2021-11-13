@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+showenv ()
+{
+	_doc $1 20160729125024 "Displays all environment variables without displaying function declarations" && return 0
+
+	local _regexp="${1:-[A-Za-z]+.*}" var i
+	_regexp+=".*="
+
+	set | sed -rn "
+/^${_regexp}/	{
+	s/\\[[0-9]+\\]=//g
+	p
+}
+"
+
+}
+

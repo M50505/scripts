@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2019-03-13 - Initial version.
+#	
+
+#_doc ${1} 20190313104340 "moves MP3 files from the staging directory (\$\{plexStagingDir\} into the current directory, which should be a Plex library directory." && exit 0
+
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd input string ""  "The input file to use."
+#optAdd output string ""  "The output file to use."
+#optAdd mark boolean false "A sample boolean option"
+#optParse $* 
+#optParseSuccess || exit 1
+
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+plexStagingDir="${HOME}/Plex"
+libraryDir="$(basename ${PWD})"
+
+cd "${plexStagingDir}"
+
+ls *.mp3 | sed -r 's/^/mv "/;s/$/"/' > src
+ls *.mp3 | sed -r "s/^[-_0-9]*\s*//;s,^,\"${libraryDir}/,;s/$/\"/" > dst
+paste src dst > renameMP3
+chmod +x renameMP3
+
+./renameMP3
+
+rm renameMP3 src dst

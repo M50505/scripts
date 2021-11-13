@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-07-08 - Initial version.
+#	
+
+header="utc-date-time,server-id,latency,jitter,download-mbps,upload-mbps,packet-loss-percent"
+logDir=/Users/mcribbins/logs
+logFile=${logDir}/speedtest.log
+
+#
+#	Specify a speedtest server that is consistently showing the highest download/upload speeds
+#	for consistency.
+#
+#	     Server: BELD Broadband - Braintree, MA (id = 27031)
+#
+speedtestServerID=27031
+
+[[ -d ${logDir} ]] || mkdir ${logDir}
+[[ -f ${logFile} ]] || echo "${header}" > ${logFile}
+
+#
+#	Capture the date and time in the ISO standard log timestamp form, UTC 0 time zone
+#
+dateTime="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+
+#
+#	Append the timestamp to the log file without a trailing newline
+#
+echo -n "${dateTime},${speedtestServerID}," >> ${logFile}
+
+#
+#	Although the speedtest command offers the ability to output csv, tsv, JSON and
+#	other structured outputs, the download and upload value format is not documented
+#	does not match the documented statement that the default format is Mbps. For this
+# reason the "human readable" form of the command is used, without and progress indicator.
+#
+#	The human readable format looks like this:
+#	
+#    Server: BELD Broadband - Braintree, MA (id = 27031)
+#        ISP: Comcast Cable
+#    Latency:    86.97 ms   (21.91 ms jitter)
+#   Download:    45.83 Mbps (data used: 80.6 MB)
+#     Upload:     5.88 Mbps (data used: 3.0 MB)
+#Packet Loss:     2.1%
+# Result URL: https://www.speedtest.net/result/c/d5f548c2-1f67-4974-baa0-8aedd6e783d4
+
+#
+#	The MODERN (not the old MacOS version) of sed is used, which implments
+#	the -r option to specify advanced POSIX-compatible regular expressions.
+#	The desired fields: latency,jitter,packe-loss,download-mbps,upload-mbps
+#	are extracted by sed in CSV form, then the tr command strip newlines.
+#
+/usr/local/bin/speedtest --server-id ${speedtestServerID} -p no | \
+/usr/local/bin/sed -rn '
+/Latency:/ {
+	s/^[^0-9.]+//
+	s/[^0-9.]+/,/
+	s/\s.*$/,/
+	H
+	n
+}
+
+/Download:/ {
+	s/^[^0-9.]+//
+	s/\s.*$/,/
+	H
+	n
+}
+
+/Upload:/ {
+	s/^[^0-9.]+//
+	s/\s.*$/,/
+	H
+	n
+}
+
+/Packet Loss:/ {
+	s/^[^0-9.]+//
+	s/%.*$//
+	H
+	x
+	s/\n//g
+	p
+	q
+}' >> ${logFile}

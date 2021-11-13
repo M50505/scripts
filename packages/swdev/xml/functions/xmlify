@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xmlify ()
+{
+	_doc $1 20160729125024 "Prepends a XML header to the specified file, and then edits the files if the -e option is provided" && return 0
+
+	local editFlag=false
+	if [[ "${1}" == "-e" ]]
+	then
+		editFlag=true
+		shift
+	fi
+
+#NOTE: 	Redirection to prependFile is used in lieu of a pipe
+#				to avoid the bash shell's compaints about importinf
+#				function definitions.
+	prependFile "${1}" <<EOF
+<!-- vim:tabstop=2:shiftwidth=2:nu:
+-->
+<?xml version="1.0" encoding="ISO-8859-1"?>
+EOF
+
+
+	${editFlag} && vim "${1}" 
+}
+

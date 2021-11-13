@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+mru ()
+{
+	_doc $1 20160729125024 "Returns the most recently access file in the specified directory or wildcard pattern" && return 0
+	while [[ $# -gt 0 ]]
+	do
+		echo "$1/`ls -t $1 --time=atime | head -1`"
+		shift
+	done
+}
+

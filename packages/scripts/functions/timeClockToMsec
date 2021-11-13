@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+timeClockToMsec ()
+{
+	_doc $1 20160729125024 "Converts clock time - HH:MM:SS.msec to milliseconds." && return 0
+
+	local multipliers=(3600000 60000 1000 1) 
+	local mindex
+	local i
+	local clock
+	local msec
+	local result
+
+	while [[ $# -gt 0 ]]
+	do
+		mindex=3
+		clock=${1}
+		msec=${1#*.}
+
+		[[ ${msec} = ${clock} ]] && clock+=".0"
+
+
+		clock=(${clock//[:.]/ })
+		msec=0
+
+		i=${#clock[@]}
+		((i--))
+
+		clock[${i}]+=000
+		((clock[${i}]=10#${clock[${i}]:0:3}))
+
+		while [[ ${i} -gt -1 ]]
+		do
+			((msec+=multipliers[${mindex}]*clock[${i}]))
+			((i--))
+			((mindex--))
+		done
+
+		result+="${msec} "
+		shift
+	done
+
+	echo ${result}
+}
+

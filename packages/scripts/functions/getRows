@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+getRows ()
+{
+	_doc $1 20160827110326 "uses the stty command to return the number of rows in the current display." && return 0
+
+	local rows=$(stty -a)
+	rows=${rows#*rows }
+	echo ${rows%%;*}
+}

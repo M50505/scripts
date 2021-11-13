@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlStartAdminServer ()
+{
+	_doc $1 20140530182202 "Starts the AdminServer instance." && return 0
+
+  wlStartServer AdminServer
+}

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xrate ()
+{
+  _doc $1 20160729125024 "Shows the growth rate of a file in bytes" && return 0
+
+	local path=${1}
+	local interval=10
+
+	if [[ ${#} -gt 1 ]]
+	then
+		interval=${2}
+	fi
+
+	set -- `ls -go ${path}`
+	start=${3}
+
+	sleep ${interval}
+
+	set -- `ls -go ${path}`
+	echo $(((${3}-${start})/${interval}))
+}
+
+

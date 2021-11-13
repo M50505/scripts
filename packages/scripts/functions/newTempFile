@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+newTempFile ()
+{
+	_doc $1 20160729125024 "Returns a the name of a unique temporary file" && return 0
+	echo "__${RANDOM}$(date +%S%N).tmp__"
+}
+

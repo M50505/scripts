@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+mvnGetDependency ()
+{
+	_doc $1 20160802214202 "displays a pom descriptor from the local repository path as a Maven dependency" && return 0
+
+	local bundle="${1}"
+	local  bundlePath=${M2_REPO}/${bundle}
+	local  version=$(basename ${bundlePath})
+	local  version=$(basename ${bundlePath})
+
+	if [[ ${version} =~ [1-9] ]]
+	then
+		:
+	else
+		local versions=(${bundlePath}/[1-9]*)
+		bundlePath=${versions[${#versions[@]}-1]}
+	fi
+	dvar bundlePath
+	#if [[ -f ${M2_REPO}
+}

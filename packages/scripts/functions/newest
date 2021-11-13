@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+newest ()
+{
+	_doc $1 20160729125024 "newest compares two files from the scripts framework and echos the name of the newest one." && return 0
+
+	local file1=${1}
+	local file2=${2}
+
+	local args=($(sed -rn '
+/_doc/	{
+	s/^.*_doc\s+\$1\s+//
+	s/\s+.*$//
+	p
+}' ${file1} ${file2}))
+
+	if [[ ${args[0]} -lt ${args[1]} ]]
+	then
+		echo ${file2}
+	else
+		echo ${file1}
+	fi
+
+}

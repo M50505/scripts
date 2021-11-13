@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlStartServer ()
+{
+	_doc $1 20140620072853 "Starts the specified WebLogic server." && return 0
+
+	[[ $# -gt 0 ]] || return $(functionFailed "Usage: wlStartServer <name>")
+
+  local server
+	local servers=(${*})
+
+	if [[ "$(toUpper ${servers[0]})" = "CLUSTER" ]]
+	then
+    servers=($(wlGetServers))
+  fi
+
+  for server in ${servers[@]}
+  do
+    wlst <<EOF 
+
+try:
+  wlNMconnect()
+except Exception,e:
+  dumpStack()
+  scriptFailed("Failed to connect to the NodeManager: " + str(e))
+
+try:
+  nmStart('${server}')
+except Exception,e:
+  dumpStack()
+  scriptFailed("Failed to start the ${server}: " + str(e))
+
+
+EOF
+  done
+}

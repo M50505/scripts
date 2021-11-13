@@ -1,0 +1,117 @@
+#!bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# .bash_local - Host-specific commands to launch at login time from the .bash_profile file
+#
+# Author:        Martin Cribbins
+#	
+# Revision history:
+#
+# 2011-03-06    -  Updated to better refrence a master copy, initially held in a VMware Workstation environment.
+#	
+#	2021-03-03		-	This has been updated to leverage Bash 4+
+# 
+# Description:
+#
+# If the .bash_profile file for this account locates this file - .bash_local - it will source this file,
+# thereby executing commands that are specific to this host for this account. This can be particularly 
+# important in a NFS-shared home directory environment.
+#
+
+if [[ ${BASH_VERSINFO[0]} -lt 4 ]]
+then
+	echo "The scripts package requires Bash version 4+"
+	return 1
+fi
+
+me=${BASH_ARGV[0]}
+
+cd $(dirname ${me}) > /dev/null
+cd - > /dev/null
+
+export MASTER_SCRIPTS_HOME=${OLDPWD}
+
+os=$(uname)
+#
+#	The test for MASTER_SCRIPTS_HOME is used in case
+# this script needs to be adjusted to be run from a location other than
+# where all of the other sccripts are located.
+#
+
+
+cd ${MASTER_SCRIPTS_HOME} > /dev/null || exit 1
+
+
+PATH=${PATH}:${MASTER_SCRIPTS_HOME}
+
+#
+#	The "scripts" package is special - it contains all of
+#	the fundamental functions and scripts in the Scripts framework;
+#	therefore the functions and scripts in this package are ALWAYS invoked
+#	prior to any other package
+#
+#PATH=${PATH}:${MASTER_SCRIPTS_HOME}/packages/Scripts 
+
+. ${MASTER_SCRIPTS_HOME}/packages/scripts/functions/_doc
+. ${MASTER_SCRIPTS_HOME}/packages/scripts/functions/dvar
+
+declare -Ax _active_function_files
+declare -Ax _active_script_files
+
+getActivePackages ()
+{
+	(
+		echo "packages/Scripts"
+
+		if [[ "${1}" = "." ]]
+		then
+			find . -type d -name scripts
+			find . -type d -name functions
+		else
+				cat ${1}
+		fi
+
+	) | \
+	egrep '^[a-zA-Z]' | \
+	sort -u 
+}
+
+if [[ -f ${HOME}/packageTable ]]
+then
+	packageSource="${HOME}/packageTable"
+elif [[ -f ${MASTER_SCRIPTS_HOME}/packages/packageTable ]]
+then
+	packageSource="${MASTER_SCRIPTS_HOME}/packages/packageTable"
+else
+	cd ${MASTER_SCRIPTS_HOME}/packages
+	packageSource="."
+fi
+
+_active_packages=($(getActivePackages "${packageSource}"))
+
+for dir in "${_active_packages[@]}"
+do
+	packagePath="${PWD}/${dir}"
+
+	if [[ -d ${packagePath}/scripts ]]
+	then
+		PATH=${PATH}:${packagePath}/scripts
+
+		for file in $(ls ${packagePath}/scripts)
+		do
+			_active_script_files[${file}]="${packagePath}/scripts/${file}"
+		done
+	fi
+
+	if [[ -d ${packagePath}/functions ]]
+	then
+		for file in $(ls ${packagePath}/functions)
+		do
+			. ${packagePath}/functions/${file}
+			export -f ${file}
+			_active_function_files[${file}]="${packagePath}/functions/${file}"
+			#declare -fx ${file}
+		done
+	fi
+done
+

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+dvar ()
+{
+	_doc $1 20160729125024 "Echos a string of the form x=x to show the current value of a variable" && return 0
+
+	local var
+	while [[ $# -gt 0 ]]
+	do
+		var=$1
+
+		eval "if [[ \${#${var}[@]} -gt 1 ]]; then IFS=,;echo \"${var}=[\${${var}[*]}]\" >&2; else echo \"${var}=\${${var}}\" >&2; fi"
+		shift
+	done
+
+	unset IFS
+}

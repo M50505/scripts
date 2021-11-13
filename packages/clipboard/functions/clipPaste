@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+clipPaste ()
+{
+  _doc ${1} 20160420021451 "Copies the clipboard contents to stdout." && return 0
+	cat  /dev/clipboard	
+}
+

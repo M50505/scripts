@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+excel2csv ()
+{
+	_doc $1 20140416183536 "excel2csv emits a CSV text file for each worksheet in the specified Excecl workbook file." && return 0
+
+	if [[ ${OSTYPE} = "cygwin" ]]
+	then
+		JAR_FILE=$(cygpath -m ${MASTER_SCRIPTS_HOME}/packages/xsv/excel2csv.jar)
+		SPREADSHEET_FILE=$(cygpath -m ${1})
+	else
+		JAR_FILE=${MASTER_SCRIPTS_HOME}/packages/xsv/excel2csv.jar
+		SPREADSHEET_FILE=${1}
+	fi
+
+
+	java -jar ${JAR_FILE} ${SPREADSHEET_FILE}
+
+}

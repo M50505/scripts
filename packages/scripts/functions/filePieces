@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+filePieces ()
+{
+	_doc $1 20160729125024 "Returns the parts of a specified path - directory, base name, extension" && return 0
+	local dir=`dirname $1`
+	local file=`basename $1`
+	local fileName=${file%.*}
+
+	if [[ "${fileName}" = "" ]]
+	then
+		echo "${dir} ${file}"
+	else
+
+		local fileType=${file#${fileName}}
+		fileType=${fileType:1}
+
+		echo "${dir} ${fileName} ${fileType}"
+	fi
+}
+

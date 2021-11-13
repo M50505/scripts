@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+portCheck ()
+{
+	_doc $1 20160729125024 "Uses telnet to check if the specified port at the specified host is listening on a TCP socket" && return 0
+
+	if [[ $# -gt 1 ]]
+	then
+		echo "Xclose" | telnet -eX $1 $2 > /dev/null 2>&1
+	else
+		netstat -an | sed -rn "
+/^\s*TCP\s+[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+[:]${1}/	{
+	p
+}
+"
+	fi
+
+	return $?
+
+}
+

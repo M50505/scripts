@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlAppRedeploy ()
+{
+	_doc $1 20140530182202 "Redeploys all or part of the specified application. If the 2nd argument is given, then that argument is the relative path to the specific file to be updated." && return 0
+
+	local result=""
+	local status=1
+	local configFile="${WL_DOMAIN}/servers/AdminServer/security/admin.boot.properties"
+	local keyFile="/u01/app/oracle/oracle-WebLogicKey.properties"
+	local url="t3://${HOSTNAME}:7001"
+
+	if [[ $# -gt 0 ]]
+	then
+		java weblogic.WLST $(which wlConnect.py) <<EOF
+redeploy("${1}")
+disconnect()
+EOF
+		status=0
+	fi
+
+	return ${status}
+}
+

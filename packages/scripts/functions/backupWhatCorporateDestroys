@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+backupWhatCorporateDestroys ()
+{
+	_doc $1 20160729125024 "defends against corporate desktop management policies, backing up pinned tasks and IE bookmarks." && return 0
+
+	mv /p/Data/whatCorporateDestroys/pinned-items.reg /p/Data/whatCorporateDestroys/pinned-items.reg.bak
+	REG EXPORT 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband' p:/Data/whatCorporateDestroys/pinned-items.reg
+	cd ~/AppData/Roaming/Microsoft/Internet\ Explorer/
+	pwd
+	ls
+	mv /p/Data/whatCorporateDestroys/QuickLaunch.tgz /p/Data/whatCorporateDestroys/QuickLaunch.tgz.bak
+	cp ~/.bashrc ~/.bash_profile /p/Data/whatCorporateDestroys
+	tar czf /p/Data/whatCorporateDestroys/QuickLaunch.tgz Quick\ Launch 
+	cd -
+
+}
+

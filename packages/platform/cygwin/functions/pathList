@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+pathList ()
+{
+	_doc $1 20150906170950 "Translate the specified absolute path into Windows form and then remove it from the system PATH variable." && return 0
+
+	local i
+	local oldIFS="${IFS}"
+	IFS=";"
+	local path=($(regtool get /machine/SYSTEM/CurrentControlSet/Control/Session\ Manager/Environment/Path))
+	IFS="${oldIFS}"
+
+	for i in "${path[@]}"
+	do
+		echo "${i}"
+	done
+
+
+}
+

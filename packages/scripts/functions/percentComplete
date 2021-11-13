@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+percentComplete ()
+{
+	_doc $1 20160729125024 "Returns the size of a file as the percentage of target amount. Each time this is called, the current size of the specified file size is returned as a percentage of the specified target size." && return 0
+
+	checkParameters "targetSize filename" || return 1
+
+	local total=$1
+	local file=$2
+	local current=`ls -l ${file} | cut -d\  -f5`
+	local percent
+
+	((percent=${current}*100/${total}))
+	echo ${percent}
+}
+
+

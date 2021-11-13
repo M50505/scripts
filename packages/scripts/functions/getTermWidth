@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+getTermWidth ()
+{
+	_doc $1 20160729125024 "Obtain the number of columns in the current shell window, or else 80 if the number of columns cannot be obtained." && return 0
+
+	echo "${COLUMNS:-80}"
+}
+
+

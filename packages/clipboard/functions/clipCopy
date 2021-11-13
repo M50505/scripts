@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+clipCopy ()
+{
+	_doc ${1} 20160422123602 "Copies the contents of the specied file - or STDIN if no file is specified - to the clipboard." && return 0
+	local input
+
+	[[ $# -gt 0 ]] && input="if=${1}"
+
+	dd ${input} of=/dev/clipboard 2>/dev/null
+
+}
+
+

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+sshdiff ()
+{
+	_doc $1 20160729125024 "Uses SSH to compare a specifed file on the local host against the same file in the same place on the specified remote host" && return 0
+
+	if [[ $# -lt 2 ]]
+	then
+		echo "Usage: shdiff <host> <path>"
+		return 1
+	fi
+
+	local host=${1}
+	local localPath="${2}"
+	local remotePath="$(getRemotePath $(dirname ${localPath}))/$(basename ${localPath})"
+
+	ssh ${host} cat ${remotePath} | diff - ${localPath}
+
+}
+

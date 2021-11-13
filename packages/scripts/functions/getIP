@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+getIP ()
+{
+	_doc $1 20160729125024 "Returns the IP address of the specified hostname or FQDN" && return 0
+	set -- `nslookup $1 2>/dev/null | grep -A1 'Name:'`
+	echo $4
+}
+

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+netGetNetworkMaskWidth ()
+{
+	_doc $1 20140416171433 "gets the bit width of the network mask that applies to the specified IP address." && return 0
+	local octets binAddr mask
+	IFS=.
+	octets=(${1})
+	unset IFS
+
+	((binAddr=(octets[0]*16777216)+(octets[1]*65536)+(octets[2]*256)+(octets[3])))
+
+	binAddr=$(echo "obase=2;${binAddr}" | bc | tr -d 0)
+
+	echo ${#binAddr}
+}

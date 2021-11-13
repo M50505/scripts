@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2016-11-27 - Initial version.
+#	
+
+_doc ${1} 20161127113808 " " && exit 0
+
+optInit
+optAdd file string ""  "For installation, the file on the local client host ot be deployed to Karaf"
+optAdd host string "localhost"  "The host name/FQDN/IP address of the Karaf instance."
+optAdd port string "8181"  "The port number for the Karaf web console."
+optAdd noAutoStart boolean false "Specifies that a newly installed bundle should not start automatically."
+optAdd refreshPackages boolean false "Specifies that all packages should be refreshed upon installation of a bundle."
+optAdd startLevel  number 0 "The starting level of the bundle being installed."
+optAdd username string "karaf" "The name of the Karaf administration account."
+optAdd password string "karaf" "The Karaf administration account password."
+optAdd bundleInstall string "" "Install the bundle, specifying either a local JAR file to be uploaded, or else a URL for Karaf to install from."
+optAdd bundleUninstall string "" "Uninstall the bundle specified by the provided bundle ID, symbolic name, or name of the bundle."
+optAdd featureInstall string "" "Install the specified feature - this feature must be ontained in a feature repository that is already added to the target Karaf instance."
+optAdd featureUninstall string "" "Uninstall the specified feature."
+optAdd repoAdd string "" "Add the feature repository (a features.xml file) specified by the provided URL."
+optAdd repoRemove string "" "Remove the feature repository specified by the repository name."
+optParse $* 
+optParseSuccess || exit 1
+
+path=""
+options="-u ${username}:${password}"
+
+if [[ -n ${bundleInstall} ]]
+then
+	options+=" -F action=install -F bundlefile=@${bundleInstall}"
+	path="install"
+
+	if ${noAutoStart}
+	then
+		:
+	else
+		options+=" -F bundlestart=start"
+	fi
+
+	if [[ ${startLevel} -gt 0 ]]
+	then
+		options+=" -F bundlestartlevel=${startLevel}"
+	fi
+
+	if ${refreshPackages}
+	then
+		options+=" -F refreshPackages=true"
+	fi
+
+	options+=" -F _noredir_=_noredir_"
+
+elif [[ -n ${bundleUninstall} ]]
+then
+	options+=" -F action=uninstall"
+	path="bundles/${bundleUninstall}"
+
+elif [[ -n ${featureInstall} ]]
+then
+	options+=" --data action=installFeature&feature=${featureInstall}"
+	path="features"
+
+elif [[ -n ${featureUninstall} ]]
+then
+	options+=" --data action=uninstallFeature&feature=${featureUninstall}"
+	path="features"
+
+elif [[ -n ${repoAdd} ]]
+then
+	options+=" --data action=addRepository&url=${repoAdd}"
+	path="features"
+
+elif [[ -n ${repoRemove} ]]
+then
+	options+=" --data action=removeRepository&url=${repoRemove}"
+	path="features"
+
+else
+	echo "one of -bundleInstall, -bundleUninstall, -featureInstall, -featureUninstall, -repoAdd, or -repoRemove must be specified."
+	exit
+fi
+
+
+echo curl ${options} http://${host}:${port}/system/console/${path}
+curl ${options} http://${host}:${port}/system/console/${path}
+
+
+
+#curl -u ${user}:${password} -F "action=install" -F "_noredir_=_noredir_" -F "bundlefile=@${1}" -F "bundlestart=start" -F "bundlestartlevel=20" -F "refreshPackages=true" http://localhost:8181/system/console/install

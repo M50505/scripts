@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+min ()
+{
+	_doc $1 20160729125024 "Returns the minimum of the provided values" && return 0
+	local lowest=999999999
+
+	if [[ $# -lt 1 ]]
+	then
+		echo ""
+		return
+	fi
+
+	while [[ $# -gt 0 ]]
+	do
+		if [[ ${1} -lt ${lowest} ]]
+		then
+			((lowest=${1}))
+		fi
+
+		shift
+	done
+
+	echo ${lowest}
+}
+

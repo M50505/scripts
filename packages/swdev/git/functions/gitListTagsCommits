@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+gitListTagsCommits ()
+{
+	git for-each-ref --format="%(objecttype)%(if:equals=tag)%(objecttype)%(then) %(refname:lstrip=-1)%(end) %(contents:subject)"
+}

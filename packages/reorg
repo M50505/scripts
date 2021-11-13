@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-02-27 - Initial version.
+#	
+#_doc ${1} 20210227125154 " " && exit 0
+
+proot=${MASTER_SCRIPTS_HOME}/packages
+
+cd ${proot}
+
+functionDirs=$(find . -type d -a -name functions)
+
+for fdir in ${functionDirs}
+do
+	cd ${proot}/${fdir}/..
+	
+	mkdir ../scripts 2>/dev/null
+
+	for script in $(find . -maxdepth 1 -type f)
+	do
+		mv ${script} scripts
+	done
+done
+

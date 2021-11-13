@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-07-10 - Initial version.
+#	
+_doc ${1} 20210710125553 "lists all respositories on the specified cloud Git provider." && exit 0
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+. ${HOME}/.gitsetup
+
+if [[ $# -gt 1 ]]
+then
+		gitProvider=${1}
+		shift
+else
+		gitProvider=${GIT_PROVIDER}
+fi
+
+gitProvider=$(toUpper ${gitProvider})
+
+if [[ -z ${gitProvider} ]]
+then
+	cat >&2 <<EOF
+The cloud Git provider cannot be determined.
+EOF
+	exit 1
+fi
+
+repo=${1}
+
+case ${gitProvider} in
+	GITHUB)
+		curl -s -u ${GIT_USER_GITHUB}:${GIT_API_KEY_GITHUB} https://api.github.com/user/repos | jq -r '.[]|{name}|join(" ")'
+		;;
+esac
+

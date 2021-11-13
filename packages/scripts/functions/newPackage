@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+newPackage ()
+{
+	_doc $1 20160729125024 "Creates a new package to be placed into the scripts framework. The name of the package and its directory path relative to the \${MASTER_SCRIPTS_HOME}/packages directory must be specified." && return 0
+
+	if [[ $# -lt 2 ]]
+	then
+		cat <<EOF
+The name of the new package, followed by the directory of the new package - relative to the \${MASTER_SCRIPTS_HOME}/packages 
+directory - must be specified.
+EOF
+		return 1
+	fi
+
+	local packageName="${1}"
+	local packageDir="${2}"
+
+	if [[ -d "${packageDir}" ]]
+	then
+		echo "The new package directory already exists."
+		return 1
+	fi
+
+	mkcd ${MASTER_SCRIPTS_HOME}/packages/${packageDir}
+
+	local EOF="EOF"
+
+	cat <<EOF > ${packageName}-init
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# ${packageName}-init - Initialization script for the ${packageDir} package.
+#
+# Author:              Martin Cribbins
+# Revision history:
+#
+# $(date  +%Y-%m-%d)    -  baseline
+#	
+# 
+# Description:
+#
+# full-description-here
+
+###############################################
+#
+#
+#
+###############################################
+
+
+if declare -F _doc >/dev/null 2>&1
+then
+	_doc \$1 $(date +%Y%m%d%H%M%S) "${packageName}-init Exports the initialization environment variables for the ${packageDir} package." && exit 0
+fi
+
+export $(toUpper ${packageName})_PACKAGE_NAME="TBD-enter title here"
+
+#
+#	Export required variables here.
+#
+#export TBD
+
+
+#
+#	Source any package-specific functions
+#
+if [[ -d \${MASTER_SCRIPTS_HOME}/${packageDir} ]]
+then
+	PATH=\${PATH}:\${MASTER_SCRIPTS_HOME}/${packageDir}
+
+	[[ -f \${MASTER_SCRIPTS_HOME}/${packageDir}/${packageName}Functions ]] && . \${MASTER_SCRIPTS_HOME}/${packageDir}/${packageName}Functions 
+fi
+
+EOF
+
+	cat <<EOF > ${packageName}-setup
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# $(date  +%Y-%m-%d)    -  baseline
+#	
+# 
+# Description:
+#
+
+_doc \$1 $(date +%Y%m%d%H%M%S) "Called by the scriptsSetup command to change the initialization environment variables for the ${packageName} package." && exit 0
+
+if [[ \${#BASH_ARGV[@]} -gt 0 ]]
+then
+	myDir=\$(dirname \${BASH_ARGV[0]})
+else
+	myDir=\$(dirname \${0})
+fi
+
+cat <<EOF
+
+  Setting up the \${$(toUpper ${packageName})_PACKAGE_NAME} package
+
+${EOF}
+
+#export TBD=\$(promptedRead "    Enter the TBD value " "TBD prompt")
+#updateVariable -e TBD "\${TBD}" "\${myDir}/${packageName}-init"
+EOF
+
+	cat <<EOF > ${packageName}Functions
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# ${packageName}Functions - exported functions for the ${packageName} package.
+#
+# Author:              Martin Cribbins
+EOF
+
+	chmod +x ${packageName}-init
+	chmod +x ${packageName}-setup
+	chmod +x ${packageName}Functions
+
+}
+

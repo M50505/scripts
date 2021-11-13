@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+sharepointListToCSV ()
+{
+	_doc $1 20140321152723 "sharepointListToCSV uses HTTP to retrieve a CSV form of a SharePoint list, based on the ListToCSV.aspx template." && return 0
+
+	if [[ $# -lt 2 ]]
+	then
+cat <<EOF
+  Usage: sharepointListToCSV username [password] URL
+
+	If the password is not specified, then it will be prompted for.
+EOF
+		return 1
+	fi
+
+	local username="${1}"
+	local password="${2}"
+	local url="${3}"
+	local prefix=$(newTempFile)
+
+	if [[ ${2} =~ ^http: ]]
+	then
+		read -s -p "password: " password
+		url="${2}"
+	fi
+
+	sharepointGetPage ${username} ${password} "${url}" | csplit --prefix=${prefix} --silent - '%^###CSV###%+1' '/^###CSV###/' 2>/dev/null
+
+	cat ${prefix}00
+
+	rm ${prefix}*
+
+}

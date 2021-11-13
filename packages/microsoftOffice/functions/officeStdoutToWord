@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+officeStdoutToWord ()
+{
+	_doc $1 20160708133055 "Converts console/STDOUT/STDERR *nix type output to text that uses Microsoft Word Paragraph and Line breaks, for use with the Console style, copying to the cut/paste buffer. Input is taken from STDIN." && return 0
+
+	tr \\012 \\013 | sed -r 's/^K^K/\n/g' | xcut
+}
+declare -fx officeStdoutToWord
+

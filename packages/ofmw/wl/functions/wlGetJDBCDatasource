@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlGetJDBCDatasource ()
+{
+	_doc $1 20140530182202 "returns username, pawword, connection fqdn, connection port, and service name for the specified WLS datasource." && return 0
+
+	local datasource="${1}"
+	local xslFile=$(newTempFile)
+
+	cat <<EOF > ${xslFile}
+<?xml version="1.0"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:wl="http://xmlns.oracle.com/weblogic/jdbc-data-source" version="1.0" >
+  <xsl:output omit-xml-declaration="yes" indent="no"/>
+  <xsl:template match="/">
+  	<xsl:value-of select="//wl:jdbc-driver-params/wl:url"/>
+  	<xsl:text> </xsl:text>
+  	<xsl:value-of select="//wl:jdbc-driver-params/wl:properties/wl:property[wl:name='user']/wl:value"/>
+  	<xsl:text> </xsl:text>
+  	<xsl:value-of select="//wl:jdbc-driver-params/wl:password-encrypted"/>
+  </xsl:template>
+</xsl:stylesheet>
+EOF
+
+	oraxsl  ${WL_DOMAIN}/config/jdbc/${datasource}-jdbc.xml ${xslFile}
+
+	rm ${xslFile}
+}

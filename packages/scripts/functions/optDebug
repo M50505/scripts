@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optDebug ()
+{
+	_doc $1 20160729125024 "Dumps the contents of each parsed option to stdout" && return 0
+	set -x
+	local index=0
+
+	while [[ ${index} -lt ${#options[@]} ]]
+	do
+		echo "${options[${index}]}=xxx"
+		((index++))
+	done
+	set +x
+
+}
+

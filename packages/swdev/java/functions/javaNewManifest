@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+javaNewManifest ()
+{
+	_doc $1 20160730110906 "creates a new manifest for the specified JAR file, copying the specified manifest file." && return 0
+
+	local absoluteJARpath="$(cygpath -m $(fullpath ${1}))"
+	local tempManifestDir=$(newTempFile)_MF
+
+	mkdir -p ${tempManifestDir}/META-INF
+
+	cp ${2} ${tempManifestDir}/META-INF/MANIFEST.MF
+
+	cd ${tempManifestDir}
+
+	zip -u ${absoluteJARpath} META-INF/MANIFEST.MF
+
+	cd -
+	rm -rf ${tempManifestDir}
+}

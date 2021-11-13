@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+grepchunk ()
+{
+	_doc $1 20160729125024 "Runs grep in case-insensitive mode using the specifed regular expression against every file in the specified list file"  && return 0
+
+	[[ $# -lt 2 ]] && failWithMessage "Usage: grepchunk [<grep-option(s)>] <regexp> <listfile>"
+
+	if [[ "${1:0:1}" == "-" ]]
+	then
+		local options="${1}"
+		shift
+	fi
+
+	local regexp="${1}"
+	local listFile="$(fullpath ${2})"
+
+	local tempDir=${TEMP:-/tmp}/$(newTempFile)
+
+	local chunk
+
+	mkdir ${tempDir}
+
+	cd ${tempDir} 2> /dev/null
+
+	csplit -k -n 4 "${listFile}" 100 \{*\} > /dev/null 2>&1
+
+	cd - 2> /dev/null
+
+	for chunk in ${tempDir}/xx*
+	do
+		local collection="$(file $(<${chunk}) | grep -i text | cut -d: -f1)"
+		echo -n "." >&2
+
+		if [[ ! -z ${collection} ]]
+		then
+			grep ${options} "${regexp}" ${collection} 2> /dev/null
+		fi
+		#sed -rn "/${regexp}/ {p}" $(<${chunk}) 2> /dev/null
+	done
+
+	rm -rf ${tempDir}
+
+}
+

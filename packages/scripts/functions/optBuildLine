@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+optBuildLine ()
+{
+	_doc $1 20160729125024 "This is an internally called function to construct the collection of options" && return 0
+	local INDENT=40
+
+
+	local index=$1
+	local description="${descriptions[${index}]##*|}"
+	local example="${descriptions[${index}]%${description}}"
+
+	example=${example%%|}
+
+	if [[ "${values[${index}]}" = "!" ]]
+	then
+		description+=" This option must be specified."
+	elif [[ "${types[${index}]}" != "boolean" && "${values[${index}]}" != "" ]]
+	then
+		description+=" Defaults to ${values[${index}]}."
+	fi
+
+	hangIndent ${INDENT} $(getTermWidth) "  -${options[${index}]} ${example}" ${description}
+
+	return 0
+}
+

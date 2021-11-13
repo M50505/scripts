@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+groovify ()
+{
+	_doc $1 20160729125024 "Generates a new, or converts an existing text file to a Groovy script file." && return 0
+
+	local editFlag=false
+	if [[ "${1}" == "-e" ]]
+	then
+		editFlag=true
+		shift
+	fi
+
+	prependFile "${1}"  <<EOF  
+/*
+ vim:tabstop=2:shiftwidth=2:nu:filetype=java
+	
+ Author:              Martin Cribbins
+ Revision history:
+
+ $(date +%Y-%m-%d) - Initial version.
+*/	
+
+EOF
+
+	chmod +x "${1}"
+		${editFlag} && vim "${1}" 
+}
+

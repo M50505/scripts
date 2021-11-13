@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#
+#	Based on work published by Matt Wilson
+#
+#	
+oraBASE=/u01/app/oracle/product/database
+oraSID=ORCL
+oraDOMAIN=cptech.com
+
+oraHOME=${oraBASE}/11.2.0/dbhome_1
+
+oraDATA=/u02/oradata/${oraSID}
+oraAPPDATA=/u01/app/oracle/oradata/${oraSID}
+oraRECOVERY=/u02/orarecovery
+
+oraDATA=${oraBASE}/oradata/${oraSID}
+oraAPPDATA=${oraBASE}/oraappdata/${oraSID}
+oraRECOVERY=${oraBASE}/orarecovery
+
+
+oraADMIN=${oraBASE}/admin/${oraSID}
+oraADUMP=${oraADMIN}/adump
+oraBDUMP=${oraADMIN}/bdump
+oraCDUMP=${oraADMIN}/cdump
+oraUDUMP=${oraADMIN}/udump
+oraSCRIPTS=${oraADMIN}/scripts
+
+mkdir -p ${oraHOME} ${oraDATA} ${oraAPPDATA} ${oraRECOVERY} ${oraADMIN} ${oraADUMP} ${oraBDUMP} ${oraCDUMP} ${oraUDUMP} ${oraSCRIPTS}
+
+# Create init.ora file for instance
+cat <<EOF > ${oraADMIN}/scripts/init.ora
+db_name=${oraSID}
+db_domain=${oraDOMAIN}
+
+db_block_size=8192
+undo_management=auto
+undo_tablespace=undotbs1
+
+control_files=(${oraDATA}/${oraSID}_ctrl_01.ctl, ${oraDATA}/${oraSID}_ctrl_02.ctl, ${oraAPPDATA}/${oraSID}_ctrl_03.ctl)
+
+background_dump_dest=${oraADMIN}/bdump
+core_dump_dest=${oraADMIN}/cdump
+user_dump_dest=${oraADMIN}/udump
+audit_file_dest=${oraADMIN}/adump
+
+db_recovery_file_dest=$oraRECOVERY
+db_recovery_file_dest_size=2147483648
+
+sga_target=402653184
+EOF
+
+# Generate the database creation script
+
+cat <<EOF > ${oraADMIN}/scripts/create.sql
+connect / as sysdba
+set echo on
+spool ${oraADMIN}/scripts/create.log
+
+startup nomount pfile=${oraADMIN}/scripts/init.ora;
+
+CREATE DATABASE "${oraSID}"
+MAXINSTANCES 1
+MAXLOGHISTORY 1
+MAXLOGFILES 16
+MAXLOGMEMBERS 3
+MAXDATAFILES 100
+CHARACTER SET AL32UTF8
+NATIONAL CHARACTER SET UTF8
+DATAFILE '${oraDATA}/system01.dbf'
+        SIZE 128M
+        AUTOEXTEND ON
+        NEXT 128M MAXSIZE UNLIMITED
+        EXTENT MANAGEMENT LOCAL
+SYSAUX DATAFILE '${oraDATA}/sysaux01.dbf'
+        SIZE 128M
+        AUTOEXTEND ON
+        NEXT 128M MAXSIZE UNLIMITED
+UNDO TABLESPACE "UNDOTBS1" DATAFILE '${oraDATA}/undotbs01.dbf'
+        SIZE 128M
+        AUTOEXTEND ON
+        NEXT 16M MAXSIZE UNLIMITED
+DEFAULT TEMPORARY TABLESPACE TEMP
+        TEMPFILE '${oraDATA}/temp01.dbf'
+        SIZE 32M
+        AUTOEXTEND ON
+        NEXT 8M MAXSIZE UNLIMITED
+DEFAULT TABLESPACE USERS DATAFILE '${oraDATA}/users01.dbf'
+        SIZE 64M
+        AUTOEXTEND ON
+        NEXT 64M MAXSIZE UNLIMITED
+LOGFILE GROUP 1 ('${oraDATA}/redo01.log') SIZE 64M,
+        GROUP 2 ('${oraDATA}/redo02.log') SIZE 64M,
+        GROUP 3 ('${oraDATA}/redo03.log') SIZE 64M;
+
+@?/rdbms/admin/catalog.sql
+@?/rdbms/admin/catproc.sql
+
+connect system/manager
+@?/sqlplus/admin/pupbld
+
+connect / as sysdba
+shutdown immediate;
+connect / as sysdba
+startup mount pfile=${oraADMIN}/scripts/init.ora;
+alter database archivelog;
+alter database open;
+create spfile='${oraHOME}/dbs/spfile${oraSID}.ora'
+        from pfile='${oraADMIN}/scripts/init.ora';
+shutdown immediate;
+startup;
+
+execute utl_recomp.recomp_serial();
+
+exit;
+EOF
+
+# Generate the run script
+
+cat <<EOF > ${oraADMIN}/scripts/create.sh
+#!/usr/bin/env bash
+ORACLE_HOME=${oraHOME}
+ORACLE_SID=${oraSID}
+export ORACLE_HOME ORACLE_SID
+\${ORACLE_HOME}/bin/sqlplus /nolog @create
+EOF
+
+chmod +x ${oraADMIN}/scripts/create.sh
+
+# All done!
+cat <<EOF
+-------------------------------------------------------------
+Ready to run the database creation script.
+Go to ${oraADMIN}/scripts and then run
+create.sh in that directory.
+-------------------------------------------------------------
+EOF
+

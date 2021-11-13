@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+envscp ()
+{
+	_doc $1 20160729125024 "Executes scp against one or more of the accounts derived from passing $1 to the getEnvTuple command" && return 0
+	local recursionFlag
+	local pullFlag=false
+	local arg
+
+	while [[ "${1}" =~ ^[-] ]]
+	do
+		if [[ "${1}" = "-r" ]]
+		then
+			recursionFlag="-r"
+			shift
+		elif [[ "${1}" = "-p" ]]
+		then
+			pullFlag=true
+			shift
+		fi
+	done
+
+	local regexp=${1}
+	shift
+
+	local args="$*"
+
+	local remoteDir
+
+	set -- $(getEnvTuple ${regexp})
+
+	while [[ $# -gt 0 ]]
+	do
+		if ${pullFlag}
+		then
+			for arg in ${args}
+			do
+				scp ${recursionFlag} ${3}@${2}:$(getRemotePath ${arg}) .
+			done
+		else
+			for arg in ${args}
+			do
+				scp ${recursionFlag} ${arg} ${3}@${2}:$(getRemotePath ${arg}) 
+			done
+		fi
+		shift 3
+	done
+}
+

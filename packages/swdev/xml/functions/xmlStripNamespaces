@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xmlStripNamespaces ()
+{
+	_doc $1 20160729125024 "strips the namespaces from one or more XML files." && return 0
+
+	while [[ $# -gt 0 ]]
+	do
+		sed -r '
+{
+
+	s,(<[/]?)[a-zA-Z]+[:],\1,g
+	s,([ 	"])[a-zA-Z]+[:],\1,g
+
+}' ${1}
+
+		shift
+	done
+
+}
+

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+unsetAll ()
+{
+	_doc $1 20170523105535 "clears all function and variable declarations." && return 0
+
+	$(declare -F | sed -r 's/declare -fx/unset/')
+	$(set | sed -r '
+/^PATH=/	{
+	d
+	n
+}
+{
+	s/^/unset /
+	s/=.*$//
+}
+')
+
+}
+

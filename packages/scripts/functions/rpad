@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+rpad ()
+{
+	_doc $1 20160729125024 "Returns the provided string, right-padded with spaces to the specified number of characters" && return 0
+	local pad="                                                                                              "
+	local target=$1
+	local width
+	((width=$2))
+
+	pad="${target}${pad:0:${width}}"
+
+	echo "${pad:0:${width}}"
+}
+

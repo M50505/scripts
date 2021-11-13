@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlAppList ()
+{
+	_doc $1 20140530182202 "Redeploys all or part of the specified application. If the 2nd argument is given, then that argument is the relative path to the specific file to be updated." && return 0
+
+	wlst <<EOF
+wlAdminConnect()
+listApplications()
+disconnect()
+EOF
+	status=0
+
+	return ${status}
+}

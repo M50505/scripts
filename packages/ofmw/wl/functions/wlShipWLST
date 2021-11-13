@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlShipWLST ()
+{
+	_doc $1 20160712100838 "Saves all WL_xxx environment variables as properties into the WLST home directory in the wlstFunctions.py file, then adds the wl package's contents of wlstFunctions.py to the newly created copy." && return 0
+
+	showenv WL | sed -r '
+{
+  s/=/="/
+  s/$/"/
+  s/""/"/g
+  s/="\(/=(/
+  s/\)"\s*$/)/
+}
+' > ${WL_WLST_FUNCTIONS}
+
+  local variable
+
+  #
+  # Add special variables that can't be derived
+  # from the environment variables set in wl-init 
+  #
+  sed -nr '/ListenPort/ {s/^.*=/WL_NM_PORT="/;s/$/"/;p}' ${WL_CONFIG_NM} >> ${WL_WLST_FUNCTIONS}
+  sed -nr '/SecureListener/ {s/^.*=/WL_NM_TYPE="/;s/true/SSL"/;s/false/plain"/;p}' ${WL_CONFIG_NM} >> ${WL_WLST_FUNCTIONS}
+  sed -nr '/ListenAddress/ {s/^.*=/WL_NM_HOST="/;s/="\s*$/="localhost/;s/$/"/;p}' ${WL_CONFIG_NM} >> ${WL_WLST_FUNCTIONS}
+
+	echo ""  >> ${WL_WLST_FUNCTIONS}
+
+	cat ${MASTER_SCRIPTS_HOME}/packages/ofmw/wl/wlstFunctions.py >> ${WL_WLST_FUNCTIONS}
+
+	wlstCommand="${WL_HOME}/common/bin/wlst.sh"
+
+	sed -r -i "s/^\s*echo/#echo/" ${wlstCommand}
+
+}

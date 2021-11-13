@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+xslt ()
+{
+	_doc $1 20160729125024 "Processes XSLT against the specified files(s) with the specifed XST file." && return 0
+
+	local xsltFile
+	local xmlFile
+
+	if [[ ${1} = "-w" ]]
+	then
+		shift
+	fi
+
+	xsltFile="${1}"
+	xmlFile="${2}"
+
+	shift 2
+
+	java -jar $(cygpath -m ${MASTER_SCRIPTS_HOME}/packages/3rdparty/saxon9.jar) -xsltversion:2.0 -xsl:${xsltFile} ${xmlFile}
+}

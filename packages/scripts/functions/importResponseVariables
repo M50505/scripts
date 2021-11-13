@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+importResponseVariables ()
+{
+	_doc $1 20160729125024 "imports Oracle response file settings as environment variables." && return 0
+
+	local prefix=${2:-rsp_}
+
+	eval $(sed -rn "
+/^\s*[A-Za-z].*[^=]*/	{
+	h
+	s/=[^=]*$//
+	s/=//g
+	s/&amp;[A-Za-z][A-Za-z];//g
+	s/[)(]//g
+	s/\s/_/g
+	s/=<.*$/=/
+	s,/,_,g
+	s/-/_/g
+	s/^/${prefix}/
+	x
+	s/^.*=/=\"/
+	s/$/\"/
+	x
+	G
+	s/\n//g
+	p
+
+}" ${1})
+}
+

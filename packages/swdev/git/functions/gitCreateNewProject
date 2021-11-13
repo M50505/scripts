@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+gitCreateNewProject ()
+{
+	_doc $1 20170523101138 "creates a new local Git instance in the current directory, that is geared towards using an existing, empty remote repository. If no argument is given, then the clipboard is accessed for the remote repository cloning URL, otherwise the first argument is used.GitHub, Stash / Bitbucket, etc. mak it easy to click 'Clone' on the repository web page and then copy the displayed URL to the clipboard." && return 0
+
+	local url="$(clipPaste)" project
+	local force=false
+
+	if [[ $# -gt 0 && "${1}" = "-f" ]]
+	then
+		force=true
+		gitForceFlag="-f"
+		shift
+	fi
+
+	url="${url:-${1}}"
+	if [[ -z ${url} ]]
+	then
+		echo "No URL was available either in the clipboard or specified on the command line."
+		return 1
+	fi
+
+	cd ${PROJECTS_ROOT}
+
+	git clone "${url}"
+
+	sed -r -i '/\[remote / {s,$,\n  push = +refs/heads/*\n  push = +refs/tags/*,}' ${projectName}/.git/config
+}

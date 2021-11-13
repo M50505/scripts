@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+wlEncrypt ()
+{
+	_doc $1 20140530182202 "encrypts the provided text using the WLS private key" && return 0
+
+		local token="${1}"
+
+		java -Dweblogic.RootDirectory=${WL_DOMAIN} weblogic.security.Encrypt "${token}"
+}
