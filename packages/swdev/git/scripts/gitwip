@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-11-18 - Initial version.
+#	
+#_doc ${1} 20211118224002 " " && exit 0
+
+gitwip && gitpub WIP
+

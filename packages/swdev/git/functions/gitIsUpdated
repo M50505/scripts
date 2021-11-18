@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-11-18 - Initial version.
+#	
+#_doc ${1} 20211118223101 " " && exit 0
+
+gitIsUpdated ()
+{
+	local result
+	((result=$(git status --short | wc -l)))
+
+	if [[ ${result} -eq 0 ]]
+	then
+		result=1
+	else
+		result=0
+	fi
+
+	return ${result}
+}
