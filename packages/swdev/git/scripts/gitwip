@@ -8,5 +8,5 @@
 #	
 #_doc ${1} 20211118224002 " " && exit 0
 
-gitwip && gitpub WIP
+gitIsUpdated && gitpub WIP
 
