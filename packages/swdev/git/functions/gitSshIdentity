@@ -8,10 +8,10 @@ gitSshIdentity ()
 		lowerID=$(toLower ${1})
 		local id_file="${HOME}/.ssh/id_rsa_${lowerID}"
 		export GIT_SSH_COMMAND="ssh -i ${id_file}"
-		eval export GIT_PROVIDER=\${GIT_PROVIDER_${upperID}}
-		eval export GIT_DOMAIN=\${GIT_DOMAIN_${upperID}}
-		eval export GIT_USER=\${GIT_USER_${upperID}}
-		eval export GIT_API_KEY=\${GIT_API_KEY_${upperID}}
+		eval GIT_PROVIDER=\${GIT_PROVIDER_${upperID}}
+		eval GIT_DOMAIN=\${GIT_DOMAIN_${upperID}}
+		eval GIT_USER=\${GIT_USER_${upperID}}
+		eval GIT_API_KEY=\${GIT_API_KEY_${upperID}}
 	else
 		echo GIT_SSH_COMMAND=${GIT_SSH_COMMAND}
 		echo GIT_PROVIDER=${GIT_PROVIDER}
