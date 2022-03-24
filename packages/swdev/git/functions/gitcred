@@ -1,5 +1,5 @@
 gitcred ()
 {
-	cp ${HOME}/gc-${1} ${HOME}/.git-credentials
+	cp /local/gc-${1} ${HOME}/.git-credentials
 }
 
