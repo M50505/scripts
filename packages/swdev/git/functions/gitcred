@@ -10,6 +10,7 @@ gitcred ()
 		cat ${HOME}/.gitconfig
 	fi
 
+
 	#git credential-cache exit
 }
 
