@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+gitFindRoot ()
+{
+	local MAX_DIRS=10
+	local currentDirCount=0
+	local oldPwd="${PWD}"
+
+	while [[ ${PWD} != "/" && ${currentDirCount} -lt ${MAX_DIRS} ]]
+	do
+		if [[ -d ".git" ]]
+		then
+			echo "${PWD}"
+			cd ${oldPwd}
+			return 0
+		fi
+
+		cd ..
+
+		((currentDirCount++))
+	done
+
+	cd ${oldPwd}
+	echo "No .git directory could be located." >&2
+	return 1
+}
