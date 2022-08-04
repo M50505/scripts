@@ -2,6 +2,8 @@ gitcred ()
 {
 	if [[ $# -gt 0 ]]
 	then
+		rm -f ${HOME}/.git-credentials ${HOME}/.gitconfig
+
 		cp /local/gitcred-${1} ${HOME}/.git-credentials
 		cp /local/gitconfig-${1} ${HOME}/.gitconfig
 	else
