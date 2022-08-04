@@ -1,0 +1,6 @@
+gitGetToken ()
+{
+	sed -r 's/^.*://;s/@.*$//' ${HOME}/.git-credentials
+}
+
+

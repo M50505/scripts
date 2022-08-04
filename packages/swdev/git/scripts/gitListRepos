@@ -11,17 +11,8 @@ _doc ${1} 20210710125553 "lists all respositories on the specified cloud Git pro
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-. ${HOME}/.gitsetup
 
-if [[ $# -gt 1 ]]
-then
-		gitProvider=${1}
-		shift
-else
-		gitProvider=${GIT_PROVIDER}
-fi
-
-gitProvider=$(toUpper ${gitProvider})
+gitProvider=$(gitGetProvider)
 
 if [[ -z ${gitProvider} ]]
 then
@@ -31,10 +22,8 @@ EOF
 	exit 1
 fi
 
-repo=${1}
-
 case ${gitProvider} in
-	GITHUB)
+	*github.com)
 		curl -s -u ${GIT_USER_GITHUB}:${GIT_API_KEY_GITHUB} https://api.github.com/user/repos | jq -r '.[]|{name}|join(" ")'
 		;;
 esac
