@@ -1,0 +1,6 @@
+gitGetProvider ()
+{
+	sed -rn '/^\s*\[\s*url/ {s/^.* "//;s/:.*//;p}' ${HOME}/.gitconfig
+}
+
+
