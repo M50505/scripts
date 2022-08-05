@@ -1,0 +1,5 @@
+gitGetToken64 ()
+{
+	gitGetToken | base64
+}
+
