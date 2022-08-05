@@ -13,6 +13,8 @@ _doc ${1} 20210710125553 "lists all respositories on the specified cloud Git pro
 
 
 gitProvider=$(gitGetProvider)
+gitUser=$(gitGetUser)
+gitToken=$(gitGetToken)
 
 if [[ -z ${gitProvider} ]]
 then
@@ -22,9 +24,11 @@ EOF
 	exit 1
 fi
 
+
 case ${gitProvider} in
 	*github.com)
-		curl -s -u ${GIT_USER_GITHUB}:${GIT_API_KEY_GITHUB} https://api.github.com/user/repos | jq -r '.[]|{name}|join(" ")'
+		curl -s -H "Authorization: token ${gitToken}"  https://api.github.com/user/repos | \
+		jq -r '.[]|{name}|join(" ")'
 		;;
 esac
 
