@@ -33,6 +33,7 @@ EOF
 	exit 1
 fi
 
+
 case ${gitProvider} in
 	*github.com)
 		git clone git@github.com:${gitUser}/${gitRepo}.git
