@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-07-10 - Initial version.
+#	
+_doc ${1} 20210710125553 "lists all respositories on the specified cloud Git provider." && exit 0
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+
+if [[ $# -lt 1 ]]
+then
+	cat >&2 <<EOF
+You must provide the name of the repository to clone.
+EOF
+	exit 1
+fi
+
+gitRepo=${1}
+gitProvider=$(gitGetProvider)
+gitUser=$(gitGetUser)
+gitToken=$(gitGetToken)
+
+if [[ -z ${gitProvider} ]]
+then
+	cat >&2 <<EOF
+The cloud Git provider cannot be determined.
+EOF
+	exit 1
+fi
+
+case ${gitProvider} in
+	*github.com)
+		git clone git@github.com:${gitUser}/${gitRepo}.git
+		;;
+esac
+
