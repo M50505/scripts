@@ -1,57 +1,21 @@
 #!/usr/bin/env bash
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
 
-awsAssumeRoleEnv ()
+awsEnvCapture ()
 {
 
-#js=$(cat <<EOF 
-#{
-#    "Credentials": {
-#        "AccessKeyId": "ASIA6IJEDAZ6JGEVGRWL",
-#        "SecretAccessKey": "SZfP2+awTXdTE+vyecstyk8uBU4FguyUm8Xku8qY",
-#        "SessionToken": "IQoJb3JpZ2luX2VjENf//////////wEaCXVzLWVhc3QtMSJIMEYCIQDuW9qqiPQdS/d2lg/6EelMu5IuM/oJRSKQYRGB3sC04wIhAKAbr7RJ7yIebxferdNFq7QYbyhV+dTBZQJaS/LU9he4KpQCCE8QAhoMOTc5ODY1MTEwMTQwIgyFscdEswPPp834owoq8QEiooTGhc07jARQI4ZINU7PyAi6iDHhSid1OZn5jeyQb315wU2u+rMWSi6feINh6PuKcOKaKrSewnbmSijHHD+esS1GC5Rcq0maqc323WzhSejrQZCJe/dmXzxqoZDUIAKqu2UmNeWwnxvFDZrN8gZjd0bmHk3Nc6IXD/QtJHbvcHwyqKTAkJ9qv//IAdJQMpr950YDOwe7ZU963iCZz0GsZ3LgZDlgZI3Ah/iTyHvbRrshUNwVXYisIQxKvyunykB+au5Cr0REznVP1rTypTujdJxg/pPAYT+JUhOQ+RPxlS0x53GcjfakVJAVmPdmlSl6MOK8hZgGOpwBeTacW8b2n6gwxpmBYukDGZzc/nkhj4Wwhupi2plMB8G1bCFr/fKPDstMTfhgwKHKYZUEjDURK1LuihqYQsW0JWrCEe5sgnPTjaA+f83VSwymVXvGeHIf+/K/zhG/GoEXoF5wfNOt8kImICuOJvlEJovzKIQqy03m4JyXcdsbo4YLTyXxefR8wcD1e5HfGDRTDwMb2NUCNba6SuMe",
-#        "Expiration": "2022-08-20T23:21:22+00:00"
-#    },
-#    "AssumedRoleUser": {
-#        "AssumedRoleId": "AROA6IJEDAZ6BQEG2M75S:cicd-s2",
-#        "Arn": "arn:aws:sts::979865110140:assumed-role/CicdCloudFormationAdministrator/cicd-s2"
-#    }
-#}
-#EOF
-#)
+	eval $($* | sed -rn '
 
-local js
-#local val
-#
-js=$(cat)
-#
-#val=$(echo ${js} | json_pp | sed -rn '
-#
-#/AccessKeyId/ {
-#	s/^.+: "/export AWS_ACCESS_KEY_ID=/
-#	s/".*$//
-#	p
-#}
-#')
-#
+/AccessKeyId/ {
 #export AWS_ACCESS_KEY_ID="${val}"
-export AWS_ACCESS_KEY_ID="${js}"
 
-return
 }
+')
+
+}
+
 
 #/SecretAccessKey/ {
 #	s/^.+: "/export AWS_SECRET_ACCESS_KEY=/
-#	s/".*$//
-#	p
-#}
-#
 #/SessionToken/ {
 #	s/^.+: "/export AWS_SESSION_TOKEN=/
-#	s/".*$//
-#	p
-#}
-#
-#'
-#
-#
