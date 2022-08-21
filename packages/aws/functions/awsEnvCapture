@@ -4,19 +4,15 @@
 awsEnvCapture ()
 {
 
-	eval $($* | sed -rn '
+	$* | sed -rn '
 
 /AccessKeyId/ {
 	s/^\s*"AccessKeyId/AWS_ACCESS_KEY_ID/
-	bcleanUp
-}
-
-:cleanUp {
 	s/"\s*:\s*/=/
 	s/",.*$/"/
 	p
 }
-')
+'
 
 }
 
