@@ -1,0 +1,9 @@
+awsEnvToBat ()
+{
+	showenv AWS | sed -r '
+{
+	s/^/set /
+}'
+
+}
+
