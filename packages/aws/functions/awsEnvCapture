@@ -3,9 +3,9 @@
 
 awsEnvCapture ()
 {
-	echo "v6" >&2
+	echo "v7" >&2
 
-	$* | sed -rn '
+	eval $($* | sed -rn '
 
 /AccessKeyId/ {
 	s/^\s*"AccessKeyId/AWS_ACCESS_KEY_ID/
@@ -29,7 +29,7 @@ b
 	s/",.*$/"/
 	p
 }
-'
+')
 
 }
 
