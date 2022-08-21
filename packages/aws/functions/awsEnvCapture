@@ -3,11 +3,18 @@
 
 awsEnvCapture ()
 {
+	echo "v5" >&2
 
 	$* | sed -rn '
 
 /AccessKeyId/ {
 	s/^\s*"AccessKeyId/AWS_ACCESS_KEY_ID/
+	b cleanUp
+}
+
+b
+
+:cleanUp {
 	s/"\s*:\s*/=/
 	s/",.*$/"/
 	p
