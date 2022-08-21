@@ -62,7 +62,7 @@ EOF
 	then
 		prependFile "${name}"  <<EOF
 #	
-# Author:              Martin Cribbins
+# Author:              ${AUTHOR}
 # Revision history:
 #
 # $(date +%Y-%m-%d) - Initial version.
