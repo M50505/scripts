@@ -1,0 +1,5 @@
+awsEnvUnset ()
+{
+	eval $(showenv AWS | sed -r 's/=.*$//;s/^/unset /')
+}
+
