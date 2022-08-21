@@ -3,12 +3,22 @@
 
 awsEnvCapture ()
 {
-	echo "v5" >&2
+	echo "v6" >&2
 
 	$* | sed -rn '
 
 /AccessKeyId/ {
 	s/^\s*"AccessKeyId/AWS_ACCESS_KEY_ID/
+	b cleanUp
+}
+
+/SecretAccessKey/ {
+	s/^\s*"SecretAccessKey/AWS_SECRET_ACCESS_KEY/
+	b cleanUp
+}
+
+/SessionToken/ {
+	s/^\s*"SessionToken/AWS_SESSION_TOKEN/
 	b cleanUp
 }
 
