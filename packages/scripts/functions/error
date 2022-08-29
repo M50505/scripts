@@ -1,0 +1,6 @@
+error ()
+{
+	echo "$*" | fmt >&2
+
+	exit 1
+}
