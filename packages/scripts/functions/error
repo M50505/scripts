@@ -1,6 +1,13 @@
 error ()
 {
-	echo "$*" | fmt >&2
+(
+	if [[ $# -gt 0 ]]
+	then
+		echo $*
+	else
+		cat
+	fi
+) | fmt >&2
 
 	exit 1
 }
