@@ -19,3 +19,4 @@ Extensible, vertical framework of and for Bash scripts.
 *
 * Dependends on Bash 4.3+
 
+
