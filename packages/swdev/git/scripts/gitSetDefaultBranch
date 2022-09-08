@@ -6,9 +6,13 @@
 #
 # 2021-07-10 - Initial version.
 #	
-_doc ${1} 20210710125553 "creates a new respository on the specified cloud Git provider, if it does not already exist. The Git provider is specified either as the first argument, otherwise it is obtained from the value of the GITPROVIDER environment variable." && exit 0
+_doc ${1} 20210710125553 "sets the default branch for a repository." && exit 0
+
+
+set -x
 
 repo=${1}
+branch=${2}
 provider=$(gitGetProvider)
 user=$(gitGetUser)
 token=$(gitGetToken)
@@ -16,7 +20,7 @@ token=$(gitGetToken)
 
 case ${provider} in
 	github.com)
-		result=$(curl -s -u ${user}:${token} --data "{\"name\":\"${repo}\",\"private\":\"true\",\"auto_init\":\"true\"}" https://api.github.com/user/repos)
+		result=$(curl -X PATCH -s -u ${user}:${token} --data "{\"default_branch\": \"${branch}\"}" https://api.github.com/repos/${user}/${repo})
 
 		successID=$(echo ${result} | jq ".id")
 
