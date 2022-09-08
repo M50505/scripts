@@ -11,12 +11,14 @@ _doc ${1} 20210710125553 "creates a new respository on the specified cloud Git p
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-. ${HOME}/.gitsetup
+#. ${HOME}/.gitsetup
 
 repo=${1}
+provider=$(gitGetProvider)
 
-case ${GIT_PROVIDER} in
-	GITHUB)
+
+case ${provider} in
+	github.com)
 		result=$(curl -s -u ${GIT_USER}:${GIT_API_KEY} --data "{\"name\":\"${repo}\",\"private\":\"true\"}" https://api.github.com/user/repos)
 
 		successID=$(echo ${result} | jq ".id")
