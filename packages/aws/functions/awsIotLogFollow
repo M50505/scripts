@@ -1,5 +1,4 @@
-#
-wsIotLogFollow ()
+awsIotLogFollow ()
 {
 	aws logs tail AWSIotLogsV2 --follow
 }
