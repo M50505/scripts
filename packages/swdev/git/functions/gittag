@@ -6,8 +6,19 @@ gittag ()
 
 	if [[ $# -gt 0 ]]
 	then
-		git tag -f ${1} -m "Added/updated tag ${1}"
-		git push --force origin ${1}
+		local tagName="${1}"
+		local tagMessage
+
+		if [[ $# -gt 1 ]]
+		then
+			shift
+			tagMessage="$*"
+		else
+			tagMessage="Added/updated tag ${tagName}"
+		fi
+
+		git tag -f ${tagName} -m "${tagMessage}"
+		git push --force origin ${tagName}
 	else
 		git ls-remote --tags
 	fi
