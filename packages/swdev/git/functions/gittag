@@ -17,9 +17,10 @@ gittag ()
 			tagMessage="Added/updated tag ${tagName}"
 		fi
 
-		git tag -f ${tagName} -m "${tagMessage}"
+		git tag -a -f ${tagName} -m "${tagMessage}"
 		git push --force origin ${tagName}
 	else
-		git ls-remote --tags
+		git tag -l -n9
+		#git ls-remote --tags
 	fi
 }
