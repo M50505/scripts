@@ -6,7 +6,6 @@
 #
 # 2022-09-21 - Initial version.
 #	
-#_doc ${1} 20220921234218 " " && exit 0
 
 rootDir="."
 
