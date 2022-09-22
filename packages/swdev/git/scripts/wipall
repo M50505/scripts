@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2022-09-21 - Initial version.
+#	
+#_doc ${1} 20220921234218 " " && exit 0
+
+rootDir="."
+
+[[ $# -gt 0 ]] & rootDir="${1}"
+
+cd "${rootDir}"
+
+for i in *
+do
+	if [[ -d ${i}/.git ]]
+	then
+		echo "${i}"
+		cd ${i}
+		gitwip
+		cd ..
+	fi
+done
