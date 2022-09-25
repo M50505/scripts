@@ -33,6 +33,7 @@ EOF
 	exit 1
 fi
 
+gitRepo="${gitRepo%/*}"
 
 case ${gitProvider} in
 	*github.com)
