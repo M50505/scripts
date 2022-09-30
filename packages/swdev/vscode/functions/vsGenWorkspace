@@ -1,0 +1,37 @@
+vsGenWorkspace ()
+{
+	if [[ $# -lt 2 ]]
+	then
+		echo "You must specify the workspace name and at least one forlder to include" >&2
+		return 1
+	fi
+
+	local wsFile="${1}.code-workspace"
+	local comma=","
+
+	shift
+
+	cat <<EOF > "${wsFile}"
+{
+	"folders": [
+EOF
+
+	while [[ $# -gt 0 ]]
+	do
+
+		cat <<EOF >> "${wsFile}"
+		{
+			"path": "${1}"
+		}${comma}
+EOF
+		shift
+
+		[[ $# -eq 1 ]] && unset comma
+	done
+
+	cat <<EOF >> "${wsFile}"
+	],
+	"settings": {}
+}
+EOF
+}
