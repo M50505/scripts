@@ -27,6 +27,7 @@ EOF
 		shift
 
 		[[ $# -eq 1 ]] && unset comma
+
 	done
 
 	cat <<EOF >> "${wsFile}"
