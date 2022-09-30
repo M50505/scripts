@@ -1,0 +1,6 @@
+gitGetUserToken ()
+{
+	echo "$(gitGetUser):$(gitGetToken)"
+}
+
+
