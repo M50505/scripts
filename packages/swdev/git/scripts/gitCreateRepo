@@ -13,6 +13,10 @@ provider=$(gitGetProvider)
 user=$(gitGetUser)
 token=$(gitGetToken)
 
+shift
+
+title="$*"
+
 case ${provider} in
 	github.com)
 		result=$(curl -s -u ${user}:${token} --data "{\"name\":\"${repo}\",\"private\":\"true\",\"auto_init\":\"true\"}" https://api.github.com/user/repos)
@@ -28,6 +32,22 @@ EOF
 		else
 			echo "Remote repository ${repo} created for user ${user} on ${provider}, cloning new empty repository."
 			git clone git@github.com:${user}/${repo}.git
+
+			cd ${repo}
+
+			cat <<EOF > README.md
+= ${title}
+
+== Introduction
+
+
+EOF
+
+	mv README.md README.adoc
+
+	gitpub "Converted the README.md to an AsciiDoc file name README.adoc"
+
+
 		fi
 	;;
 esac
