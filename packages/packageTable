@@ -14,6 +14,7 @@ packages/net
 #packages/platform
 #packages/platform/cygwin
 #packages/sharepoint
+packages/swdev/asciidoc
 packages/swdev/git
 packages/swdev/vscode
 #packages/swdev/gradle
