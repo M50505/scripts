@@ -20,5 +20,24 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-sed -rn '/:[a-zA-Z][^:]*:/	{p}' ${1}
+echo "@startgantt"
+
+commas=$(sed -rn '
+/\[.*cols=/	{
+	s/^.*cols=//
+	s/[^,]//g
+	p
+}
+' ${1})
+
+columnCount=${#commas}
+
+echo ${columnCount}
+
+exit
+
+"8%,12%,40%,20%,1%"]
+sed -rn '/:[a-zA-Z][^:]*:/	{
+	p
+}' ${1}
 
