@@ -4,9 +4,9 @@
 # Author:              Martin Cribbins
 # Revision history:
 #
-# 2023-02-11 - Initial version.
+# 2023-02-17 - Initial version.
 #	
-#_doc ${1} 20230211011833 " " && exit 0
+#_doc ${1} 20230217233227 " " && exit 0
 
 #optInit
 #optAdd sample string "test"  "A sample string option"
@@ -20,38 +20,9 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-echo "@startgantt"
-
-commas=$(sed -rn '
-/\[.*cols=/	{
-	s/^.*cols=//
-	s/[^,]//g
-	p
-}
-' ${1})
-
-columnCount=${#commas}
-
-tr -d \\r < ${1} | sed -rn '
-:top
-
-/[1-9]+\//	{
-  x
-  s/\n//g
-  p
-  x
-  s/\|//
-	s/\//,/g
-  s/$/,/
-  h
-
-  btop
-}
-
-/^\|[1-9]+\s+(day|week)/ {
-  s/\|//
-  s/$/,/
-  H
-
-  btop
-}'
+(
+while read -a tokens
+do
+  dvar tokens
+done
+) < ${1}
