@@ -20,9 +20,10 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
+
 (
-while read -a tokens
-do
-  dvar tokens
-done
+  while IFS=, read -r day month year duration task
+  do
+    dvar day month year duration task
+  done
 ) < ${1}

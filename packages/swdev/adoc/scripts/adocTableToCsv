@@ -20,17 +20,6 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-echo "@startgantt"
-
-commas=$(sed -rn '
-/\[.*cols=/	{
-	s/^.*cols=//
-	s/[^,]//g
-	p
-}
-' ${1})
-
-columnCount=${#commas}
 
 tr -d \\r < ${1} | sed -rn '
 :top
@@ -54,4 +43,16 @@ tr -d \\r < ${1} | sed -rn '
   H
 
   btop
-}'
+}
+
+/\+\s*$/ {
+  s/\|//
+  s/\*//g
+  s/_//g
+  s/\s+\+//
+  # s/$/,/
+  H
+
+  btop
+}
+'
