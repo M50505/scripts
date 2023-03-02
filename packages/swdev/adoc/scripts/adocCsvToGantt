@@ -20,10 +20,41 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
+declare -i day month year
+declare -i startYear startMonth startDay
+
+startYear=0
+
+cat <<EOF
+[plantuml]
+....
+@startgantt
+EOF
 
 (
   while IFS=, read -r day month year duration task
   do
-    dvar day month year duration task
+    #
+    if [[ ${startYear} -eq 0 ]]
+    then
+      startYear=year
+      startMonth=month
+      startDay=day
+
+      echo "Project starts ${startYear}-${startMonth}-${startDay}"
+      # dvar startYear startMonth startDay
+    fi
+
+    echo "[${task}] lasts ${duration}"
   done
 ) < ${1}
+
+cat <<EOF
+@endgantt
+....
+EOF
+
+
+
+
+
