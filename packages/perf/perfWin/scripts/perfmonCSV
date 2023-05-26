@@ -20,4 +20,4 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-tr \\015 \\012 ${1} | dd skip=3
+tr \\015 \\012 < ${1} | dd skip=3
