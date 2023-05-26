@@ -11,6 +11,7 @@ packages/net
 #packages/ofmw/wl
 #packages/perf
 #packages/perf/perfNix
+packages/perf/perfWin
 #packages/platform
 #packages/platform/cygwin
 #packages/sharepoint
