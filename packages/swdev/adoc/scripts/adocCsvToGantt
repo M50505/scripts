@@ -29,6 +29,7 @@ cat <<EOF
 [plantuml]
 ....
 @startgantt
+ganttscale weekly
 EOF
 
 (
@@ -45,7 +46,7 @@ EOF
       # dvar startYear startMonth startDay
     fi
 
-    echo "[${task}] lasts ${duration}"
+    echo "[${task}]  starts D+7 and lasts ${duration}"
   done
 ) < ${1}
 
