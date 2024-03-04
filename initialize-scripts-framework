@@ -108,6 +108,7 @@ do
 		for file in $(ls ${packagePath}/functions)
 		do
 			. ${packagePath}/functions/${file}
+			echo . ${packagePath}/functions/${file}
 			export -f ${file}
 			_active_function_files[${file}]="${packagePath}/functions/${file}"
 			#declare -fx ${file}
