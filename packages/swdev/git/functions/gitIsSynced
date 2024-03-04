@@ -1,7 +1,1 @@
-#!/usr/bin/env bash
-# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
-
-gitIsSynced ()
-{
-    return $(git status | grep 'nothing to commit' >/dev/null 2>&1)
-}
+#!/usr/bin/env bash# vim:tabstop=2:shiftwidth=2:nu:filetype=shgitIsSynced (){    return $(git status | grep 'nothing to commit' >/dev/null 2>&1)}
