@@ -8,10 +8,9 @@ gitNeedsCommit ()
     (
         [[ -d ${dir}/.git ]] || return 1
 
-	    git status 2>/dev/null | grep 'nothing to commit' >/dev/null 2>&1
-    ) || return 1
-    echo "Proc status=$?"
-
-	return $?
+	    git status 2>/dev/null | grep 'up to date' >/dev/null 2>&1 && return 1
+    ) 
+    
+    return $?
 }
 
