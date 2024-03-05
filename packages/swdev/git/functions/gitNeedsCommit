@@ -5,12 +5,16 @@ gitNeedsCommit ()
 {
 	local dir="${1:-.}"
 
-    (
-        [[ -d ${dir}/.git ]] || return 1
+    #   If there's no .git directory present, then
+    #   no commit is needed because it is not possible.
 
-	    git status 2>/dev/null | grep 'up to date' >/dev/null 2>&1 && return 1
-    ) 
-    
-    return $?
+    [[ -d ${dir}/.git ]] || return 1
+
+    (
+        cd ${dir}
+        git status 2>/dev/null | grep 'nothing to commit' >/dev/null 2>&1 && exit 1
+    )
+
+    echo "trail $?"
 }
 
