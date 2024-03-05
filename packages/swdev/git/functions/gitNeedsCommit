@@ -3,16 +3,21 @@
 
 gitNeedsCommit ()
 {
-	local dir="${1:-.}"
+	local newDir="${1:-.}"
+    local oldDir="${PWD}"
+    local status=0
 
     #   If there's no .git directory present, then
     #   no commit is needed because it is not possible.
 
-    [[ -d ${dir}/.git ]] || return 1
 
-    (
-        cd ${dir}
-        git status 2>/dev/null | grep 'nothing to commit' >/dev/null 2>&1
-    ) || return 0
-}
+    [[ -d ${newDir}/.git ]] || return 1
 
+    cd ${newDir}
+    
+    git status 2>/dev/null | grep 'nothing to commit' >/dev/null 2>&1 && status=1
+
+    cd "${oldDir}"
+
+    return ${status}
+}   
