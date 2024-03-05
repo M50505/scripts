@@ -4,17 +4,21 @@
 gitWipAll ()
 {
 	local status=1
-	local dir
+	local newDir
+	local oldDir="${PWD}"
 	
-	for dir in *
+	for newDir in *
 	do
-		if [[ -d ${dir} ]]
+		if gitNeedsCommit "${newDir}"
 		then
-			echo -n "${dir}: "
-		()
-	git status | grep 'nothing to commit' >/dev/null 2>&1
-	status=$?
+			echo "Synchronizing ${newDir}"
+			
+			cd "${newDir}"
 
-	return ${status}
+			gitwip
+
+			cd "${oldDir}"
+		fi
+	done
 }
 
