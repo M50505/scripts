@@ -12,9 +12,7 @@ gitNeedsCommit ()
 
     (
         cd ${dir}
-        git status 2>/dev/null | grep 'nothing to commit' >/dev/null 2>&1 && exit 1
-    )
-
-    echo "trail $?"
+        git status 2>/dev/null | grep 'nothing to commit' >/dev/null 2>&1
+    ) || return 0
 }
 
