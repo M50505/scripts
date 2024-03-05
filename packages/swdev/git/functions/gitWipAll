@@ -9,15 +9,19 @@ gitWipAll ()
 	
 	for newDir in *
 	do
+        echo -n "${newDir}"
+
 		if gitNeedsCommit "${newDir}"
 		then
-			echo "Synchronizing ${newDir}"
+			echo " Synchronizing"
 			
 			cd "${newDir}"
 
 			gitwip
 
 			cd "${oldDir}"
+        else
+            echo "OK"
 		fi
 	done
 }
