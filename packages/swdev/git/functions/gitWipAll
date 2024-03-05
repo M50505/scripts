@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
 
-gitIsSynced ()
+gitWipAll ()
 {
 	local status=1
+	local dir
 	
+	for dir in *
+	do
+		if [[ -d ${dir} ]]
+		then
+			echo -n "${dir}: "
+		()
 	git status | grep 'nothing to commit' >/dev/null 2>&1
 	status=$?
 

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+
+gitNeedsCommit ()
+{
+	local dir="${1:-.}"
+
+    (
+        [[ -d ${dir}/.git ]] || return 1
+
+	    git status 2>/dev/null | grep 'nothing to commit' >/dev/null 2>&1
+    ) || return 1
+    echo "Proc status=$?"
+
+	return $?
+}
+

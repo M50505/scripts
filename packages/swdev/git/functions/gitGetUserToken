@@ -3,4 +3,3 @@ gitGetUserToken ()
 	echo "$(gitGetUser):$(gitGetToken)"
 }
 
-
