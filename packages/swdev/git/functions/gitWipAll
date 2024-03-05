@@ -6,9 +6,7 @@ gitWipAll ()
 	local status=1
 	local newDir
 	local oldDir="${PWD}"
-	
-    dvar oldDir
-    
+	    
 	for newDir in *
 	do
         echo -n "${newDir}"
