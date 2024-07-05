@@ -9,6 +9,7 @@ gitcred ()
 		cp /local/${gitStoreDir}/gitcred-${1} ${HOME}/.git-credentials
 		cp /local/${gitStoreDir}/gitconfig-${1} ${HOME}/.gitconfig
 		export GIT_SSH_COMMAND="ssh -i ${HOME}/.ssh/id_rsa.${1}"
+
 	else
 		[[ -f ${HOME}/.git-credentials ]] && cat ${HOME}/.git-credentials
 		echo ------------------------------------
