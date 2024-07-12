@@ -1,19 +1,36 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+
 gitcred ()
 {
-	local gitStoreDir=.config/git
+
+	local gitCredFile="${HOME}/.git-credentials"
+	local gitConfigFile="${HOME}/.gitconfig"
 
 	if [[ $# -gt 0 ]]
 	then
-		rm -f ${HOME}/.git-credentials ${HOME}/.gitconfig
+		local credKey="${1}"
 
-		cp /local/${gitStoreDir}/gitcred-${1} ${HOME}/.git-credentials
-		cp /local/${gitStoreDir}/gitconfig-${1} ${HOME}/.gitconfig
+		local linuxConfigFile="/local/wsl/xfer/linux-configs"
+
+		jq ".fields[]| select(.label==\"gitcred-${credKey}\").value" "${linuxConfigFile}" | \
+		tr -d \" > "${gitCredFile}"
+
+		jq ".fields[]| select(.label==\"gitconfig-${credKey}\").value" "${linuxConfigFile}" | \
+		sed -r '
+{
+	s/\\n/\n/g
+	s/\\"/QQQ/g
+	s/"//g
+	s/QQQ/"/g
+}' > "${gitConfigFile}"
+
 		export GIT_SSH_COMMAND="ssh -i ${HOME}/.ssh/id_rsa.${1}"
-
 	else
-		[[ -f ${HOME}/.git-credentials ]] && cat ${HOME}/.git-credentials
+		echo "Config and credential:"
+		cat "${gitConfigFile}"
 		echo ------------------------------------
-		[[ -f  ${HOME}/.gitconfig ]] && cat ${HOME}/.gitconfig
+		cat "${gitCredFile}"
 	fi
 }
 

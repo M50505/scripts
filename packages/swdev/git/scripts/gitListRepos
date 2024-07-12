@@ -28,7 +28,8 @@ fi
 case ${gitProvider} in
 	*github.com)
 		curl -s -H "Authorization: token ${gitToken}"  https://api.github.com/user/repos | \
-		jq -r '.[]|{name}|join(" ")'
+		cat
+		#jq -r '.[]|{name}|join(" ")'
 		;;
 esac
 
