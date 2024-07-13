@@ -11,4 +11,3 @@
 message="${1:-WIP}"
 
 gitIsUpdated && gitpub ${message}
-
