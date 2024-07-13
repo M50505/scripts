@@ -11,7 +11,6 @@ _doc ${1} 20210710125553 "lists all respositories on the specified cloud Git pro
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-
 gitProvider=$(gitGetProvider)
 gitUser=$(gitGetUser)
 gitToken=$(gitGetToken)
