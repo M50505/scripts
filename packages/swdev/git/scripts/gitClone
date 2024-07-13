@@ -35,9 +35,21 @@ fi
 
 #gitRepo="${gitRepo%/*}"
 
+# Is this a qualified repo name? If so then there it is in the
+# form of [user|org]/repo-name, and we simply clone using the 
+# qualified name. Otherwise we will create a qualified repo name
+# using the currently credentialed user account name from gitUser .
+
+simpleRepoName=${gitRepo#*/}
+
+if [[ "${simpleRepoName}" = "${gitRepo}" ]]
+then
+	gitRepo="${gitUser}/${gitRepo}"
+fi
+
 case ${gitProvider} in
 	*github.com)
-		git clone git@github.com:${gitUser}/${gitRepo}.git
+		git clone git@github.com:${gitRepo}.git
 		;;
 esac
 
