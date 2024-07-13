@@ -8,5 +8,7 @@
 #	
 #_doc ${1} 20211118224002 " " && exit 0
 
-gitIsUpdated && gitpub WIP
+message="${1:-WIP}"
+
+gitIsUpdated && gitpub ${message}
 
