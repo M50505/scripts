@@ -24,4 +24,6 @@ packages/swdev/vscode
 #packages/swdev/ruby
 #packages/swdev/xml
 #packages/swdev/xsv
+packages/swdev/vscode
+packages/swdev/vscode/runonsave
 packages/zephyr
