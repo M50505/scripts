@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2024-08-10 - Initial version.
+#	
+#_doc ${1} 20240810112648 " " && exit 0
+
+basename="${1}"
+
+adocHtmlPdfCmd="/tmp/asciidoctor-web-pdf-linux-v1.0.0-alpha.16/asciidoctor-web-pdf"
+adocHtmlCmd="asciidoctor"
+
+adocHtmlPdfOpts="-a stylesheet -a stylesheet=${basename}.css"
+adocHtmlOpts="-a stylesheet -a stylesheet=${basename}.css"
+
+${adocHtmlPdfCmd} ${adocHtmlPdfOpts} ${basename}.adoc
+${adocHtmlCmd} ${adocHtmlOpts} ${basename}.adoc
+
+mv ${basename}.pdf /local/xfer
+mv ${basename}.html /local/xfer
+
+[[ -f diag-plantuml ]] && rm diag-plantuml
+

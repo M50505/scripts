@@ -26,3 +26,5 @@ adocFile="${1}"
 htmlFile="${adocFile%.adoc}.html"
 
 mv "${htmlFile}" "${xferDir}"
+
+echo mv "${htmlFile}" "${xferDir}" >> /tmp/log
