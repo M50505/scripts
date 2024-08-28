@@ -1,0 +1,87 @@
+
+# Generates a "simple" web site via Antora. A simple site is one that does not
+#	attempt to track non-main branches in the underlying repositories, thereby
+#	allowing Antora to handle all Git interactions.
+#
+#	Each repository contributing content to the site *must* meet these criteria:
+#
+#	-	all contributing repositories use the same default branch.
+#
+#	- each repository has a docs/antora.yml file
+#
+#	- the antora.yml in each repository has its version: key set to the value of a tilde ( ~ )
+#
+#	-	the antora.playbook.yml file has its content/branches key set to [main] or
+#		whatever the default branch for the repositories is.
+#
+#	Input(s):
+#
+#		The relative or absolute file path of the Antora Playbook file.
+#
+#	Returns:
+#		0																	# The entire process succeeded.
+#
+#		1																	#	Some step in the process failed.
+#
+#	Echos:
+#		STDERR:	Notification that the playbook file path has not been passed in,
+#						and any error output from any step
+#
+#		STDOUT:	NONE
+#
+#	Testing status:
+#		UNTESTED
+
+MIN_NODE_VERSION=18
+
+myScriptDir=$(dirname ${0})
+
+
+if [[ ! -d ${myScriptDir}/functions ]]
+then
+	echo "Cannot find the functions directory, exiting."
+	exit 1
+fi
+
+for func in ${myScriptDir}/functions/*
+do
+	. ${func}
+done
+
+playbookFile=${1:-antora-playbook.yml}																					# The file name of the Antora playbook for a simple-type site
+
+info Checking if Node.js ${MIN_NODE_VERSION} or greater is installed
+
+if ! isNodeVersionInstalled ${MIN_NODE_VERSION}
+then
+	info Need to install Node.js ${MIN_NODE_VERSION}
+	if installNode ${MIN_NODE_VERSION}
+	then
+		info Node.js 22+ is now installed
+	else
+		error Failed to install Node.js 22+
+		return 1
+	fi
+fi
+
+info Checking if Antora 3+ is installed
+
+if ! isAntoraVersionInstalled 3
+then
+	info Need to install Antora 3+
+	if installAntora
+	then
+		info Antora 3+ is now installed
+	else
+		error Failed to install Antora 3+
+		return 1
+	fi
+fi
+
+if ! npm list | grep antora/lunr
+then
+	npm i @antora/lunr-extension
+fi
+
+
+antora generate --log-failure-level warn --log-level all  ${playbookFile}
