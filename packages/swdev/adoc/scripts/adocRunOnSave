@@ -8,6 +8,7 @@
 #	
 #_doc ${1} 20240810112648 " " && exit 0
 
+
 basename="${1%.adoc}"
 
 if [[ ! -f "${basename}.adoc" ]]
