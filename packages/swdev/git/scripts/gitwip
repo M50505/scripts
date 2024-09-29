@@ -15,4 +15,5 @@ else
 	message="WIP"
 fi
 
+
 gitIsUpdated && gitpub "${message}"
