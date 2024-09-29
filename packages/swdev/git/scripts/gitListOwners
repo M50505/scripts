@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-07-10 - Initial version.
+#	
+_doc ${1} 20210710125553 "lists all respositories on the specified cloud Git provider." && exit 0
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+for rep in $(find  -O1 -name .git)
+do
+	config="${rep}/config"
+	repoName=${rep#./}
+	repoName=${repoName%/*}
+
+	repoOwner="$(git config -f ${config} remote.origin.url)"
+	repoOwner="${repoOwner#*:}"
+	repoOwner="${repoOwner%/*}" #ttws/tws-mechanical git@github.com:s15-tws/tws-mechanical.git
+
+	echo "${repoName},${repoOwner}"
+done

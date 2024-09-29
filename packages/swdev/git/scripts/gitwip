@@ -8,6 +8,11 @@
 #	
 #_doc ${1} 20211118224002 " " && exit 0
 
-message="${1:-WIP}"
+if [[ $# -gt 0 ]]
+then
+	message="${*}"
+else
+	message="WIP"
+fi
 
-gitIsUpdated && gitpub ${message}
+gitIsUpdated && gitpub "${message}"
