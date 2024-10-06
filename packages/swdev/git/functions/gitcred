@@ -17,9 +17,10 @@ gitcred ()
 
 		export GIT_SSH_COMMAND="ssh -i ${HOME}/.ssh/id_rsa.${1}"
 	else
-		echo "Credential:"
-		echo ------------------------------------
-		cat "${gitCredFile}"
+		local cred=$(<"${gitCredFile}")
+		cred=${cred#*//}
+		cred=${cred%:*}
+		echo ${cred}
 	fi
 }
 
