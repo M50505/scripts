@@ -10,7 +10,7 @@ gitcred ()
 	then
 		local credKey="${1}"
 
-		local linuxConfigFile="/local/wsl/xfer/linux-configs"
+		local linuxConfigFile="/local/wsl/xfer/linux-configs.json"
 
 		jq ".fields[]| select(.label==\"gitcred-${credKey}\").value" "${linuxConfigFile}" | \
 		tr -d \" > "${gitCredFile}"
