@@ -5,6 +5,7 @@ gitcred ()
 {
 
 	local gitCredFile="${HOME}/.git-credentials"
+	local gitConfigFile="${HOME}/.gitconfig"
 
 	if [[ $# -gt 0 ]]
 	then
@@ -14,6 +15,15 @@ gitcred ()
 
 		jq ".fields[]| select(.label==\"gitcred-${credKey}\").value" "${linuxConfigFile}" | \
 		tr -d \" > "${gitCredFile}"
+
+		jq ".fields[]| select(.label==\"gitconfig-${credKey}\").value" "${linuxConfigFile}" | \
+		sed '
+{
+	s/^"//
+	s/"$//
+	s/\\n/\n/g
+	s/\\"/"/g
+}' > "${gitConfigFile}"
 
 		export GIT_SSH_COMMAND="ssh -i ${HOME}/.ssh/id_rsa.${1}"
 	else
