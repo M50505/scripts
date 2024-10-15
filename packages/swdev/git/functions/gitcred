@@ -7,7 +7,6 @@ gitcred ()
 	local gitCredFile="${HOME}/.git-credentials"
 	local gitConfigFile="${HOME}/.gitconfig"
 
-
 	if [[ $# -gt 0 ]]
 	then
 		local credKey="${1}"
