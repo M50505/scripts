@@ -7,6 +7,8 @@
 # 2021-07-08 - Initial version.
 #	
 
+_doc ${1} 20241020102132 "New function, no functionality yet. " && exit 0
+
 header="utc-date-time,server-id,latency,jitter,download-mbps,upload-mbps,packet-loss-percent"
 logDir=/Users/mcribbins/logs
 logFile=${logDir}/speedtest.log

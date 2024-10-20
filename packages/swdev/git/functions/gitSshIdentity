@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+
 gitSshIdentity ()
 {
+	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
 	if [[ $# -gt 0 ]]
 	then
 		upperID=$(toUpper ${1})
@@ -20,6 +22,5 @@ gitSshIdentity ()
 		echo GIT_API_KEY=${GIT_API_KEY}
 	fi
 }
-declare -fx gitSshIdentity
 
 

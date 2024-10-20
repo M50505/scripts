@@ -6,10 +6,11 @@
 #
 # 2024-03-06 - Initial version.
 #	
-#_doc ${1} 20240306231906 " " && exit 0
 
 vsGenWorkspace ()
 {
+	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+
 	if [[ $# -lt 2 ]]
 	then
 		echo "You must specify the workspace name and at least one forlder to include" >&2

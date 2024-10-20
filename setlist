@@ -1,0 +1,2068 @@
+AUTHOR='Martin Cribbins'
+AWS_CONFIGS_IMPORT_FILE=/local/wsl/xfer/aws-configs.json
+AWS_REGION=us-east-1
+BASH=/bin/bash
+BASHOPTS=checkwinsize:cmdhist:complete_fullquote:expand_aliases:extquote:force_fignore:globasciiranges:globskipdots:hostcomplete:interactive_comments:login_shell:patsub_replacement:progcomp:promptvars:sourcepath
+BASH_ALIASES=()
+BASH_ARGC=([0]="0")
+BASH_ARGV=()
+BASH_CMDS=()
+BASH_LINENO=([0]="21")
+BASH_LOADABLES_PATH=/usr/local/lib/bash:/usr/lib/bash:/opt/local/lib/bash:/usr/pkg/lib/bash:/opt/pkg/lib/bash:.
+BASH_SOURCE=([0]="/home/portable/scripts/packages/scripts/functions/srcvim")
+BASH_VERSINFO=([0]="5" [1]="2" [2]="15" [3]="1" [4]="release" [5]="x86_64-pc-linux-gnu")
+BASH_VERSION='5.2.15(1)-release'
+COLUMNS=129
+DIRSTACK=()
+DISPLAY=:0
+EUID=1001
+FUNCNAME=([0]="srcvim")
+GIT_SSH_COMMAND='ssh -i /home/portable/.ssh/id_rsa_toLower                         Converts the passed string to all lower case.'
+GROUPS=()
+HISTFILE=/home/portable/.bash_history
+HISTFILESIZE=500
+HISTSIZE=500
+HOME=/home/portable
+HOSTNAME=M5-LAPTOP
+HOSTTYPE=x86_64
+IFS=$' \t\n'
+LANG=C.UTF-8
+LINES=32
+LINUX_CONFIGS_IMPORT_FILE=/local/wsl/xfer/linux-configs.json
+LOGNAME=portable
+LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'
+MACHTYPE=x86_64-pc-linux-gnu
+MAILCHECK=60
+MASTER_SCRIPTS_HOME=/home/portable/scripts
+NAME=M5-LAPTOP
+OLDPWD=/home/portable/scripts
+OPTERR=1
+OPTIND=1
+OSTYPE=linux-gnu
+PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Amazon/AWSSAMCLI/bin/:/mnt/c/Program Files/Go/bin:/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/150/DTS/Binn/:/mnt/c/Program Files (x86)/combit/LL21/Redistributable Files/:/mnt/c/Program Files (x86)/combit/LL21/Redistributable Files/x64/:/mnt/c/Program Files (x86)/Microsoft SQL Server/160/DTS/Binn/:/mnt/c/Program Files/Azure Data Studio/bin:/mnt/c/Program Files/Adobe/Acrobat DC/Acrobat:/mnt/c/Program Files/HashiCorp:/mnt/c/Program Files/Amazon/AWSCLIV2/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Ruby32-x64/bin:/mnt/c/Program Files/jdk-22/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/PuTTY/:/mnt/c/Users/mcrib/AppData/Local/Programs/Python/Python312/Scripts/:/mnt/c/Users/mcrib/AppData/Local/Programs/Python/Python312/:/mnt/c/Users/mcrib/AppData/Local/Programs/Python/Launcher/:/mnt/c/Ruby32-x64/bin:/mnt/c/Users/mcrib/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/mcrib/AppData/Local/JetBrains/Toolbox/scripts:/mnt/c/Users/mcrib/go/bin:/mnt/c/Users/mcrib/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/Azure Data Studio/bin:/mnt/c/Program Files/Microsoft Office/root/Office16:/mnt/c/Program Files/SysinternalsSuite:/mnt/c/Users/mcrib/bin:/mnt/c/Users/mcrib/AppData/Local/Microsoft/WinGet/Packages/nektos.act_Microsoft.Winget.Source_8wekyb3d8bbwe:/mnt/c/Users/mcrib/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0/LocalCache/local-packages/Python312/Scripts:/mnt/c/Program Files/Graphviz/bin:/mnt/c/Users/mcrib/AppData/Local/Programs/Microsoft VS Code:/mnt/c/Users/mcrib/AppData/Local/Microsoft/WinGet/Packages/AgileBits.1Password.CLI_Microsoft.Winget.Source_8wekyb3d8bbwe/:/usr/local/gradle/bin:/home/portable/bin:/home/portable/.local/bin:/home/portable/scripts:/home/portable/scripts/packages/swdev/git/scripts:/local/projects/cicd/scripts:/usr/local/go/bin:/usr/local/hashi'
+PIPESTATUS=([0]="0")
+PPID=81
+PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+PS2='> '
+PS4='+ '
+PULSE_SERVER=unix:/mnt/wslg/PulseServer
+PWD=/home/portable/scripts
+SHELL=/bin/bash
+SHELLOPTS=braceexpand:hashall:histexpand:history:interactive-comments:monitor:vi
+SHLVL=1
+TERM=xterm-256color
+TERRAFORM_CONFIGS_IMPORT_FILE=/local/wsl/xfer/terraform-configs.json
+UID=1001
+USER=portable
+WAYLAND_DISPLAY=wayland-0
+WSL2_GUI_APPS_ENABLED=1
+WSLENV=
+WSL_DISTRO_NAME=udeb-net_awscli_go_py
+WSL_INTEROP=/run/WSL/81_interop
+XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir
+_=srcvim
+_active_function_files=([getIP]="/home/portable/scripts/packages/scripts/functions/getIP" [functionWarning]="/home/portable/scripts/packages/scripts/functions/functionWarning" [error]="/home/portable/scripts/packages/scripts/functions/error" [gitWipAll]="/home/portable/scripts/packages/swdev/git/functions/gitWipAll" [gitGetToken64]="/home/portable/scripts/packages/swdev/git/functions/gitGetToken64" [filePieces]="/home/portable/scripts/packages/scripts/functions/filePieces" [pythonify]="/home/portable/scripts/packages/scripts/functions/pythonify" [portCheck]="/home/portable/scripts/packages/scripts/functions/portCheck" [_listManagedFunctions]="/home/portable/scripts/packages/scripts/functions/_listManagedFunctions" [scriptProgress]="/home/portable/scripts/packages/scripts/functions/scriptProgress" [mru]="/home/portable/scripts/packages/scripts/functions/mru" [dedup]="/home/portable/scripts/packages/scripts/functions/dedup" [nextFile]="/home/portable/scripts/packages/scripts/functions/nextFile" [gitCommit]="/home/portable/scripts/packages/swdev/git/functions/gitCommit" [deltaSeconds]="/home/portable/scripts/packages/scripts/functions/deltaSeconds" [gitGetProvider]="/home/portable/scripts/packages/swdev/git/functions/gitGetProvider" [optBuildLine]="/home/portable/scripts/packages/scripts/functions/optBuildLine" [newest]="/home/portable/scripts/packages/scripts/functions/newest" [isNumeric]="/home/portable/scripts/packages/scripts/functions/isNumeric" [gitNeedsCommit]="/home/portable/scripts/packages/swdev/git/functions/gitNeedsCommit" [functionFailed]="/home/portable/scripts/packages/scripts/functions/functionFailed" [scriptFailed]="/home/portable/scripts/packages/scripts/functions/scriptFailed" [envscp]="/home/portable/scripts/packages/scripts/functions/envscp" [_findScriptsFrameworkInits]="/home/portable/scripts/packages/scripts/functions/_findScriptsFrameworkInits" [optDebug]="/home/portable/scripts/packages/scripts/functions/optDebug" [toLower]="/home/portable/scripts/packages/scripts/functions/toLower" [execchunk]="/home/portable/scripts/packages/scripts/functions/execchunk" [linesInFile]="/home/portable/scripts/packages/scripts/functions/linesInFile" [setRemoteKey]="/home/portable/scripts/packages/scripts/functions/setRemoteKey" [hasValue]="/home/portable/scripts/packages/scripts/functions/hasValue" [sedtrimnl]="/home/portable/scripts/packages/scripts/functions/sedtrimnl" [gitIsUpdated]="/home/portable/scripts/packages/swdev/git/functions/gitIsUpdated" [gitSshIdentity]="/home/portable/scripts/packages/swdev/git/functions/gitSshIdentity" [datedBackup]="/home/portable/scripts/packages/scripts/functions/datedBackup" [srcvim]="/home/portable/scripts/packages/scripts/functions/srcvim" [isAlpha]="/home/portable/scripts/packages/scripts/functions/isAlpha" [path]="/home/portable/scripts/packages/scripts/functions/path" [gitNew]="/home/portable/scripts/packages/swdev/git/functions/gitNew" [dvar]="/home/portable/scripts/packages/scripts/functions/dvar" [toUpper]="/home/portable/scripts/packages/scripts/functions/toUpper" [_findScriptsFrameworkScripts]="/home/portable/scripts/packages/scripts/functions/_findScriptsFrameworkScripts" [fullpath]="/home/portable/scripts/packages/scripts/functions/fullpath" [showenv]="/home/portable/scripts/packages/scripts/functions/showenv" [getColumns]="/home/portable/scripts/packages/scripts/functions/getColumns" [_listManagedCode]="/home/portable/scripts/packages/scripts/functions/_listManagedCode" [hasKey]="/home/portable/scripts/packages/scripts/functions/hasKey" [b2us]="/home/portable/scripts/packages/scripts/functions/b2us" [grepchunk]="/home/portable/scripts/packages/scripts/functions/grepchunk" [isFileText]="/home/portable/scripts/packages/scripts/functions/isFileText" [prependFile]="/home/portable/scripts/packages/scripts/functions/prependFile" [functionInfo]="/home/portable/scripts/packages/scripts/functions/functionInfo" [optParseSuccess]="/home/portable/scripts/packages/scripts/functions/optParseSuccess" [xrate]="/home/portable/scripts/packages/scripts/functions/xrate" [ext2ext]="/home/portable/scripts/packages/scripts/functions/ext2ext" [_findScriptsFrameworkFunctionDirs]="/home/portable/scripts/packages/scripts/functions/_findScriptsFrameworkFunctionDirs" [plural]="/home/portable/scripts/packages/scripts/functions/plural" [sshdiff]="/home/portable/scripts/packages/scripts/functions/sshdiff" [gitpub]="/home/portable/scripts/packages/swdev/git/functions/gitpub" [newPackage]="/home/portable/scripts/packages/scripts/functions/newPackage" [gitGetUserToken]="/home/portable/scripts/packages/swdev/git/functions/gitGetUserToken" [adBulkPassword]="/home/portable/scripts/packages/scripts/functions/adBulkPassword" [ctest2]="/home/portable/scripts/packages/scripts/functions/ctest2" [timeMsecToClock]="/home/portable/scripts/packages/scripts/functions/timeMsecToClock" [showfunctions]="/home/portable/scripts/packages/scripts/functions/showfunctions" [statusMessage]="/home/portable/scripts/packages/scripts/functions/statusMessage" [mkcd]="/home/portable/scripts/packages/scripts/functions/mkcd" [optParseFailure]="/home/portable/scripts/packages/scripts/functions/optParseFailure" [latestFileBackup]="/home/portable/scripts/packages/scripts/functions/latestFileBackup" [expandCss]="/home/portable/scripts/packages/scripts/functions/expandCss" [apachify]="/home/portable/scripts/packages/scripts/functions/apachify" [cddir]="/home/portable/scripts/packages/scripts/functions/cddir" [_doc]="/home/portable/scripts/packages/scripts/functions/_doc" [shellify]="/home/portable/scripts/packages/scripts/functions/shellify" [wvi]="/home/portable/scripts/packages/scripts/functions/wvi" [nofunc]="/home/portable/scripts/packages/scripts/functions/nofunc" [joinArray]="/home/portable/scripts/packages/scripts/functions/joinArray" [trueFalse]="/home/portable/scripts/packages/scripts/functions/trueFalse" [addCommas]="/home/portable/scripts/packages/scripts/functions/addCommas" [cleanFilename]="/home/portable/scripts/packages/scripts/functions/cleanFilename" [getRows]="/home/portable/scripts/packages/scripts/functions/getRows" [jsify]="/home/portable/scripts/packages/scripts/functions/jsify" [max]="/home/portable/scripts/packages/scripts/functions/max" [getRemotePath]="/home/portable/scripts/packages/scripts/functions/getRemotePath" [updateVariable]="/home/portable/scripts/packages/scripts/functions/updateVariable" [gitInit]="/home/portable/scripts/packages/swdev/git/functions/gitInit" [envssh]="/home/portable/scripts/packages/scripts/functions/envssh" [gitPR]="/home/portable/scripts/packages/swdev/git/functions/gitPR" [sshx]="/home/portable/scripts/packages/scripts/functions/sshx" [optHelp]="/home/portable/scripts/packages/scripts/functions/optHelp" [lpad]="/home/portable/scripts/packages/scripts/functions/lpad" [_listManagedScripts]="/home/portable/scripts/packages/scripts/functions/_listManagedScripts" [gittag]="/home/portable/scripts/packages/swdev/git/functions/gittag" [min]="/home/portable/scripts/packages/scripts/functions/min" [optReset]="/home/portable/scripts/packages/scripts/functions/optReset" [gitGetUser]="/home/portable/scripts/packages/swdev/git/functions/gitGetUser" [fileWithDatedBackup]="/home/portable/scripts/packages/scripts/functions/fileWithDatedBackup" [unsetAll]="/home/portable/scripts/packages/scripts/functions/unsetAll" [jarx]="/home/portable/scripts/packages/scripts/functions/jarx" [isTrue]="/home/portable/scripts/packages/scripts/functions/isTrue" [hangIndent]="/home/portable/scripts/packages/scripts/functions/hangIndent" [gitListTagsCommits]="/home/portable/scripts/packages/swdev/git/functions/gitListTagsCommits" [showcmds]="/home/portable/scripts/packages/scripts/functions/showcmds" [timeClockToMsec]="/home/portable/scripts/packages/scripts/functions/timeClockToMsec" [optAddHelp]="/home/portable/scripts/packages/scripts/functions/optAddHelp" [backupWhatCorporateDestroys]="/home/portable/scripts/packages/scripts/functions/backupWhatCorporateDestroys" [newTempFile]="/home/portable/scripts/packages/scripts/functions/newTempFile" [isFileBackedUp]="/home/portable/scripts/packages/scripts/functions/isFileBackedUp" [scriptWarning]="/home/portable/scripts/packages/scripts/functions/scriptWarning" [getTermWidth]="/home/portable/scripts/packages/scripts/functions/getTermWidth" [wtd]="/home/portable/scripts/packages/scripts/functions/wtd" [wtf]="/home/portable/scripts/packages/scripts/functions/wtf" [groovify]="/home/portable/scripts/packages/scripts/functions/groovify" [optParse]="/home/portable/scripts/packages/scripts/functions/optParse" [htmlify]="/home/portable/scripts/packages/scripts/functions/htmlify" [ddvar]="/home/portable/scripts/packages/scripts/functions/ddvar" [__fdef]="/home/portable/scripts/packages/scripts/functions/__fdef" [gitFindRoot]="/home/portable/scripts/packages/swdev/git/functions/gitFindRoot" [cdw]="/home/portable/scripts/packages/scripts/functions/cdw" [promptedRead]="/home/portable/scripts/packages/scripts/functions/promptedRead" [scriptInfo]="/home/portable/scripts/packages/scripts/functions/scriptInfo" [splitString]="/home/portable/scripts/packages/scripts/functions/splitString" [percentComplete]="/home/portable/scripts/packages/scripts/functions/percentComplete" [optAdd]="/home/portable/scripts/packages/scripts/functions/optAdd" [resolveHost]="/home/portable/scripts/packages/scripts/functions/resolveHost" [optUsage]="/home/portable/scripts/packages/scripts/functions/optUsage" [envdiff]="/home/portable/scripts/packages/scripts/functions/envdiff" [newDoc]="/home/portable/scripts/packages/scripts/functions/newDoc" [dirToIso]="/home/portable/scripts/packages/scripts/functions/dirToIso" [randpct]="/home/portable/scripts/packages/scripts/functions/randpct" [gitGetToken]="/home/portable/scripts/packages/swdev/git/functions/gitGetToken" [rpad]="/home/portable/scripts/packages/scripts/functions/rpad" [scriptsDebugMessage]="/home/portable/scripts/packages/scripts/functions/scriptsDebugMessage" [gitCreateNewProject]="/home/portable/scripts/packages/swdev/git/functions/gitCreateNewProject" [optInit]="/home/portable/scripts/packages/scripts/functions/optInit" )
+_active_packages=([0]="packages/Scripts" [1]="packages/scripts" [2]="packages/swdev/git")
+_active_script_files=([gitWipAll]="/home/portable/scripts/packages/swdev/git/scripts/gitWipAll" [gitClone]="/home/portable/scripts/packages/swdev/git/scripts/gitClone" [gitwip]="/home/portable/scripts/packages/swdev/git/scripts/gitwip" [wipall]="/home/portable/scripts/packages/swdev/git/scripts/wipall" [gitPullAll]="/home/portable/scripts/packages/swdev/git/scripts/gitPullAll" [x.json]="/home/portable/scripts/packages/swdev/git/scripts/x.json" [gitListOwners]="/home/portable/scripts/packages/swdev/git/scripts/gitListOwners" [gitListRepos]="/home/portable/scripts/packages/swdev/git/scripts/gitListRepos" [gitSetDefaultBranch]="/home/portable/scripts/packages/swdev/git/scripts/gitSetDefaultBranch" [gitCreateRepo]="/home/portable/scripts/packages/swdev/git/scripts/gitCreateRepo" )
+dir=packages/swdev/git
+file=gittag
+fn=srcvim
+i=packages/swdev/git
+lowerID='toLower                         Converts the passed string to all lower case.'
+me=/home/portable/scripts/initialize-scripts-framework
+os=Linux
+packagePath=/home/portable/scripts/packages/swdev/git
+packageSource=/home/portable/scripts/packages/packageTable
+upperID='toUpper                         Converts the passed string to all upper case.'
+__fdef () 
+{ 
+    return 0
+}
+_doc () 
+{ 
+    local _DOC_INDENT=32;
+    local cmdName;
+    local defaultColumns=80;
+    if [[ "${1}" = "-h" ]]; then
+        shift 2;
+        if [[ "${FUNCNAME[1]}" = "main" ]]; then
+            cmdName="$(basename ${BASH_SOURCE[1]})";
+            hangIndent ${_DOC_INDENT} ${COLUMNS-${defaultColumns}} ${cmdName} $*;
+            exit 0;
+        else
+            cmdName=${FUNCNAME[1]};
+            hangIndent ${_DOC_INDENT} ${COLUMNS-${defaultColumns}} ${cmdName} $*;
+            return 0;
+        fi;
+        echo "";
+    fi;
+    return 1
+}
+_findScriptsFrameworkFunctionDirs () 
+{ 
+    local cwd="${PWD}";
+    cd ${MASTER_SCRIPTS_HOME}/packages;
+    for i in ${_active_packages[@]};
+    do
+        [[ -d ${i}/functions ]] && echo "${i}/functions";
+    done;
+    cd "${cwd}"
+}
+_findScriptsFrameworkInits () 
+{ 
+    _doc ${1} 20241020102132 "New function, no functionality yet. " && return 0;
+    local cwd="${PWD}";
+    cd ${MASTER_SCRIPTS_HOME}/packages;
+    for i in ${_active_packages[*]};
+    do
+        echo ${i}/*-init;
+    done;
+    cd "${cwd}"
+}
+_findScriptsFrameworkScripts () 
+{ 
+    _doc ${1} 20241020102132 "New function, no functionality yet. " && return 0;
+    local cwd="${PWD}";
+    cd ${MASTER_SCRIPTS_HOME}/packages;
+    find ${_active_packages[@]} -type f -a ! -iname \*\.\* -a ! -name \*Functions -a ! -name \*-init -a ! -wholename \*-data/\* -a -perm /111 | sort -u;
+    cd "${cwd}"
+}
+_listManagedCode () 
+{ 
+    _doc $1 20160729125024 "Emits the TBD with a success status (0), otherwise an empty string with a failure status (1)." && return 0;
+    local result="";
+    local status=1;
+    case ${1} in 
+        -s)
+            shift;
+            _listManagedScripts $*
+        ;;
+        -f)
+            shift;
+            _listManagedFunctions $*
+        ;;
+        *)
+            shift;
+            ( _listManagedScripts $*;
+            _listManagedFunctions $* ) | sort
+        ;;
+    esac
+}
+_listManagedFunctions () 
+{ 
+    _doc $1 20160729125024 "Emits the TBD with a success status (0), otherwise an empty string with a failure status (1)." && return 0;
+    local fn;
+    for fn in $(egrep -v '^#' ${MASTER_SCRIPTS_HOME}/packages/packageTable);
+    do
+        [[ -d ${MASTER_SCRIPTS_HOME}/${fn}/functions ]] && ls -1 ${MASTER_SCRIPTS_HOME}/${fn}/functions;
+    done
+}
+_listManagedScripts () 
+{ 
+    _doc $1 20160729125024 "Emits the list of scripts (not functions) in the scripts framework with a success status (0), otherwise an empty string with a failure status (1)." && return 0;
+    local regexp="[0-9_a-z]+";
+    if [[ $# -gt 0 ]]; then
+        regexp="${*}";
+    fi;
+    cd ${MASTER_SCRIPTS_HOME}/packages;
+    grep -l '_doc.*exit' $(find $(sed -nr '/^\s*[^#]/ {s/\s.*$//;p}' packageTable) -type f -a -perm /111 | sort -u) | sed -rn "/${regexp}/ {s/:.*$//;s,^.*/,,;p}"
+}
+adBulkPassword () 
+{ 
+    _doc $1 20160729125024 "Accepts a LDIFF file, generating a series of DSMOD commands to set the specified password for each account. Use -p to specify the password." && return 0;
+    local password="CTItest01";
+    if [[ "${1}" = "-p" ]]; then
+        password="${2}";
+        shift;
+    fi;
+    sed -rn "/^\s*[Dd][Nn][:]/	{
+		s/^\s*[Dd][Nn][:]\s*/dsmod user /
+		s/$/ -pwd ${password}/
+		p
+	}" ${1}
+}
+addCommas () 
+{ 
+    _doc $1 20160729125024 "Takes an integer string and echos it back with commas embedded as needed." && return 0;
+    if [[ $# -gt 0 ]]; then
+        local result;
+        local num=$1;
+        local offset;
+        ((offset=${#num} % 3));
+        if [[ ${offset} -gt 0 ]]; then
+            result="${num:0:${offset}},";
+            num=${num:${offset}};
+        fi;
+        while [[ ${#num} -gt 0 ]]; do
+            result="${result}${num:0:3},";
+            num=${num:3};
+        done;
+    fi;
+    echo ${result:0:${#result}-1}
+}
+apachify () 
+{ 
+    _doc $1 20160729125024 "Prepends vim options to the specified Apache HTTP server conf file." && return 0;
+    local editFlag=false;
+    if [[ "${1}" == "-e" ]]; then
+        editFlag=true;
+        shift;
+    fi;
+    prependFile "${1}" <<EOF
+	# vim:tabstop=4:shiftwidth=4:nu:filetype=conf\n" $*
+EOF
+
+    ${editFlag} && vim "${1}"
+}
+b2us () 
+{ 
+    _doc $1 20160729125024 "Translates blanks to underscores in the specified string" && return 0;
+    dos2unix -f -7 | tr \\012 _ | sed -r "s,[)(/.    :;],_,g;s/-/_/g;s/,/_/g;s/'//g;s/__+/_/g;s/_$//;s/[)(]/_/g"
+}
+backupWhatCorporateDestroys () 
+{ 
+    _doc $1 20160729125024 "defends against corporate desktop management policies, backing up pinned tasks and IE bookmarks." && return 0;
+    mv /p/Data/whatCorporateDestroys/pinned-items.reg /p/Data/whatCorporateDestroys/pinned-items.reg.bak;
+    REG EXPORT 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband' p:/Data/whatCorporateDestroys/pinned-items.reg;
+    cd ~/AppData/Roaming/Microsoft/Internet\ Explorer/;
+    pwd;
+    ls;
+    mv /p/Data/whatCorporateDestroys/QuickLaunch.tgz /p/Data/whatCorporateDestroys/QuickLaunch.tgz.bak;
+    cp ~/.bashrc ~/.bash_profile /p/Data/whatCorporateDestroys;
+    tar czf /p/Data/whatCorporateDestroys/QuickLaunch.tgz Quick\ Launch;
+    cd -
+}
+cddir () 
+{ 
+    _doc $1 20160819094847 "changes directory to the parent directory of the specified path" && return 0;
+    cd $(dirname ${1})
+}
+cdw () 
+{ 
+    _doc $1 20160729125024 "Changes the current directory to the one which contains the specified executable." && return 0;
+    local newDir="";
+    cd $(dirname $(which ${1}))
+}
+cleanFilename () 
+{ 
+    _doc $1 20160729125024 "Cleans up a file name, changing parenthesis, back slashes, forward slashes, and periods into underscores" && return 0;
+    sed '{
+	s,[/)( ;:%,],_,g
+	s,__,_,g
+	s,_$,,
+	s,_\([.+]\),\1,g
+	s,\([.+]\)_,\1,g
+	s/[.]/_/g
+	s/^\s+//
+}'
+}
+ctest2 () 
+{ 
+    _doc $1 20160729125024 "ctest2 emits." && return 0;
+    echo "$(caller) has called this ctest2 function"
+}
+datedBackup () 
+{ 
+    _doc $1 20160729125024 "If the specified file exists, then it is copied to <filename>.YYYYMMDDHHMMSS, and the new filename is echoed. If the file does not already exist, then just the new filename is echoed." && return 0;
+    local suffix="$(date +%Y%m%d%H%M%S)";
+    if [[ -f "${1}" ]]; then
+        cp "${1}" "${1}.${suffix}";
+    fi;
+    echo "${1}.${suffix}"
+}
+ddvar () 
+{ 
+    _doc $1 20160729125024 "calls dvar if the environment variable 'debug' is true." && return 0;
+    ${debug} && dvar $*
+}
+dedup () 
+{ 
+    _doc $1 20160729125024 "de-duplicates input on a line-by-line basis." && return 0;
+    local buf prev;
+    while read buf; do
+        [[ "${buf}" != "${prev}" ]] && echo "${buf}";
+        prev="${buf}";
+    done
+}
+deltaSeconds () 
+{ 
+    _doc $1 20160729125024 "Computes the difference between the second time argument and the first." && return 0;
+    local begin=${1};
+    local end=${2};
+    local delta;
+    local beginMilliseconds;
+    local endMilliseconds;
+    ((beginMilliseconds=${begin:9:3}+(1000*${begin:6:2})+(60000*${begin:3:2})+(3600000*${begin:0:2})));
+    ((endMilliseconds=${end:9:3}+(1000*${end:6:2})+(60000*${end:3:2})+(3600000*${end:0:2})));
+    ((delta=endMilliseconds-beginMilliseconds));
+    ((offset=${#delta}-3));
+    echo ${delta:0:${offset}}.${delta:${offset}:3}
+}
+dirToIso () 
+{ 
+    _doc $1 20160729125024 "Recursively copies the specied directory into the specifed .ISO image file" && return 0;
+    if [[ $# -lt 3 ]]; then
+        echo "You must specify -vol[umeID] <id> -iso <isoFile> file(s)";
+        return 1;
+    fi;
+    while [[ $# -gt 0 ]]; do
+        case $1 in 
+            -vol*)
+                opts="${opts} -V $2";
+                shift 2
+            ;;
+            -i*)
+                opts="${opts} -o $2";
+                shift 2
+            ;;
+            -b*)
+                opts="${opts} -G $2";
+                shift 2
+            ;;
+            -d*)
+                echoCmd="echo";
+                shift
+            ;;
+            *)
+                break
+            ;;
+        esac;
+    done;
+    files="$*";
+    ${echoCmd} mkisofs -l -d -D -max-iso9660-filenames -L -no-iso-translate -allow-lowercase -allow-multidot ${opts} ${files}
+}
+dvar () 
+{ 
+    _doc $1 20160729125024 "Echos a string of the form x=x to show the current value of a variable" && return 0;
+    local var;
+    while [[ $# -gt 0 ]]; do
+        var=$1;
+        eval "if [[ \${#${var}[@]} -gt 1 ]]; then IFS=,;echo \"${var}=[\${${var}[*]}]\" >&2; else echo \"${var}=\${${var}}\" >&2; fi";
+        shift;
+    done;
+    unset IFS
+}
+envdiff () 
+{ 
+    _doc $1 20160729125024 "Executes sshdiff against one or more of the accounts derived from passing $1 to the getEnvTuple command" && return 0;
+    local tuple=($(getEnvTuple ${1}));
+    sshdiff ${tuple[2]}@${tuple[1]} "${2}"
+}
+envscp () 
+{ 
+    _doc $1 20160729125024 "Executes scp against one or more of the accounts derived from passing $1 to the getEnvTuple command" && return 0;
+    local recursionFlag;
+    local pullFlag=false;
+    local arg;
+    while [[ "${1}" =~ ^[-] ]]; do
+        if [[ "${1}" = "-r" ]]; then
+            recursionFlag="-r";
+            shift;
+        else
+            if [[ "${1}" = "-p" ]]; then
+                pullFlag=true;
+                shift;
+            fi;
+        fi;
+    done;
+    local regexp=${1};
+    shift;
+    local args="$*";
+    local remoteDir;
+    set -- $(getEnvTuple ${regexp});
+    while [[ $# -gt 0 ]]; do
+        if ${pullFlag}; then
+            for arg in ${args};
+            do
+                scp ${recursionFlag} ${3}@${2}:$(getRemotePath ${arg}) .;
+            done;
+        else
+            for arg in ${args};
+            do
+                scp ${recursionFlag} ${arg} ${3}@${2}:$(getRemotePath ${arg});
+            done;
+        fi;
+        shift 3;
+    done
+}
+envssh () 
+{ 
+    _doc $1 20160729125024 "Executes ssh against one or more of the accounts derived from passing $1 to the getEnvTuple command" && return 0;
+    local regexp="${1}";
+    shift;
+    if [[ "${regexp}" = "-l" ]]; then
+        getEnvTuple -l;
+        return;
+    fi;
+    local args="$*";
+    set -- $(getEnvTuple ${regexp});
+    while [[ $# -gt 0 ]]; do
+        ssh ${3}@${2} ${args};
+        shift 3;
+    done
+}
+error () 
+{ 
+    _doc ${1} 20241020102132 "New function, no functionality yet. " && return 0;
+    ( if [[ $# -gt 0 ]]; then
+        echo $*;
+    else
+        cat;
+    fi ) | fmt 1>&2;
+    exit 1
+}
+execchunk () 
+{ 
+    _doc $1 20160729125024 "Runs a program with optional additional arguments against a large file list \(as in the result of find\)." && return 0;
+    [[ $# -lt 2 ]] && return $(functionFailed "Usage: execchunk [<grep-option(s)>] <regexp> <listfile>");
+    local app=${1};
+    shift;
+    if [[ "${1:0:1}" == "-" ]]; then
+        local options="${1}";
+        shift;
+    fi;
+    local listFile="$(fullpath ${1})";
+    local tempDir=${TEMP:-/tmp}/$(newTempFile);
+    local chunk;
+    mkdir ${tempDir};
+    cd ${tempDir} 2> /dev/null;
+    csplit -k -n 4 "${listFile}" 100 \{*\} > /dev/null 2>&1;
+    cd - 2> /dev/null;
+    for chunk in ${tempDir}/xx*;
+    do
+        echo ${chunk} 1>&2;
+        ${app} ${options} $(< ${chunk}) 2> /dev/null;
+    done;
+    rm -rf ${tempDir}
+}
+expandCss () 
+{ 
+    _doc $1 20160729125024 "Unfolds a flattened .css file into human-readable form." && return 0;
+    sed -r '
+		s/;([^}])/;\n  \1/g
+		s/;([}])/;\n}/g
+		s/[}][.]/}\n\n./g
+		s/([^#])[{]/\1	{\n  /g
+		s,/[*]([^/]+)[*]/,\n/*\n\1\n*/\n,g
+	' ${1}
+}
+ext2ext () 
+{ 
+    _doc $1 20160729125024 "Given two specified file name extensions - old and new - this function renames each file having the old extension to the same file name with the new extension" && return 0;
+    local src=${1#.};
+    local dst=${2#.};
+    for i in *.${src};
+    do
+        mv ${i} ${i%${src}}${dst};
+    done
+}
+filePieces () 
+{ 
+    _doc $1 20160729125024 "Returns the parts of a specified path - directory, base name, extension" && return 0;
+    local dir=`dirname $1`;
+    local file=`basename $1`;
+    local fileName=${file%.*};
+    if [[ "${fileName}" = "" ]]; then
+        echo "${dir} ${file}";
+    else
+        local fileType=${file#${fileName}};
+        fileType=${fileType:1};
+        echo "${dir} ${fileName} ${fileType}";
+    fi
+}
+fileWithDatedBackup () 
+{ 
+    _doc $1 20160729125024 "Echos back the name of the specified file, after copying the file to \<filename\>.YYYYMMDDHHSS" && return 0;
+    if [[ -f "${1}" ]]; then
+        cp "${1}" "${1}.$(date +%Y%m%d%H%M%S)";
+    fi;
+    echo "${1}"
+}
+fullpath () 
+{ 
+    _doc $1 20160729125024 "Returns the full absolute path to the specified file, directory, or directory/file" && return 0;
+    if [[ "${1:0:1}" == "/" ]]; then
+        echo "${1}";
+    else
+        local path="${PWD}/${1}";
+        echo "${path}" | sed -r 's,(^/.+)(/[^/]+/[.][.])(.*$),\1\3,';
+    fi
+}
+functionFailed () 
+{ 
+    _doc $1 20160729125024 "displays the provided text to STDERR and then exits with a status of 1." && return 0;
+    functionWarning "${1}";
+    return 1
+}
+functionInfo () 
+{ 
+    _doc $1 20160729125024 "Displays the provided text to STDOUT." && return 0;
+    echo "${1}" | fmt -w $(getTermWidth)
+}
+functionWarning () 
+{ 
+    _doc $1 20160729125024 "Displays the provided text to STDERR." && return 0;
+    echo "${1}" | fmt -w $(getTermWidth) 1>&2
+}
+getActivePackages () 
+{ 
+    ( echo "packages/Scripts";
+    if [[ "${1}" = "." ]]; then
+        find . -type d -name scripts;
+        find . -type d -name functions;
+    else
+        cat ${1};
+    fi ) | egrep '^[a-zA-Z]' | sort -u
+}
+getColumns () 
+{ 
+    _doc $1 20160827110326 "uses the stty command to return the number of columns in the current display." && return 0;
+    local columns=80;
+    local tokens=($(stty -a));
+    local tokenCount=${#tokens[*]};
+    local token;
+    for ((i=0; i< tokenCount; i++))
+    do
+        token="${tokens[${i}]}";
+        token="${token%;*}";
+        if [[ "${token}" = "columns" ]]; then
+            columns=${tokens[i-1]};
+            break;
+        fi;
+    done;
+    echo ${columns}
+}
+getIP () 
+{ 
+    _doc $1 20160729125024 "Returns the IP address of the specified hostname or FQDN" && return 0;
+    set -- `nslookup $1 2>/dev/null | grep -A1 'Name:'`;
+    echo $4
+}
+getRemotePath () 
+{ 
+    _doc $1 20160729125024 "returns the equivalent path at the remote host" && return 0;
+    local subdir;
+    local full;
+    if [[ ${1:0:1} = "/" ]]; then
+        path="${1}";
+    else
+        full="$(fullpath ${1})";
+        path="~${full#${HOME}}";
+    fi;
+    echo ${path}
+}
+getRows () 
+{ 
+    _doc $1 20160827110326 "uses the stty command to return the number of rows in the current display." && return 0;
+    local rows=$(stty -a);
+    rows=${rows#*rows };
+    echo ${rows%%;*}
+}
+getTermWidth () 
+{ 
+    _doc $1 20160729125024 "Obtain the number of columns in the current shell window, or else 80 if the number of columns cannot be obtained." && return 0;
+    echo "${COLUMNS:-80}"
+}
+gitCommit () 
+{ 
+    _doc ${1} 20150804152727 "<tag> <commit message words ...> finds and local source code files with a GIT_TAG variable and sets it to the specified tag, then executes a git commit with the specified message." && return 0;
+    if [[ $# -lt 2 ]]; then
+        echo "You must specify the git tag and then one or more words of commit message.";
+        return 1;
+    fi;
+    local tag=${1};
+    shift;
+    local message="${*}";
+    sourceFiles=($(egrep -l -E 'GIT_TAG\s*=' $(file $(find -type f) | sed -rn '/ASCII/ {s/:.*$//;p}')));
+    for file in ${sourceFiles[@]};
+    do
+        sed -r -i "
+/GIT_TAG/	{
+	s/(^.*GIT_TAG\s*=\s*\").*(\".*$)/\1${tag}\2/
+}" ${file};
+    done;
+    git add .;
+    git commit -m "${message}";
+    git tag ${tag} -f -m "${message}"
+}
+gitCreateNewProject () 
+{ 
+    _doc $1 20170523101138 "creates a new local Git instance in the current directory, that is geared towards using an existing, empty remote repository. If no argument is given, then the clipboard is accessed for the remote repository cloning URL, otherwise the first argument is used.GitHub, Stash / Bitbucket, etc. mak it easy to click 'Clone' on the repository web page and then copy the displayed URL to the clipboard." && return 0;
+    local url="$(clipPaste)" project;
+    local force=false;
+    if [[ $# -gt 0 && "${1}" = "-f" ]]; then
+        force=true;
+        gitForceFlag="-f";
+        shift;
+    fi;
+    url="${url:-${1}}";
+    if [[ -z ${url} ]]; then
+        echo "No URL was available either in the clipboard or specified on the command line.";
+        return 1;
+    fi;
+    cd ${PROJECTS_ROOT};
+    git clone "${url}";
+    sed -r -i '/\[remote / {s,$,\n  push = +refs/heads/*\n  push = +refs/tags/*,}' ${projectName}/.git/config
+}
+gitFindRoot () 
+{ 
+    local MAX_DIRS=10;
+    local currentDirCount=0;
+    local oldPwd="${PWD}";
+    while [[ ${PWD} != "/" && ${currentDirCount} -lt ${MAX_DIRS} ]]; do
+        if [[ -d ".git" ]]; then
+            echo "${PWD}";
+            cd ${oldPwd};
+            return 0;
+        fi;
+        cd ..;
+        ((currentDirCount++));
+    done;
+    cd ${oldPwd};
+    echo "No .git directory could be located." 1>&2;
+    return 1
+}
+gitGetProvider () 
+{ 
+    sed -rn '/\[url/ {s/^.*@//;s/:.*$//;p}' ${HOME}/.gitconfig
+}
+gitGetToken () 
+{ 
+    sed -r 's/^.*://;s/@.*$//' ${HOME}/.git-credentials
+}
+gitGetToken64 () 
+{ 
+    gitGetToken | base64
+}
+gitGetUser () 
+{ 
+    sed -r 's,^.*//,,;s/:.*$//' ${HOME}/.git-credentials
+}
+gitGetUserToken () 
+{ 
+    echo "$(gitGetUser):$(gitGetToken)"
+}
+gitInit () 
+{ 
+    local gitCredFile="${HOME}/.git-credentials";
+    local gitConfigFile="${HOME}/.gitconfig";
+    if [[ $# -gt 0 ]]; then
+        local credKey="${1}";
+        local linuxConfigFile="/local/wsl/xfer/linux-configs.json";
+        jq ".fields[]| select(.label==\"gitcred-${credKey}\").value" "${linuxConfigFile}" | tr -d \" > "${gitCredFile}";
+        jq ".fields[]| select(.label==\"gitconfig-${credKey}\").value" "${linuxConfigFile}" | sed '
+{
+	s/^"//
+	s/"$//
+	s/\\n/\n/g
+	s/\\"/"/g
+}' > "${gitConfigFile}";
+        export GIT_SSH_COMMAND="ssh -i ${HOME}/.ssh/id_rsa.${1}";
+    else
+        local cred=$(< "${gitCredFile}");
+        cred=${cred#*//};
+        cred=${cred%:*};
+        echo ${cred};
+    fi
+}
+gitIsUpdated () 
+{ 
+    local result;
+    ((result=$(git status --short | wc -l)));
+    if [[ ${result} -eq 0 ]]; then
+        result=1;
+    else
+        result=0;
+    fi;
+    return ${result}
+}
+gitListTagsCommits () 
+{ 
+    git for-each-ref --format="%(objecttype)%(if:equals=tag)%(objecttype)%(then) %(refname:lstrip=-1)%(end) %(contents:subject)"
+}
+gitNeedsCommit () 
+{ 
+    local newDir="${1:-.}";
+    local oldDir="${PWD}";
+    local status=0;
+    [[ -d ${newDir}/.git ]] || return 1;
+    cd ${newDir};
+    git status 2> /dev/null | grep 'nothing to commit' > /dev/null 2>&1 && status=1;
+    cd "${oldDir}";
+    return ${status}
+}
+gitNew () 
+{ 
+    _doc $1 20161206145846 "Creates a new git branch off of the master branch for the specified directory, using the pom.xml version in that directory." && return 0;
+    if [[ $# -gt 0 && -d ${1} && -f ${1}/pom.xml ]]; then
+        local version=$(mvnGetVersion ${1});
+        git checkout master;
+        git checkout -b ${1}_${version};
+        git add ${1};
+        git commit -m "${1} version ${version}";
+        git checkout master;
+    fi
+}
+gitPR () 
+{ 
+    _doc ${1} 20150804152727 "<tag> <commit message words ...> finds and local source code files with a GIT_TAG variable and sets it to the specified tag, then executes a git commit with the specified message." && return 0;
+    if [[ $# -lt 2 ]]; then
+        cat <<EOF
+You must specify the temporary branch for the push as the first argument,
+and the commit message as the second argument.
+EOF
+
+        return 1;
+    fi
+    local branch="${1}";
+    local message="${2}";
+    git add .;
+    git commit -m "${message}";
+    git push --tags --set-upstream origin ${branch}
+}
+gitSshIdentity () 
+{ 
+    if [[ $# -gt 0 ]]; then
+        upperID=$(toUpper ${1});
+        lowerID=$(toLower ${1});
+        local id_file="${HOME}/.ssh/id_rsa_${lowerID}";
+        export GIT_SSH_COMMAND="ssh -i ${id_file}";
+        eval GIT_PROVIDER=\${GIT_PROVIDER_${upperID}};
+        eval GIT_DOMAIN=\${GIT_DOMAIN_${upperID}};
+        eval GIT_USER=\${GIT_USER_${upperID}};
+        eval GIT_API_KEY=\${GIT_API_KEY_${upperID}};
+    else
+        echo GIT_SSH_COMMAND=${GIT_SSH_COMMAND};
+        echo GIT_PROVIDER=${GIT_PROVIDER};
+        echo GIT_DOMAIN=${GIT_DOMAIN};
+        echo GIT_USER=${GIT_USER};
+        echo GIT_API_KEY=${GIT_API_KEY};
+    fi
+}
+gitWipAll () 
+{ 
+    local status=1;
+    local newDir;
+    local oldDir="${PWD}";
+    for newDir in *;
+    do
+        echo -n "${newDir}";
+        if gitNeedsCommit "${newDir}"; then
+            echo " Synchronizing";
+            cd "${newDir}";
+            gitwip;
+            cd "${oldDir}";
+        else
+            echo " OK";
+        fi;
+    done
+}
+gitpub () 
+{ 
+    _doc $1 20170525133155 "combines the steps of add, commit, and then push. Specify the commit comment as one or more arguments to this function." && return 0;
+    local tag;
+    git add .;
+    git commit -m "$*";
+    git push
+}
+gittag () 
+{ 
+    _doc $1 20170525133155 "Sets (or resets) the specified tag and then issues a commit specifically for the purpose of capturing the tag." && return 0;
+    if [[ $# -gt 0 ]]; then
+        local tagName="${1}";
+        local tagMessage;
+        if [[ $# -gt 1 ]]; then
+            shift;
+            tagMessage="$*";
+        else
+            tagMessage="Added/updated tag ${tagName}";
+        fi;
+        git tag -a -f ${tagName} -m "${tagMessage}";
+        git push --force origin ${tagName};
+    else
+        git tag -l -n9;
+    fi
+}
+grepchunk () 
+{ 
+    _doc $1 20160729125024 "Runs grep in case-insensitive mode using the specifed regular expression against every file in the specified list file" && return 0;
+    [[ $# -lt 2 ]] && failWithMessage "Usage: grepchunk [<grep-option(s)>] <regexp> <listfile>";
+    if [[ "${1:0:1}" == "-" ]]; then
+        local options="${1}";
+        shift;
+    fi;
+    local regexp="${1}";
+    local listFile="$(fullpath ${2})";
+    local tempDir=${TEMP:-/tmp}/$(newTempFile);
+    local chunk;
+    mkdir ${tempDir};
+    cd ${tempDir} 2> /dev/null;
+    csplit -k -n 4 "${listFile}" 100 \{*\} > /dev/null 2>&1;
+    cd - 2> /dev/null;
+    for chunk in ${tempDir}/xx*;
+    do
+        local collection="$(file $(< ${chunk}) | grep -i text | cut -d: -f1)";
+        echo -n "." 1>&2;
+        if [[ ! -z ${collection} ]]; then
+            grep ${options} "${regexp}" ${collection} 2> /dev/null;
+        fi;
+    done;
+    rm -rf ${tempDir}
+}
+groovify () 
+{ 
+    _doc $1 20160729125024 "Generates a new, or converts an existing text file to a Groovy script file." && return 0;
+    local editFlag=false;
+    if [[ "${1}" == "-e" ]]; then
+        editFlag=true;
+        shift;
+    fi;
+    prependFile "${1}" <<EOF
+/*
+ vim:tabstop=2:shiftwidth=2:nu:filetype=java
+	
+ Author:              Martin Cribbins
+ Revision history:
+
+ $(date +%Y-%m-%d) - Initial version.
+*/	
+
+EOF
+
+    chmod +x "${1}";
+    ${editFlag} && vim "${1}"
+}
+hangIndent () 
+{ 
+    _doc $1 20160729125024 "Uses the specifed indent, width, and text, to create a left-justified, word-wrapped paragraph with no indent on the first line, and subsequent lines indented by the specified amount. The first word of the specified text is not indented, and thedistance between the end of the first work and the second word is padded to match the subsequent indentation." && return 0;
+    local indent=${1};
+    local width=${2};
+    local line=$(rpad "${3}" ${indent}-1);
+    local delta=0;
+    shift 3;
+    while [[ $# -gt 0 ]]; do
+        ((delta=(${width}-${#line})-1));
+        if [[ ${delta} -le ${#1} ]]; then
+            echo -e "${line}";
+            line="$(lpad -i ${1} ${indent})";
+        else
+            line+=" ${1}";
+        fi;
+        shift;
+    done;
+    echo -e "${line}";
+    return 0
+}
+hasKey () 
+{ 
+    _doc $1 20160827132026 "checks for key." && return 0;
+    eval "local target=\" \${!$1[@]} \"";
+    [[ ${target} =~ " ${2} " ]]
+}
+hasValue () 
+{ 
+    _doc $1 20160827132026 "checks for a second argument" && return 0;
+    eval "local target=\" \${$1[@]} \"";
+    [[ ${target} =~ " ${2} " ]]
+}
+htmlify () 
+{ 
+    _doc $1 20160729125024 "Prepends vim options and then wraps the specified file in an HTML html-head-title-meta-head-body wrapper" && return 0;
+    local editFlag=false;
+    if [[ "${1}" == "-e" ]]; then
+        editFlag=true;
+        shift;
+    fi;
+    prependFile "${1}" <<EOF
+	<!--
+	vim:tabstop=2:shiftwidth=2:nu:filetype=html
+	-->
+	<html>
+	<meta></meta>
+	<title></title>
+	<head></head>
+	<body>
+EOF
+
+    cat <<EOF >> "${1}"
+	</body>
+	</html>
+EOF
+
+    ${editFlag} && vim "${1}"
+}
+isAlpha () 
+{ 
+    _doc $1 20160729125024 "Returns true if the specified string is non-numeric." && return 0;
+    local testValue=$1;
+    ! isNumeric $testValue
+}
+isFileBackedUp () 
+{ 
+    _doc $1 20160729125024 "Tests for a backup being present for the specified file" && return 0;
+    [[ ! -z "$(latestFileBackup ${1})" ]]
+}
+isFileText () 
+{ 
+    _doc $1 20160729125024 "Returns true if the specified file is a text \(i.e. non-binary\) file." && return 0;
+    file "${1}" | grep -i text > /dev/null 2>&1
+}
+isNumeric () 
+{ 
+    _doc $1 20160729125024 "Returns true if the specified string represents a number, otherwise it returns false." && return 0;
+    local testValue=$1;
+    local x=${testValue:0:1};
+    [[ $x = 0 || $x = 1 || $x = 2 || $x = 3 || $x = 4 || $x = 5 || $x = 6 || $x = 7 || $x = 8 || $x = 9 ]]
+}
+isTrue () 
+{ 
+    _doc $1 20160729125024 "Checks to see if the passed argument equates to a true condition" && return 0;
+    if [[ "$(trueFalse ${1})" = "true" ]]; then
+        echo 0;
+        return 0;
+    else
+        echo 1;
+        return 1;
+    fi
+}
+jarx () 
+{ 
+    _doc $1 20160729125024 "jar wraps the underlying original jar utility, making it work with Cygwin file paths." && return 0;
+    local options="${1}";
+    local newOptions;
+    local files;
+    local optionsCount=${#options};
+    local index=0;
+    while [[ $# -gt 0 ]]; do
+        if [[ ${1} =~ "/" ]]; then
+            newOptions+=" $(cygpath -m ${1})";
+        else
+            newOptions+=" ${1}";
+        fi;
+        shift;
+    done;
+    command jar ${newOptions}
+}
+joinArray () 
+{ 
+    _doc $1 20160729125024 "Concatenates all of the tokens within the quoted first argument into a single string, with the tokens delimited by the character specified in the second argument" && return 0;
+    local string="${1}";
+    echo ${string// /${2}}
+}
+jsify () 
+{ 
+    _doc $1 20160729125024 "jsify creates/modifies the specified file to begin with a vim comment for JavaScript." && return 0;
+    local editFlag=false;
+    if [[ "${1}" == "-e" ]]; then
+        editFlag=true;
+        shift;
+    fi;
+    prependFile "${1}" <<EOF
+# vim:tabstop=2:shiftwidth=2:nu:filetype=javascript
+EOF
+
+    ${editFlag} && vim "${1}"
+}
+latestFileBackup () 
+{ 
+    _doc $1 20160729125024 "returns the nameof the latest backup of the specified file." && return 0;
+    local file=${1};
+    pattern="${file}.[0-9][0-9][0-9][0-9][0-9][0-9][0-3][0-9][0-2][0-9][0-5][0-9]*";
+    local backups=(${pattern});
+    if [[ "${backups}" != "${pattern}" ]]; then
+        echo ${backups[${#backups[@]}-1]};
+    fi
+}
+linesInFile () 
+{ 
+    _doc $1 20160729125024 "This is a convenience function, returning only the line count from the wc command" && return 0;
+    set -- $(wc -l "${1}");
+    echo ${1}
+}
+lpad () 
+{ 
+    _doc $1 20160729125024 "Returns the provided string, left-padded with spaces to the specified number of characters" && return 0;
+    local pad="                                                       ";
+    local indentFlag=false;
+    if [[ "${1}" = "-i" ]]; then
+        indentFlag=true;
+        shift;
+    fi;
+    local target=$1;
+    local width=$2;
+    if ${indentFlag}; then
+        pad="${pad:0:${width}}";
+        echo "${pad}${target}";
+    else
+        pad="${pad:0:${width}}${target}";
+        echo "${pad:${#target}}";
+    fi
+}
+max () 
+{ 
+    _doc $1 20160729125024 "Returns the maximum of the provided values" && return 0;
+    local highest=-999999999;
+    if [[ $# -lt 2 ]]; then
+        echo "You must provide at least two arguments" 1>&2;
+        return;
+    fi;
+    while [[ $# -gt 0 ]]; do
+        if [[ ${1} -gt ${highest} ]]; then
+            ((highest=${1}));
+        fi;
+        shift;
+    done;
+    echo ${highest}
+}
+min () 
+{ 
+    _doc $1 20160729125024 "Returns the minimum of the provided values" && return 0;
+    local lowest=999999999;
+    if [[ $# -lt 1 ]]; then
+        echo "";
+        return;
+    fi;
+    while [[ $# -gt 0 ]]; do
+        if [[ ${1} -lt ${lowest} ]]; then
+            ((lowest=${1}));
+        fi;
+        shift;
+    done;
+    echo ${lowest}
+}
+mkcd () 
+{ 
+    _doc $1 20160729125024 "Creates the specified directory, and then changes directory to the new directory" && return 0;
+    mkdir -p "$1";
+    pushd "$1" > /dev/null
+}
+mru () 
+{ 
+    _doc $1 20160729125024 "Returns the most recently access file in the specified directory or wildcard pattern" && return 0;
+    while [[ $# -gt 0 ]]; do
+        echo "$1/`ls -t $1 --time=atime | head -1`";
+        shift;
+    done
+}
+newDoc () 
+{ 
+    _doc $1 20160729125024 "Emits an initial _doc call template." && return 0;
+    cat <<EOF
+_doc \$1 $(date +%Y%m%d%H%M%S) "${1} Emits TBD with a success status (0), otherwise an empty string with a failure status (1)." && return 0
+EOF
+
+}
+newPackage () 
+{ 
+    _doc $1 20160729125024 "Creates a new package to be placed into the scripts framework. The name of the package and its directory path relative to the \${MASTER_SCRIPTS_HOME}/packages directory must be specified." && return 0;
+    if [[ $# -lt 2 ]]; then
+        cat <<EOF
+The name of the new package, followed by the directory of the new package - relative to the \${MASTER_SCRIPTS_HOME}/packages 
+directory - must be specified.
+EOF
+
+        return 1;
+    fi
+    local packageName="${1}";
+    local packageDir="${2}";
+    if [[ -d "${packageDir}" ]]; then
+        echo "The new package directory already exists.";
+        return 1;
+    fi;
+    mkcd ${MASTER_SCRIPTS_HOME}/packages/${packageDir};
+    local EOF="EOF";
+    cat <<EOF > ${packageName}-init
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# ${packageName}-init - Initialization script for the ${packageDir} package.
+#
+# Author:              Martin Cribbins
+# Revision history:
+#
+# $(date  +%Y-%m-%d)    -  baseline
+#	
+# 
+# Description:
+#
+# full-description-here
+
+###############################################
+#
+#
+#
+###############################################
+
+
+if declare -F _doc >/dev/null 2>&1
+then
+	_doc \$1 $(date +%Y%m%d%H%M%S) "${packageName}-init Exports the initialization environment variables for the ${packageDir} package." && exit 0
+fi
+
+export $(toUpper ${packageName})_PACKAGE_NAME="TBD-enter title here"
+
+#
+#	Export required variables here.
+#
+#export TBD
+
+
+#
+#	Source any package-specific functions
+#
+if [[ -d \${MASTER_SCRIPTS_HOME}/${packageDir} ]]
+then
+	PATH=\${PATH}:\${MASTER_SCRIPTS_HOME}/${packageDir}
+
+	[[ -f \${MASTER_SCRIPTS_HOME}/${packageDir}/${packageName}Functions ]] && . \${MASTER_SCRIPTS_HOME}/${packageDir}/${packageName}Functions 
+fi
+
+EOF
+
+    cat <<EOF > ${packageName}-setup
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# $(date  +%Y-%m-%d)    -  baseline
+#	
+# 
+# Description:
+#
+
+_doc \$1 $(date +%Y%m%d%H%M%S) "Called by the scriptsSetup command to change the initialization environment variables for the ${packageName} package." && exit 0
+
+if [[ \${#BASH_ARGV[@]} -gt 0 ]]
+then
+	myDir=\$(dirname \${BASH_ARGV[0]})
+else
+	myDir=\$(dirname \${0})
+fi
+
+cat <<EOF
+
+  Setting up the \${$(toUpper ${packageName})_PACKAGE_NAME} package
+
+${EOF}
+
+#export TBD=\$(promptedRead "    Enter the TBD value " "TBD prompt")
+#updateVariable -e TBD "\${TBD}" "\${myDir}/${packageName}-init"
+EOF
+
+    cat <<EOF > ${packageName}Functions
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# ${packageName}Functions - exported functions for the ${packageName} package.
+#
+# Author:              Martin Cribbins
+EOF
+
+    chmod +x ${packageName}-init;
+    chmod +x ${packageName}-setup;
+    chmod +x ${packageName}Functions
+}
+newTempFile () 
+{ 
+    _doc $1 20160729125024 "Returns a the name of a unique temporary file" && return 0;
+    echo "__${RANDOM}$(date +%S%N).tmp__"
+}
+newest () 
+{ 
+    _doc $1 20160729125024 "newest compares two files from the scripts framework and echos the name of the newest one." && return 0;
+    local file1=${1};
+    local file2=${2};
+    local args=($(sed -rn '
+/_doc/	{
+	s/^.*_doc\s+\$1\s+//
+	s/\s+.*$//
+	p
+}' ${file1} ${file2}));
+    if [[ ${args[0]} -lt ${args[1]} ]]; then
+        echo ${file2};
+    else
+        echo ${file1};
+    fi
+}
+nextFile () 
+{ 
+    _doc $1 20160729125024 "Returns the name of what should be the next file in the provided sequence of files, if the the sequence is of the form <text><number> or <number><text> . If no argument is specified, then nextFile returns and empty string. If a wildcard pattern is specified that does not expand into a series of file names, then nextFile strips the wildcard pattern of all '?' and '*' characters, and then appends 001 to the pattern, and echoes that string." && return 0;
+    local files;
+    if [[ $# -lt 1 ]]; then
+        files=($(echo *));
+    else
+        files=($*);
+    fi;
+    local x=${files[${#files[*]}-1]};
+    local ext=${x#*.};
+    local next;
+    [[ -n ${ext} ]] && ext=".${ext}";
+    ((next=${x//[^0-9]/}+1));
+    echo ${next}${ext}
+}
+nofunc () 
+{ 
+    _doc $1 20160827132026 "deletes all exported functions." && return 0;
+    ( unset $(declare -F | sed -r 's/declare -fx? //');
+    $* )
+}
+optAdd () 
+{ 
+    _doc $1 20160729125024 "Add an option declaration of the following form: optAdd <option-name> <option-type> <default-value-or-!> <description> where: <option-name> is the full name of the option. When the option name is used at runtime, it may be abbreviated to the point that it is is still distinguishable from other options.  <option-type> The variable type: boolean, string, int, or float <default-value-or-!> The default value, or else an exclamation point to indicate that the option must be specified on the command line. <description> The description of the option. This will be displayed if the optUsage() function is called." && return 0;
+    options[${#options[@]}]=$1;
+    types[${#types[@]}]=$2;
+    values[${#values[@]}]=$3;
+    descriptions[${#descriptions[@]}]="${4}"
+}
+optAddHelp () 
+{ 
+    _doc $1 20160729125024 "This is called internally to build the usage display" && return 0;
+    local buf;
+    while read buf; do
+        _help+="${buf}\n";
+    done
+}
+optBuildLine () 
+{ 
+    _doc $1 20160729125024 "This is an internally called function to construct the collection of options" && return 0;
+    local INDENT=40;
+    local index=$1;
+    local description="${descriptions[${index}]##*|}";
+    local example="${descriptions[${index}]%${description}}";
+    example=${example%%|};
+    if [[ "${values[${index}]}" = "!" ]]; then
+        description+=" This option must be specified.";
+    else
+        if [[ "${types[${index}]}" != "boolean" && "${values[${index}]}" != "" ]]; then
+            description+=" Defaults to ${values[${index}]}.";
+        fi;
+    fi;
+    hangIndent ${INDENT} $(getTermWidth) "  -${options[${index}]} ${example}" ${description};
+    return 0
+}
+optDebug () 
+{ 
+    _doc $1 20160729125024 "Dumps the contents of each parsed option to stdout" && return 0;
+    set -x;
+    local index=0;
+    while [[ ${index} -lt ${#options[@]} ]]; do
+        echo "${options[${index}]}=xxx";
+        ((index++));
+    done;
+    set +x
+}
+optHelp () 
+{ 
+    _doc $1 20160729125024 "This can be called internally or else by the developer's script to render the usage information." && return 0;
+    if [[ -z "${PAGER}" ]]; then
+        if which less > /dev/null; then
+            PAGER=less;
+        else
+            if which more > /dev/null; then
+                PAGER=more;
+            else
+                PAGER=cat;
+            fi;
+        fi;
+    fi;
+    ( echo -e ${_help};
+    optUsage usage ) | ${PAGER}
+}
+optInit () 
+{ 
+    _doc $1 20160729125024 "These are the option parsing functions, all contained within one master function - optInit. __optInit 'sets the stage' for the other command line option handling function, clearing any residual trailing arguments from prior calls, and declaring the utlity variables (options,values, etc.) as function-local to keep them out of the way of the calling script." && return 0;
+    local options;
+    local types;
+    local values;
+    local descriptions;
+    local isParsedOK=true;
+    local _help="";
+    unset optRemainingArgs
+}
+optParse () 
+{ 
+    _doc $1 20160729125024 "Parses the command line and sets the values of the options" && return 0;
+    local opt;
+    local index;
+    local target;
+    local hits;
+    local hitIndex;
+    local indent=4;
+    local optionWidth=32;
+    local offsetWidth=44;
+    local blanks="                                                                                     ";
+    local msg;
+    local line;
+    local debug=false;
+    if [[ "${1}" = "__" ]]; then
+        debug=true;
+        shift;
+    fi;
+    while [[ $# -gt 0 ]]; do
+        if [[ "${1:0:1}" = "-" ]]; then
+            opt=$(toLower ${1##-});
+            ddvar opt;
+            if [[ "${opt}" = "?" || "${opt}" = "help" ]]; then
+                optUsage help;
+                optReset;
+                return;
+            fi;
+            index=0;
+            unset hits;
+            while [[ ${index} -lt ${#options[@]} ]]; do
+                target=$(toLower ${options[((index))]});
+                ddvar index target;
+                if [[ ${target} != ${target#${opt}} ]]; then
+                    hits[${#hits[@]}]=${index};
+                    ddvar hits;
+                fi;
+                ((index++));
+            done;
+            if [[ ${#hits[@]} -eq 1 ]]; then
+                hitIndex=${hits[0]};
+                ddvar hitIndex;
+                if [[ "${types[${hitIndex}]}" = "boolean" ]]; then
+                    values[${hitIndex}]=true;
+                else
+                    values[${hitIndex}]=$2;
+                    shift;
+                fi;
+                ddvar values;
+            else
+                if [[ ${#hits[@]} -eq 0 ]]; then
+                    optUsage illegal ${target};
+                    optReset;
+                    isParsedOK=false;
+                    return 1;
+                else
+                    optUsage ambiguous ${target};
+                    optReset;
+                    isParsedOK=false;
+                    return 1;
+                fi;
+            fi;
+        else
+            optRemainingArgs[${#optRemainingArgs[@]}]=$1;
+            ddvar optRemainingArgs;
+        fi;
+        shift;
+    done;
+    index=0;
+    while [[ ${index} -lt ${#options[@]} ]]; do
+        if [[ "${values[${index}]}" = "!" ]]; then
+            optUsage unset ${options[${index}]};
+            optReset;
+            isParsedOK=false;
+            break;
+        fi;
+        if [[ "${types[${index}]}" = "array" ]]; then
+            if [[ "${values[${index}]:0:1}" = "," ]]; then
+                values[${index}]="${values[${index}]:1}";
+            fi;
+            eval "IFS=, ${options[${index}]}=(\${values[${index}]})";
+        else
+            eval ${options[${index}]}=${values[${index}]};
+        fi;
+        if ${debug}; then
+            echo "${options[${index}]}=${values[${index}]}";
+        fi;
+        ((index++));
+    done;
+    optReset
+}
+optParseFailure () 
+{ 
+    _doc $1 20160729125024 "Return true (zero) if the parsing of any of the options failed." && return 0;
+    if ${isParsedOK}; then
+        return 1;
+    else
+        return 0;
+    fi
+}
+optParseSuccess () 
+{ 
+    _doc $1 20160729125024 "Returns true (zero) if the parsing of all options succeeded." && return 0;
+    if ${isParsedOK}; then
+        return 0;
+    else
+        return 1;
+    fi
+}
+optReset () 
+{ 
+    _doc $1 20160729125024 "This is an internally called function to return state variables to their initial values" && return 0;
+    unset options;
+    unset types;
+    unset values;
+    unset descriptions
+}
+optUsage () 
+{ 
+    _doc $1 20160729125024 "Writes a formatted display of the usage of the options" && return 0;
+    isParsedOK=false;
+    case "${1}" in 
+        ambiguous)
+            if [[ ${#hits[@]} -eq 2 ]]; then
+                echo -e "Ambiguous option '--${opt}' - could be either of: \n";
+            else
+                echo -e "Ambiguous option '--${opt}' - could be any of: \n";
+            fi;
+            for hitIndex in ${hits[@]};
+            do
+                optBuildLine ${hitIndex};
+                echo "";
+            done
+        ;;
+        illegal)
+            echo -n "Unknown option '--${opt}', ";
+            optUsage
+        ;;
+        unset)
+            echo -e "Option -${2} must be specified.\n"
+        ;;
+        help)
+            optHelp
+        ;;
+        *)
+            hitIndex=0;
+            echo -e "Usage:\n";
+            while [[ ${hitIndex} -lt ${#options[@]} ]]; do
+                optBuildLine ${hitIndex};
+                echo "";
+                ((hitIndex++));
+            done
+        ;;
+    esac
+}
+path () 
+{ 
+    _doc $1 20160729125024 "Appends, prepends, or deletes components of the PATH environment variable." && return 0;
+    local opt=x;
+    if [[ ${1:0:1} = "-" ]]; then
+        opt=${1:1:1};
+    fi;
+    case ${opt} in 
+        a)
+            PATH=${PATH}:${2}
+        ;;
+        p)
+            PATH=${2}:${PATH}
+        ;;
+        m)
+            path -d ${2%+*};
+            path -i ${2}
+        ;;
+        *)
+            IFS=":";
+            local path=($PATH);
+            unset IFS;
+            local newPath;
+            for ((i=0; i<${#path[@]}; i++))
+            do
+                case ${opt} in 
+                    d)
+                        if [[ "${2}" != "${path[${i}]}" ]]; then
+                            newPath="${newPath}:${path[${i}]}";
+                        fi
+                    ;;
+                    r)
+                        [[ "${path[${i}]}" =~ "${2}" ]] || newPath="${newPath}:${path[${i}]}"
+                    ;;
+                    i)
+                        newPath="${newPath}:${path[${i}]}";
+                        if [[ ${2#*+} -eq ${i} ]]; then
+                            newPath="${newPath}:${2%+*}";
+                        fi
+                    ;;
+                    n)
+                        dvar path[${i}]
+                    ;;
+                    e)
+                        echo "PATH=\${PATH}:${path[${i}]}"
+                    ;;
+                    *)
+                        echo ${path[${i}]}
+                    ;;
+                esac;
+            done;
+            case ${opt} in 
+                i | d | r)
+                    PATH=${newPath:1}
+                ;;
+            esac
+        ;;
+    esac
+}
+percentComplete () 
+{ 
+    _doc $1 20160729125024 "Returns the size of a file as the percentage of target amount. Each time this is called, the current size of the specified file size is returned as a percentage of the specified target size." && return 0;
+    checkParameters "targetSize filename" || return 1;
+    local total=$1;
+    local file=$2;
+    local current=`ls -l ${file} | cut -d\  -f5`;
+    local percent;
+    ((percent=${current}*100/${total}));
+    echo ${percent}
+}
+plural () 
+{ 
+    _doc $1 20160729125024 "rudimentary utility function to pluralize various words that would be used in notification messages." && return 0;
+    local result="${1}";
+    if [[ $# -gt 1 && ${2} -gt 1 ]]; then
+        case ${1} in 
+            is)
+                result="are"
+            ;;
+            this)
+                result="these"
+            ;;
+            service)
+                result="services"
+            ;;
+        esac;
+    fi;
+    echo ${result}
+}
+portCheck () 
+{ 
+    _doc $1 20160729125024 "Uses telnet to check if the specified port at the specified host is listening on a TCP socket" && return 0;
+    if [[ $# -gt 1 ]]; then
+        echo "Xclose" | telnet -eX $1 $2 > /dev/null 2>&1;
+    else
+        netstat -an | sed -rn "
+/^\s*TCP\s+[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+[:]${1}/	{
+	p
+}
+";
+    fi;
+    return $?
+}
+prependFile () 
+{ 
+    _doc $1 20160729125024 "Prepends content from stdin to the specified file" && return 0;
+    local tempFile=$(newTempFile);
+    cat > ${tempFile};
+    local count=$(linesInFile ${tempFile});
+    if [[ -f "${1}" ]]; then
+        ((count+=$(linesInFile "${1}")));
+        cat "${1}" >> ${tempFile};
+    fi;
+    if [[ ${count} -eq $(linesInFile ${tempFile}) ]]; then
+        mv ${tempFile} "${1}";
+        return 0;
+    else
+        rm ${tempFile};
+        return 1;
+    fi
+}
+promptedRead () 
+{ 
+    _doc $1 20160729125024 "Keeps prompting for an answer, with an optionally specified default value, until the read is satisfied." && return 0;
+    local result="";
+    local status=1;
+    local default="";
+    local prompt;
+    if [[ $# -gt 0 ]]; then
+        prompt="${1}";
+        if [[ $# -gt 1 ]]; then
+            default="${2}";
+            prompt="${prompt} [${default}]";
+        fi;
+        prompt="${prompt} : ";
+        while [[ -z ${result} ]]; do
+            read -p "${prompt}" result;
+            if [[ -z ${result} && ! -z ${default} ]]; then
+                result="${default}";
+            fi;
+        done;
+        status=0;
+    fi;
+    echo "${result}";
+    return ${status}
+}
+pythonify () 
+{ 
+    _doc $1 20160729125024 "Prepends vim options to a Python script" && return 0;
+    local editFlag=false;
+    if [[ "${1}" == "-e" ]]; then
+        editFlag=true;
+        shift;
+    fi;
+    prependFile "${1}" <<EOF
+# vim:expandtab:tabstop=2:shiftwidth=2:nu
+"""
+TBD
+
+
+Author: Martin Cribbins
+$(date +%Y-%m-%d)  Baseline version.
+"""
+	
+EOF
+
+    chmod +x "${1}";
+    ${editFlag} && vim "${1}"
+}
+randpct () 
+{ 
+    _doc $1 20160729125024 "Returns a random percentage" && return 0;
+    local R;
+    ((R=$RANDOM/328));
+    echo ${R}
+}
+resolveHost () 
+{ 
+    _doc $1 20160729125024 "Returns true if the specified host reponds to ICMP pings, and if a hostname or FQDN is passed, DNS resolution is implicitly tested as well" && return 0;
+    local fqdn=$1;
+    local result;
+    local status=1;
+    if result=$(ping ${fqdn} 54 1); then
+        status=0;
+    fi;
+    echo ${result} | sed -n "
+
+	/bytes from/ {
+	s/^.*bytes from /resolves to /
+	s/:.*$//
+	p
+}
+
+/unknown/ {
+c ${fqdn} is not defined in DNS
+	}
+
+	/0 packets received/ {
+	c ${fqdn} is not responding
+}";
+    return ${status}
+}
+rpad () 
+{ 
+    _doc $1 20160729125024 "Returns the provided string, right-padded with spaces to the specified number of characters" && return 0;
+    local pad="                                                                                              ";
+    local target=$1;
+    local width;
+    ((width=$2));
+    pad="${target}${pad:0:${width}}";
+    echo "${pad:0:${width}}"
+}
+scriptFailed () 
+{ 
+    _doc $1 20160729125024 "displays the provided text on STDERR and then exits the calling script." && return 0;
+    scriptWarning "${1}";
+    exit 1
+}
+scriptInfo () 
+{ 
+    _doc $1 20160729125024 "displays the provided text on STDOUT." && return 0;
+    echo "${1}" | fmt -w $(getTermWidth)
+}
+scriptProgress () 
+{ 
+    _doc $1 20160729125024 "displays an initial progress message with an elipsis and without a linefeed" && return 0;
+    echo -n "${1} ... "
+}
+scriptWarning () 
+{ 
+    _doc $1 20160729125024 "displays the provided text on STDERR." && return 0;
+    echo "${1}" | fmt -w $(getTermWidth) 1>&2
+}
+scriptsDebugMessage () 
+{ 
+    _doc $1 20160729125024 "Emits the text passed as arguments to STDOUT if the SCRIPTS_DEBUG environment variable is not empty." && return 0;
+    local status=1;
+    if [[ $# -gt 0 && ! -z ${SCRIPTS_DEBUG} ]]; then
+        echo "${*}";
+        status=0;
+    fi;
+    return ${status}
+}
+sedtrimnl () 
+{ 
+    _doc $1 20160729125024 "Uses the 'sed newline deletion trick' to remove newlines from the specified file" && return 0;
+    sed -nr "/$1/ {
+	N
+	s/\n\s*/ /
+	p
+}" $2
+}
+setRemoteKey () 
+{ 
+    _doc $1 20160729125024 "Using the same syntax as the ssh command, copies the local public key to the remote account." && return 0;
+    if [[ -f ~/.ssh/id_dsa.pub ]]; then
+        ssh $* "mkdir .ssh 2> /dev/null;chmod 700 .ssh 2>/dev/null;cat >> .ssh/authorized_keys;chmod 700 .ssh/authorized_keys" < ~/.ssh/id_dsa.pub;
+    fi;
+    if [[ -f ~/.ssh/id_rsa.pub ]]; then
+        ssh $* "mkdir .ssh 2> /dev/null;chmod 700 .ssh 2>/dev/null;cat >> .ssh/authorized_keys;chmod 700 .ssh/authorized_keys" < ~/.ssh/id_rsa.pub;
+    fi
+}
+shellify () 
+{ 
+    _doc $1 20160729125024 "Prepends shbang and options parsing to the specified shell script" && return 0;
+    local editFlag=false name description;
+    optionsFlag=true;
+    headerFlag=true;
+    while [[ "${1:0:1}" = "-" ]]; do
+        case "${1}" in 
+            -e)
+                editFlag=true;
+                shift
+            ;;
+            -v)
+                optionsFlag=false;
+                headerFlag=false;
+                shift
+            ;;
+            -n)
+                optionsFlag=false;
+                shift
+            ;;
+            *)
+                echo "Unknown option: ${1}";
+                return 1
+            ;;
+        esac;
+    done;
+    name="${1}";
+    shift;
+    description="${*}";
+    if ${optionsFlag}; then
+        prependFile "${name}" <<EOF
+#_doc \${1} $(date +%Y%m%d%H%M%S) "${description} " && exit 0
+
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd input string ""  "The input file to use."
+#optAdd output string ""  "The output file to use."
+#optAdd mark boolean false "A sample boolean option"
+#optParse \$* 
+#optParseSuccess || exit 1
+
+
+#[[ -n \${input} ]] && exec 0<\${input}
+#[[ -n \${output} ]] && exec 1>\${output}
+
+
+EOF
+
+    fi
+    if ${headerFlag}; then
+        prependFile "${name}" <<EOF
+#	
+# Author:              ${AUTHOR}
+# Revision history:
+#
+# $(date +%Y-%m-%d) - Initial version.
+#	
+EOF
+
+    fi
+    prependFile "${name}" <<EOF
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+EOF
+
+    chmod +x "${name}";
+    ${editFlag} && vim "${name}"
+}
+showcmds () 
+{ 
+    local cmd;
+    local cmds=($(echo ${_active_script_files[@]} ${_active_function_files[@]} | tr ' ' \\n | sed -r 's,/.*/,,' | sort));
+    for cmd in ${cmds[@]};
+    do
+        if [[ ! "${cmd:0:1}" = "_" ]]; then
+            if [[ ! "${cmd}" = "showcmds" ]]; then
+                ${cmd} -h;
+                echo "";
+            fi;
+        fi;
+    done
+}
+showenv () 
+{ 
+    _doc $1 20160729125024 "Displays all environment variables without displaying function declarations" && return 0;
+    local _regexp="${1:-[A-Za-z]+.*}" var i;
+    _regexp+=".*=";
+    set | sed -rn "
+/^${_regexp}/	{
+	s/\\[[0-9]+\\]=//g
+	p
+}
+"
+}
+showfunctions () 
+{ 
+    _doc $1 20160729125024 "Displays a summary of each declared shell function." && return 0;
+    local fn;
+    case ${1} in 
+        -l)
+            if [[ $# -gt 1 ]]; then
+                for fn in $(_listManagedFunctions ${2});
+                do
+                    ${fn} -h;
+                    echo "";
+                done;
+            else
+                _listManagedFunctions;
+            fi
+        ;;
+        -d)
+            for fn in $(_listManagedFunctions ${2});
+            do
+                echo "${fn} date $(_doc_timestamp=1 ${fn} -h)";
+            done
+        ;;
+        -t)
+            for fn in $(_listManagedFunctions ${2});
+            do
+                echo "${fn} $(_doc_timestamp=1 ${fn} -h)";
+            done
+        ;;
+        *)
+            for fn in $(_listManagedFunctions ${2});
+            do
+                ${fn} -h;
+                echo "";
+            done
+        ;;
+    esac
+}
+splitString () 
+{ 
+    _doc $1 20160729125024 "Splits the string specified in the first argument, using the delimiter in the second argument" && return 0;
+    local delim="$IFS";
+    IFS="$2";
+    echo $1;
+    IFS="${delim}"
+}
+srcvim () 
+{ 
+    set > setlist;
+    _doc $1 20160729125024 "Executes vim on each of the specifed files, and then sources \( . \<filename\> \) each of the files." && return 0;
+    vim $*;
+    while [[ $# -gt 0 ]]; do
+        . ${1};
+        shift;
+    done
+}
+sshdiff () 
+{ 
+    _doc $1 20160729125024 "Uses SSH to compare a specifed file on the local host against the same file in the same place on the specified remote host" && return 0;
+    if [[ $# -lt 2 ]]; then
+        echo "Usage: shdiff <host> <path>";
+        return 1;
+    fi;
+    local host=${1};
+    local localPath="${2}";
+    local remotePath="$(getRemotePath $(dirname ${localPath}))/$(basename ${localPath})";
+    ssh ${host} cat ${remotePath} | diff - ${localPath}
+}
+sshx () 
+{ 
+    _doc $1 20160729125024 "Launches X-Windows using startx, on the local machine prior to running ssh, which is run with the -X port-forawrding option." && return 0;
+    pgrep xinit || startx & DISPLAY=192.167.90.1:0.0 ssh -CY $*
+}
+statusMessage () 
+{ 
+    _doc $1 20160729125024 "Simply echoes out the specified text. This function is designed to give the 	calling script greater readability by using pairs of calls to progressMessage and then statusMessage." && return 0;
+    echo ${1}
+}
+timeClockToMsec () 
+{ 
+    _doc $1 20160729125024 "Converts clock time - HH:MM:SS.msec to milliseconds." && return 0;
+    local multipliers=(3600000 60000 1000 1);
+    local mindex;
+    local i;
+    local clock;
+    local msec;
+    local result;
+    while [[ $# -gt 0 ]]; do
+        mindex=3;
+        clock=${1};
+        msec=${1#*.};
+        [[ ${msec} = ${clock} ]] && clock+=".0";
+        clock=(${clock//[:.]/ });
+        msec=0;
+        i=${#clock[@]};
+        ((i--));
+        clock[${i}]+=000;
+        ((clock[${i}]=10#${clock[${i}]:0:3}));
+        while [[ ${i} -gt -1 ]]; do
+            ((msec+=multipliers[${mindex}]*clock[${i}]));
+            ((i--));
+            ((mindex--));
+        done;
+        result+="${msec} ";
+        shift;
+    done;
+    echo ${result}
+}
+timeMsecToClock () 
+{ 
+    _doc $1 20160729125024 "Converts milliseconds to clock time - HH:MM:SS.msec ." && return 0;
+    [[ $# -lt 1 ]] && return $(functionFailed "You must specify a time in milliseconds.");
+    local timestring;
+    local msec=${1};
+    local count;
+    local digits;
+    local zeros="000";
+    ((count=${msec}/3600000));
+    digits="${count}00";
+    timestring+="${digits:0:2}:";
+    ((msec-=${count}*3600000));
+    ((count=${msec}/60000));
+    digits="${count}00";
+    timestring+="${digits:0:2}:";
+    ((msec-=${count}*60000));
+    ((count=${msec}/1000));
+    digits="${count}00";
+    timestring+="${digits:0:2}.";
+    ((msec-=${count}*1000));
+    digits="${zeros:0:3-${#msec}}${msec}";
+    timestring+="${digits:0:3}";
+    echo ${timestring};
+    timestring+="${msec}"
+}
+toLower () 
+{ 
+    _doc $1 20160729125024 "Converts the passed string to all lower case." && return 0;
+    if [[ $# -gt 0 ]]; then
+        echo "$*" | tr '[A-Z]' '[a-z]';
+    else
+        tr '[A-Z]' '[a-z]';
+    fi
+}
+toUpper () 
+{ 
+    _doc $1 20160729125024 "Converts the passed string to all upper case." && return 0;
+    if [[ $# -gt 0 ]]; then
+        echo "$*" | tr '[a-z]' '[A-Z]';
+    else
+        tr '[a-z]' '[A-Z]';
+    fi
+}
+trueFalse () 
+{ 
+    _doc $1 20160729125024 "Converts a number of typical representations for true/false into a bash-compliant return value." && return 0;
+    case "${1}" in 
+        [TtYy1]*)
+            echo true
+        ;;
+        *)
+            echo false
+        ;;
+    esac
+}
+unsetAll () 
+{ 
+    _doc $1 20170523105535 "clears all function and variable declarations." && return 0;
+    $(declare -F | sed -r 's/declare -fx/unset/');
+    $(set | sed -r '
+/^PATH=/	{
+	d
+	n
+}
+{
+	s/^/unset /
+	s/=.*$//
+}
+')
+}
+updateVariable () 
+{ 
+    _doc $1 20160729125024 "Updates the setting of an environment variable in a script file, if the variable is being set by that file, otherwise the assignment line is added to the end of the file. If '-e' is the first argument, then the assignment line is set/modified to use the export qualifier." && return 0;
+    local result="";
+    local status=1;
+    local file;
+    local variable;
+    local value;
+    local assignment;
+    local isExported=false;
+    if [[ $# -gt 1 ]]; then
+        if [[ ${1} = "-e" ]]; then
+            isExported=true;
+            shift;
+        fi;
+        if [[ $# -gt 2 ]]; then
+            variable=${1};
+            value=${2};
+            file=${3};
+            assignment="${variable}=${value}";
+            if ${isExported}; then
+                assignment="export ${assignment}";
+            fi;
+            if [[ -f ${file} ]]; then
+                if grep "^[^#]*${variable}=" ${file} > /dev/null; then
+                    sed -ri "/^[^#]*${variable}=/ {s,^.*,${assignment},}" ${file};
+                else
+                    echo "${assignment}" >> ${file};
+                fi;
+                status=0;
+            fi;
+        fi;
+    fi;
+    return ${status}
+}
+wtd () 
+{ 
+    _doc $1 20160729125024 "Finds where environment variables matching the provided regular expression are defined." && return 0;
+    local sources hostrc target targets;
+    sources="${_active_inits[@]} ${_active_scripts[@]} ${_active_function_files[@]}";
+    for target in ${sources};
+    do
+        targets+="${MASTER_SCRIPTS_HOME}/packages/${target}  ";
+    done;
+    hostrc="${MASTER_SCRIPTS_HOME}/hosts/${HOSTNAME}_pre_rc";
+    [[ -f ${hostrc} ]] && targets="${hostrc} ${targets}";
+    hostrc="${MASTER_SCRIPTS_HOME}/hosts/${HOSTNAME}_post_rc";
+    [[ -f ${hostrc} ]] && targets+=" ${hostrc}";
+    egrep -l "^${1}=|^export\s+${1}=" ${targets}
+}
+wtf () 
+{ 
+    _doc $1 20160729125024 "The 'which' command on steroids, delves into function definitions as well." && return 0;
+    local target=${1};
+    local found;
+    local result=1;
+    if found=$(command which ${target} 2> /dev/null); then
+        echo ${found};
+        result=0;
+    else
+        if [[ ! -z ${_active_function_files[${target}]} ]]; then
+            echo ${_active_function_files[${target}]};
+            result=0;
+        fi;
+    fi;
+    return ${result}
+}
+wvi () 
+{ 
+    _doc $1 20160729125024 "Uses  vim (vi) to edit the specified command, by using 'wtf' to located the command script." && return 0;
+    local commandPath;
+    if commandPath=$(wtf ${1}); then
+        if file -b ${commandPath} | grep text 2> /dev/null 1>&2; then
+            vim ${commandPath};
+        else
+            echo "${commandPath} is not a text file.";
+        fi;
+    else
+        echo "${1} cannot be found.";
+    fi
+}
+xrate () 
+{ 
+    _doc $1 20160729125024 "Shows the growth rate of a file in bytes" && return 0;
+    local path=${1};
+    local interval=10;
+    if [[ ${#} -gt 1 ]]; then
+        interval=${2};
+    fi;
+    set -- `ls -go ${path}`;
+    start=${3};
+    sleep ${interval};
+    set -- `ls -go ${path}`;
+    echo $(((${3}-${start})/${interval}))
+}

@@ -1,4 +1,5 @@
 awsIotLogFollow ()
 {
+	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
 	aws logs tail AWSIotLogsV2 --follow
 }

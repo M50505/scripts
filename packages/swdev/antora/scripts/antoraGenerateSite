@@ -1,4 +1,11 @@
-
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2024-10-20 - Initial version.
+#	
 # Generates a "simple" web site via Antora. A simple site is one that does not
 #	attempt to track non-main branches in the underlying repositories, thereby
 #	allowing Antora to handle all Git interactions.
@@ -31,6 +38,8 @@
 #
 #	Testing status:
 #		UNTESTED
+
+_doc ${1} 20241020102132 "New function, no functionality yet. " && exit 0
 
 MIN_NODE_VERSION=18
 

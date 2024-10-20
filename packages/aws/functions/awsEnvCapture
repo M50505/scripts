@@ -3,6 +3,7 @@
 
 awsEnvCapture ()
 {
+	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
 	eval $($* | sed -rn '
 
 /AccessKeyId/ {

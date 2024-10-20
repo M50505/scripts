@@ -6,7 +6,7 @@
 #
 # 2024-08-10 - Initial version.
 #	
-#_doc ${1} 20240810112648 " " && exit 0
+_doc ${1} 20240810112648 "No documentation yet." && exit 0
 
 
 basename="${1%.adoc}"

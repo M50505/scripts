@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+_listManagedFunctions ()
+{
+	_doc $1 20160729125024 "Lists every function by simple name within the scripts packages directory tree." && return 0
+
+	local pkg
+
+	for pkg in $(egrep -v '^#' ${MASTER_SCRIPTS_HOME}/packages/packageTable )
+	do
+		[[ -d ${MASTER_SCRIPTS_HOME}/${pkg}/functions ]] && ls -1 ${MASTER_SCRIPTS_HOME}/${pkg}/functions
+	done
+}

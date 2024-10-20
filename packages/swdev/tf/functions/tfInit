@@ -7,10 +7,12 @@
 # 2024-10-20 - Initial version.
 #	
 
-gitGetUser ()
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+tfInit ()
 {
 	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
-	sed -r 's,^.*//,,;s/:.*$//' ${HOME}/.git-credentials
+	return 0
 }
-
-

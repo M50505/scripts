@@ -1,20 +1,14 @@
 #!/usr/bin/env bash
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+
 _listManagedScripts ()
 {
-	_doc $1 20160729125024 "Emits the list of scripts (not functions) in the scripts framework with a success status (0), otherwise an empty string with a failure status (1)." && return 0
+	_doc $1 20160729125024 "Lists every script by simple name within the scripts packages directory tree." && return 0
 
-	local regexp="[0-9_a-z]+"
+	local pkg
 
-	if [[ $# -gt 0 ]]
-	then
-		regexp="${*}"
-	fi
-
-	cd ${MASTER_SCRIPTS_HOME}/packages
-
-
-	grep -l '_doc.*exit' $(find $(sed -nr '/^\s*[^#]/ {s/\s.*$//;p}' packageTable ) -type f -a -perm /111 | sort -u) | sed -rn "/${regexp}/ {s/:.*$//;s,^.*/,,;p}" 
-
+	for pkg in $(egrep -v '^#' ${MASTER_SCRIPTS_HOME}/packages/packageTable )
+	do
+		[[ -d ${MASTER_SCRIPTS_HOME}/${pkg}/scripts ]] && ls -1 ${MASTER_SCRIPTS_HOME}/${pkg}/scripts
+	done
 }
-

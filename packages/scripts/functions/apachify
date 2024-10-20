@@ -3,6 +3,7 @@
 apachify ()
 {
 	_doc $1 20160729125024 "Prepends vim options to the specified Apache HTTP server conf file." && return 0
+
 	local editFlag=false
 	if [[ "${1}" == "-e" ]]
 	then

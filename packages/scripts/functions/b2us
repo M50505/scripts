@@ -3,6 +3,9 @@
 b2us ()
 {
 	_doc $1 20160729125024 "Translates blanks to underscores in the specified string" && return 0
-	dos2unix -f -7 | tr \\012 _ | sed -r "s,[)(/.    :;],_,g;s/-/_/g;s/,/_/g;s/'//g;s/__+/_/g;s/_$//;s/[)(]/_/g" #| clipCopy
+
+	dos2unix -f -7 | \
+	tr \\012 _ | \
+	sed -r "s,[)(/.    :;],_,g;s/-/_/g;s/,/_/g;s/'//g;s/__+/_/g;s/_$//;s/[)(]/_/g" #| clipCopy
 }
 

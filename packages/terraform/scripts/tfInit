@@ -8,20 +8,9 @@
 #	
 #_doc ${1} 20241013102640 " " && exit 0
 
-#optInit
-#optAdd sample string "test"  "A sample string option"
-#optAdd input string ""  "The input file to use."
-#optAdd output string ""  "The output file to use."
-#optAdd mark boolean false "A sample boolean option"
-#optParse $* 
-#optParseSuccess || exit 1
+_doc ${1} 20241020102132 "New script, no functionality yet. " && exit 0
 
+#terraformCredFile="/local/wsl/xfer/linux-configs"
 
-#[[ -n ${input} ]] && exec 0<${input}
-#[[ -n ${output} ]] && exec 1>${output}
-
-
-terraformCredFile="/local/wsl/xfer/linux-configs"
-
-		jq ".fields[]| select(.label==\"gitcred-${credKey}\").value" "${terraformCredFile}" | \
-		tr -d \" > "${gitCredFile}"
+#jq ".fields[]| select(.label==\"gitcred-${credKey}\").value" "${terraformCredFile}" | \
+#tr -d \" > "${gitCredFile}"

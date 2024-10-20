@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+
 gitListTagsCommits ()
 {
+	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
 	git for-each-ref --format="%(objecttype)%(if:equals=tag)%(objecttype)%(then) %(refname:lstrip=-1)%(end) %(contents:subject)"
 }

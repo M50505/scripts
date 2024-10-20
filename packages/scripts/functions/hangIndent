@@ -2,7 +2,7 @@
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
 hangIndent ()
 {
-	_doc $1 20160729125024 "Takes the specifed indent, width, and text, and created a left-justified, word-wrapped paragraph with no indent on the first line, and subsequent lines indented by the specified amount. The first word of the specified text is not indented, and thedistance between the end of the first work and the second word is padded to match the subsequent indentation." && return 0
+	_doc $1 20160729125024 "Uses the specifed indent, width, and text, to create a left-justified, word-wrapped paragraph with no indent on the first line, and subsequent lines indented by the specified amount. The first word of the specified text is not indented, and thedistance between the end of the first work and the second word is padded to match the subsequent indentation." && return 0
 
 	local indent=${1}
 	local width=${2}

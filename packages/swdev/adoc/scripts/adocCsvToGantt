@@ -6,7 +6,7 @@
 #
 # 2023-02-17 - Initial version.
 #	
-#_doc ${1} 20230217233227 " " && exit 0
+_doc ${1} 20230217233227 "No documentation yet." && exit 0
 
 #optInit
 #optAdd sample string "test"  "A sample string option"

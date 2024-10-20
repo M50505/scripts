@@ -6,10 +6,10 @@
 #
 # 2021-11-18 - Initial version.
 #	
-#_doc ${1} 20211118223101 " " && exit 0
 
 gitIsUpdated ()
 {
+	_doc ${1} 20211118223101 "Not focumented yet. " && return 0
 	local result
 	((result=$(git status --short | wc -l)))
 

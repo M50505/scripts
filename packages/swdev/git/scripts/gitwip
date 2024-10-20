@@ -6,7 +6,7 @@
 #
 # 2021-11-18 - Initial version.
 #	
-#_doc ${1} 20211118224002 " " && exit 0
+_doc ${1} 20211118224002 "Not documented yet." && exit 0
 
 if [[ $# -gt 0 ]]
 then

@@ -6,7 +6,7 @@
 #
 # 2024-07-16 - Initial version.
 #	
-#_doc ${1} 20240716185522 "Html " && exit 0
+_doc ${1} 20240716185522 "Not documented yet " && exit 0
 
 #optInit
 #optAdd sample string "test"  "A sample string option"

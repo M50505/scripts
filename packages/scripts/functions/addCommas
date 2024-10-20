@@ -3,6 +3,7 @@
 addCommas ()
 {
 	_doc $1 20160729125024 "Takes an integer string and echos it back with commas embedded as needed." && return 0
+
 	if [[ $# -gt 0 ]]
 	then
 		local result

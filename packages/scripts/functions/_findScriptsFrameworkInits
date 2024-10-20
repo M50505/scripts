@@ -2,6 +2,8 @@
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
 _findScriptsFrameworkInits ()
 {
+	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+
 	local cwd="${PWD}"
 	cd ${MASTER_SCRIPTS_HOME}/packages
 	for i in ${_active_packages[*]}

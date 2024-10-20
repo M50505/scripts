@@ -1,5 +1,6 @@
 awsEnvToBat ()
 {
+	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
 	showenv AWS | sed -r '
 {
 	s/^/set /

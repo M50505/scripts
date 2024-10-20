@@ -1,5 +1,7 @@
 awsEnvSetDefaults ()
 {
+	_doc ${1} 20241019 Not yet documented.
+
 	export AWS_DEFAULT_REGION="us-east-1"
 }
 
