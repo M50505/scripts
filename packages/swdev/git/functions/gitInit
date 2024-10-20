@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
 
-gitcred ()
+gitInit ()
 {
 
 	local gitCredFile="${HOME}/.git-credentials"
