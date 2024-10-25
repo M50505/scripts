@@ -14,5 +14,20 @@
 tfInit ()
 {
 	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
-	return 0
+	
+	local terraformRC="${HOME}/.terraformrc"
+
+	if [[ -f ${TERRAFORM_CONFIGS_IMPORT_FILE} ]]
+	then
+		token=$(jq ".fields[]| select(.label==\"LoginToken\").value" "${TERRAFORM_CONFIGS_IMPORT_FILE}")
+
+		cat <<EOF > "${terraformRC}"
+credentials "app.terraform.io" {
+  token = ${token}
+}
+EOF
+
+	else
+		error Could not locate the ${TERRAFORM_CONFIGS_IMPORT_FILE} file
+	fi
 }
