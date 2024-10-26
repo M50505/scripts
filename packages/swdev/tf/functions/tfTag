@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2024-10-26 - Initial version.
+#	
+#_doc ${1} 20241026083213 " " && exit 0
+
+tfTag ()
+{
+	local tfFileCount=$(ls *.tf | wc -l)
+
+	if (( tfFileCount == 0 ))
+	then
+		echo "No .tf files found."
+		return 1
+	fi
+
+	echo "Found ${tfFileCount} .tf files"
+}
+
