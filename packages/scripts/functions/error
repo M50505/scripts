@@ -19,5 +19,5 @@ error ()
 	fi
 ) | fmt >&2
 
-	exit 1
+	return 1
 }

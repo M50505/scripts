@@ -10,14 +10,59 @@
 
 tfTag ()
 {
-	local tfFileCount=$(ls *.tf | wc -l)
+	local tfFiles=($(echo *.tf))
 
-	if (( tfFileCount == 0 ))
+	if [[ $# -lt 1 ]]
+	then
+		error You must specify a valid semver tag.
+		return 1
+	fi
+
+	if [[ ! ${1} =~ ^v[0-9]+[.][0-9]+[.][0-9]+ ]]
+	then
+		cat <<EOF >&2
+You must specify a valid semver tag in the form vM.m.u
+where:
+		v must the first character
+		M is the major version, zero or greater
+		m is the minor version, zero or greater
+		u is the micro version, zero or greater
+for example:
+	valid semver tags:
+		v1.2.6
+		v13.5.34
+		v0.1.0
+
+	invalid semver tags:
+		1.2.4
+		v3
+		v4.5
+EOF
+		return 1
+	fi
+
+	if [[ "${tfFiles}" = "*.tf" ]]
 	then
 		echo "No .tf files found."
 		return 1
 	fi
+	local tag="${1}"
+	local tfFile
 
-	echo "Found ${tfFileCount} .tf files"
+	for tfFile in ${tfFiles[*]}
+	do
+		sed -i -r "
+/^\s*#\s*v/ {
+	s/^.*$/#	${tag}/
+	b done
+}
+
+1,1	{
+	s/^/#	${tag}\n/
+}
+
+:done
+" ${tfFile}
+	done
 }
 
