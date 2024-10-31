@@ -82,7 +82,7 @@ li p {
 EOF
 fi
 
-adocHtmlPdfCmd="/tmp/asciidoctor-web-pdf-linux-v1.0.0-alpha.16/asciidoctor-web-pdf"
+adocHtmlPdfCmd="/usr/local/asciidoctor-web-pdf-linux/asciidoctor-web-pdf"
 adocHtmlCmd="asciidoctor"
 
 adocHtmlPdfOpts="-a stylesheet -a stylesheet=${basename}.css"
