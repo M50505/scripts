@@ -82,6 +82,7 @@ li p {
 EOF
 fi
 
+
 adocHtmlPdfCmd="/usr/local/asciidoctor-web-pdf-linux/asciidoctor-web-pdf"
 adocHtmlCmd="asciidoctor"
 
