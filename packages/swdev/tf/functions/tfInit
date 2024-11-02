@@ -17,11 +17,16 @@ tfInit ()
 	
 	local terraformRC="${HOME}/.terraformrc"
 	local terraformCachingRoot="/tmp/terraform"
+	local awsAccountId
 
 	if [[ -f ${TERRAFORM_CONFIGS_IMPORT_FILE} ]]
 	then
 		token=$(jq ".fields[]| select(.label==\"LoginToken\").value" "${TERRAFORM_CONFIGS_IMPORT_FILE}")
+		
+		awsAccountId=$(jq ".fields[]| select(.label==\"Account ID\").value" "${TERRAFORM_CONFIGS_IMPORT_FILE}")
 
+		export TF_AWS_ACCOUNT_ID="${awsAccountId}"
+		
 		cat <<EOF > "${terraformRC}"
 credentials "app.terraform.io" {
   token = ${token}
