@@ -23,10 +23,8 @@ tfInit ()
 	then
 		token=$(jq ".fields[]| select(.label==\"LoginToken\").value" "${TERRAFORM_CONFIGS_IMPORT_FILE}")
 		
-		awsAccountId=$(jq ".fields[]| select(.label==\"Account ID\").value" "${TERRAFORM_CONFIGS_IMPORT_FILE}")
+		export TF_AWS_ACCOUNT_ID=$(jq ".fields[]| select(.label==\"Account ID\").value" "${AWS_CONFIGS_IMPORT_FILE}")
 
-		export TF_AWS_ACCOUNT_ID="${awsAccountId}"
-		
 		cat <<EOF > "${terraformRC}"
 credentials "app.terraform.io" {
   token = ${token}
