@@ -23,7 +23,9 @@ tfInit ()
 	then
 		token=$(jq ".fields[]| select(.label==\"LoginToken\").value" "${TERRAFORM_CONFIGS_IMPORT_FILE}")
 		
-		export TF_AWS_ACCOUNT_ID=$(jq ".fields[]| select(.label==\"Account ID\").value" "${AWS_CONFIGS_IMPORT_FILE}")
+		export TF_VAR_AWS_ACCOUNT_ID=$(jq ".fields[]| select(.label==\"Account ID\").value" "${AWS_CONFIGS_IMPORT_FILE}")
+
+		[[ -d "${terraformCachingRoot}/plugin-cache" ]] || mkdir -p "${terraformCachingRoot}/plugin-cache"
 
 		cat <<EOF > "${terraformRC}"
 credentials "app.terraform.io" {
@@ -39,3 +41,4 @@ EOF
 		error Could not locate the ${TERRAFORM_CONFIGS_IMPORT_FILE} file
 	fi
 }
+		
