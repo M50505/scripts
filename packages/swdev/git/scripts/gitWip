@@ -16,4 +16,4 @@ else
 fi
 
 
-gitIsUpdated && gitpub "${message}"
+gitIsUpdated && gitPub "${message}"

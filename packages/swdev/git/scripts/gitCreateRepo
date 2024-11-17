@@ -45,7 +45,7 @@ EOF
 
 	mv README.md README.adoc
 
-	gitpub "Converted the README.md to an AsciiDoc file name README.adoc"
+	gitPub "Converted the README.md to an AsciiDoc file name README.adoc"
 
 
 		fi
