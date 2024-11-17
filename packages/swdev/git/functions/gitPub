@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # vim:tabstop=2:shiftwidth=2:nu:filetype=sh
-gitpub ()
+gitPub ()
 {
 	_doc $1 20170525133155 "combines the steps of add, commit, and then push. Specify the commit comment as one or more arguments to this function." && return 0
 
