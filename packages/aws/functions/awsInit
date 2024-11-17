@@ -10,12 +10,11 @@
 
 awsInit ()
 {
-	local keyId=$(jq ".fields[]| select(.label==\"AWS_ACCESS_KEY_ID\").value" "${AWS_CONFIGS_IMPORT_FILE}" | tr -d \")
+	local keyId=$(jq -r ".fields[]| select(.label==\"AWS_ACCESS_KEY_ID\").value" "${AWS_CONFIGS_IMPORT_FILE}")
 
-	local key=$(jq ".fields[]| select(.label==\"AWS_SECRET_ACCESS_KEY\").value" "${AWS_CONFIGS_IMPORT_FILE}" | tr -d \")
-	local region=$(jq ".fields[]| select(.label==\"region\").value" "${AWS_CONFIGS_IMPORT_FILE}" | tr -d \")
+	local key=$(jq -r ".fields[]| select(.label==\"AWS_SECRET_ACCESS_KEY\").value" "${AWS_CONFIGS_IMPORT_FILE}")
+	local region=$(jq -r ".fields[]| select(.label==\"region\").value" "${AWS_CONFIGS_IMPORT_FILE}")
 
-	dvar keyId
 
 	local awsConfigDir="${HOME}/.aws"
 	local awsConfigFile="${awsConfigDir}/config"
