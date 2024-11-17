@@ -21,6 +21,8 @@ gitCreateNewProject ()
 		return 1
 	fi
 
+	gitRepoIsAccessible || return 1
+
 	cd ${PROJECTS_ROOT}
 
 	git clone "${url}"

@@ -9,6 +9,8 @@ gitFindRoot ()
 	local currentDirCount=0
 	local oldPwd="${PWD}"
 
+	gitRepoIsAccessible || return 1
+
 	while [[ ${PWD} != "/" && ${currentDirCount} -lt ${MAX_DIRS} ]]
 	do
 		if [[ -d ".git" ]]

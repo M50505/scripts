@@ -10,6 +10,8 @@ gitCommit ()
 		return 1
 	fi
 
+	gitRepoIsAccessible || return 1
+
 	local tag=${1}
 	shift
 

@@ -12,6 +12,8 @@ EOF
 		return 1
 	fi
 
+	gitRepoIsAccessible || return 1
+
 	local branch="${1}"
 	local message="${2}"
 

@@ -6,6 +6,9 @@ gitpub ()
 
 	local tag
 
+
+	gitRepoIsAccessible || return 1
+
 	git add .
 	git commit -m "$*"
 	git push 

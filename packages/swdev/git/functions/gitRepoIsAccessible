@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2024-11-04 - Initial version.
+#	
+
+gitRepoIsAccessible ()
+{
+    [[ -d .git ]] || error This is not a local git repository directory. || return 1
+
+    local repoUrl=$(sed -rn '/^\s*url\s*=\s*/ {s/^\s*url\s*=\s*(.*$)/\1/;p}' .git/config)
+		
+		git ls-remote --exit-code -h ${repoUrl} > /dev/null
+}

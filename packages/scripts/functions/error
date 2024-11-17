@@ -10,6 +10,7 @@
 error ()
 {
 	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+
 (
 	if [[ $# -gt 0 ]]
 	then

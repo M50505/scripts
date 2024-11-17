@@ -4,6 +4,9 @@ gittag ()
 {
 	_doc $1 20170525133155 "Sets (or resets) the specified tag and then issues a commit specifically for the purpose of capturing the tag." && return 0
 
+
+	gitRepoIsAccessible || return 1
+
 	if [[ $# -gt 0 ]]
 	then
 		local tagName="${1}"

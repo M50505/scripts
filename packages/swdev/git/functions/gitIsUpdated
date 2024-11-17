@@ -9,8 +9,13 @@
 
 gitIsUpdated ()
 {
-	_doc ${1} 20211118223101 "Not focumented yet. " && return 0
+	_doc ${1} 20211118223101 "Check to see if the local repo is up to date. " && return 0
+
 	local result
+
+
+	gitRepoIsAccessible || return 1
+
 	((result=$(git status --short | wc -l)))
 
 	if [[ ${result} -eq 0 ]]
