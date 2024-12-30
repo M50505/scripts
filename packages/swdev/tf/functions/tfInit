@@ -21,9 +21,9 @@ tfInit ()
 
 	if [[ -f ${TERRAFORM_CONFIGS_IMPORT_FILE} ]]
 	then
-		token=$(jq ".fields[]| select(.label==\"LoginToken\").value" "${TERRAFORM_CONFIGS_IMPORT_FILE}")
+		token=$(jq -r ".fields[]| select(.label==\"LoginToken\").value" "${TERRAFORM_CONFIGS_IMPORT_FILE}")
 		
-		export TF_VAR_aws_account_id=$(jq ".fields[]| select(.label==\"Account ID\").value" "${AWS_CONFIGS_IMPORT_FILE}")
+		export TF_VAR_aws_account_id=$(jq -r ".fields[]| select(.label==\"Account ID\").value" "${AWS_CONFIGS_IMPORT_FILE}")
 
 		[[ -d "${terraformCachingRoot}/plugin-cache" ]] || mkdir -p "${terraformCachingRoot}/plugin-cache"
 
