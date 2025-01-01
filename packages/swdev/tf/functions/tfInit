@@ -29,7 +29,7 @@ tfInit ()
 
 		cat <<EOF > "${terraformRC}"
 credentials "app.terraform.io" {
-  token = ${token}
+  token = "${token}"
 }
 
 plugin_cache_dir   = "${terraformCachingRoot}/plugin-cache"

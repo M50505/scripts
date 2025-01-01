@@ -19,7 +19,7 @@ gitWipAll ()
 			
 			cd "${newDir}"
 
-			gitwip
+			gitWip
 
 			cd "${oldDir}"
         else
