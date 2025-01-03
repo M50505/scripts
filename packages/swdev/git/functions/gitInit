@@ -28,10 +28,16 @@ gitInit ()
 
 		export GIT_SSH_COMMAND="ssh -i ${HOME}/.ssh/id_rsa.${1}"
 	else
-		local cred=$(<"${gitCredFile}")
-		cred=${cred#*//}
-		cred=${cred%:*}
-		echo ${cred}
+		if [[ -f "${gitCredFile}" ]]
+		then
+			local cred=$(<"${gitCredFile}")
+			cred=${cred#*//}
+			cred=${cred%:*}
+			echo ${cred}
+		else
+			echo "No credentials have been set as yet." >&2
+			return 1
+		fi
 	fi
 }
 
