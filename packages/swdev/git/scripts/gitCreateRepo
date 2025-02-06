@@ -45,10 +45,15 @@ EOF
 
 	mv README.md README.adoc
 
+	git config --global --add push.default current
+	git config --global --add push.autoSetupRemote true
+
 	gitPub "Converted the README.md to an AsciiDoc file name README.adoc"
 
-
+	
 		fi
 	;;
+
+	
 esac
 
