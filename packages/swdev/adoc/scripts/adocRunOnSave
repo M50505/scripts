@@ -83,7 +83,7 @@ EOF
 fi
 
 
-adocHtmlPdfCmd="/usr/local/asciidoctor-web-pdf-linux/asciidoctor-web-pdf"
+adocHtmlPdfCmd="asciidoctor-web-pdf"
 adocHtmlCmd="asciidoctor"
 
 adocHtmlPdfOpts="-a stylesheet -a stylesheet=${basename}.css"
@@ -92,7 +92,8 @@ adocHtmlOpts="-a stylesheet -a stylesheet=${basename}.css"
 while (inotifywait -e modify ${basename}.adoc ${basename}.css)
 do
     ${adocHtmlPdfCmd} ${adocHtmlPdfOpts} ${basename}.adoc
-    ${adocHtmlCmd} ${adocHtmlOpts} ${basename}.adoc
+    echo ${adocHtmlPdfCmd} ${adocHtmlPdfOpts} ${basename}.adoc
+    #${adocHtmlCmd} ${adocHtmlOpts} ${basename}.adoc
 
     mv ${basename}.pdf /local/xfer
     mv ${basename}.html /local/xfer

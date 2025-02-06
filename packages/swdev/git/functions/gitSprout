@@ -8,12 +8,15 @@
 #	
 _doc ${1} 20211118224002 "Not documented yet." && exit 0
 
-if [[ $# -gt 0 ]]
-then
-	message="${*}"
-else
-	message="WIP"
-fi
+gitSprout ()
+{
+	if [[ $# -gt 0 ]]
+	then
+		message="${*}"
+	else
+		message="WIP"
+	fi
 
 
-gitIsUpdated && gitPub "${message}"
+	gitIsUpdated && gitPub "${message}"
+}
