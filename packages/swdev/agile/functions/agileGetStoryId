@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-02-11 - Initial version.
+#	
+#_doc ${1} 20250211100019 " " && exit 0
+
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd input string ""  "The input file to use."
+#optAdd output string ""  "The output file to use."
+#optAdd mark boolean false "A sample boolean option"
+#optParse $* 
+#optParseSuccess || exit 1
+
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+agileGetStoryId ()
+{
+	echo 1234
+}

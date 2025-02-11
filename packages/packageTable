@@ -16,6 +16,7 @@ packages/perf/perfWin
 #packages/platform/cygwin
 #packages/sharepoint
 packages/swdev/adoc
+packages/swdev/agile
 packages/swdev/antora
 packages/swdev/git
 packages/swdev/tf
