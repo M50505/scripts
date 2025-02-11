@@ -6,7 +6,7 @@
 #
 # 2021-11-18 - Initial version.
 #	
-_doc ${1} 20211118224002 "Not documented yet." && exit 0
+_doc ${1} 20211118224002 "Commits and pushes, using either a provided message or else 'WIP'." && exit 0
 
 gitWip ()
 {
@@ -17,12 +17,12 @@ gitWip ()
 		message="WIP"
 	fi
 
-	if gitIsUpdated
-	then
-		(
-			gitCdRoot
-			gitPub "${message}"
-		)	
-	fi
+	(
+		gitCdRoot
 
+		if gitIsUpdated
+		then
+			gitPub "${message}"
+		fi
+	)	
 }
