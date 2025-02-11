@@ -19,6 +19,7 @@ gitWip ()
 
 	if gitIsUpdated
 	then
+		echo gitIsUpdate passes, now using gitCdRoot and then gitPub
 		(
 			gitCdRoot
 			gitPub "${message}"
