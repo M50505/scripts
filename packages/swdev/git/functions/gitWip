@@ -17,5 +17,11 @@ gitWip ()
 		message="WIP"
 	fi
 
-	gitIsUpdated && gitPub "${message}"
+	if gitIsUpdated
+	then
+		(
+			gitCdRoot
+			gitPub "${message}"
+		)	
+	fi
 }
