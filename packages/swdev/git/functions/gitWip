@@ -25,4 +25,5 @@ gitWip ()
 			gitPub "${message}"
 		)	
 	fi
+
 }
