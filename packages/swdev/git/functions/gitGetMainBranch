@@ -4,9 +4,9 @@
 # Author:              Martin Cribbins
 # Revision history:
 #
-# 2025-02-11 - Initial version.
+# 2025-02-12 - Initial version.
 #	
-#_doc ${1} 20250211124138 " " && exit 0
+#_doc ${1} 20250212090609 " " && exit 0
 
 #optInit
 #optAdd sample string "test"  "A sample string option"
@@ -20,17 +20,8 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-gitCdRoot ()
+
+gitGetMainBranch ()
 {
-	local stopDir=$(dirname "${HOME}")
-
-	while [[ "${PWD}" != "${stopDir}" ]]
-	do
-		if [[ -d .git ]]
-		then
-			return 0
-		fi
-
-		cd ..
-	done
+	git branch -r | sed -rn '/HEAD/ {s,^.*origin/,,;p}'
 }
