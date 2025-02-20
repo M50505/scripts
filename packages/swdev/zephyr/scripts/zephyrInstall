@@ -8,46 +8,60 @@
 #	
 #_doc ${1} 20250220160226 " " && exit 0
 
-#optInit
-#optAdd sample string "test"  "A sample string option"
-#optAdd input string ""  "The input file to use."
-#optAdd output string ""  "The output file to use."
-#optAdd mark boolean false "A sample boolean option"
-#optParse $* 
-#optParseSuccess || exit 1
+#
+#	Most of the time we will likely already have the tools that are
+#	found via apt already installed. If the argument "apt" is specified,
+#	then an apt update, upgrade, and then apt install of all required 
+#	packages is performed.
+#
 
+if [[ "${1}" = "apt" ]]
+then
+	sudo apt update -y
+	sudo apt upgrade -y
+	
+	sudo apt install -y \
+	cmake \
+	ninja-build \
+	gperf \
+	ccache \
+	dfu-util \
+	device-tree-compiler \
+	xz-utils \
+	file \
+	make \
+	gcc \
+	gcc-multilib \
+	g++-multilib \
+	libsdl2-dev \
+	libmagic1
+fi
 
-#[[ -n ${input} ]] && exec 0<${input}
-#[[ -n ${output} ]] && exec 1>${output}
+rm -rf ~/zephyrproject
+rm -rf ~/.west
+rm -rf ~/.cmake
 
-sudo apt install -y --no-install-recommends \
-cmake \
-ninja-build \
-gperf \
-ccache \
-dfu-util \
-device-tree-compiler \
-xz-utils \
-file \
-make \
-gcc \
-gcc-multilib \
-g++-multilib \
-libsdl2-dev \
-libmagic1
+python3 uninstall -y west
 
-python3 -m venv ~/zephyrproject/.venv
-. ~/zephyrproject/.venv/bin/activate
+#python3 -m venv ~/zephyrproject/.venv
+#. ~/zephyrproject/.venv/bin/activate
 
 pip3 install west
+
 
 west init ~/zephyrproject
 cd ~/zephyrproject
 west update
 
 west zephyr-export
-west packages pip --install
 
-cd ~/zephyrproject/zephyr
-west sdk install
+#
+#	To date, these steps for "installing" the Zephyr SDK
+#	do not work. This might be due to the fact that we are
+#	now working with Zephyr 4.1, and the steps as listed in
+#	the Zephyr Project Getting Started document are out of date.
+#
+
+#cd ~/zephyrproject/zephyr
+#west sdk install
 
