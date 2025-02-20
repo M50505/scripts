@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-02-20 - Initial version.
+#	
+#_doc ${1} 20250220160226 " " && exit 0
+
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd input string ""  "The input file to use."
+#optAdd output string ""  "The output file to use."
+#optAdd mark boolean false "A sample boolean option"
+#optParse $* 
+#optParseSuccess || exit 1
+
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+sudo apt install -y --no-install-recommends \
+cmake \
+ninja-build \
+gperf \
+ccache \
+dfu-util \
+device-tree-compiler \
+xz-utils \
+file \
+make \
+gcc \
+gcc-multilib \
+g++-multilib \
+libsdl2-dev \
+libmagic1
+
+python3 -m venv ~/zephyrproject/.venv
+. ~/zephyrproject/.venv/bin/activate
+
+pip3 install west
+
+west init ~/zephyrproject
+cd ~/zephyrproject
+west update
+
+west zephyr-export
+west packages pip --install
+
+cd ~/zephyrproject/zephyr
+west sdk install
+

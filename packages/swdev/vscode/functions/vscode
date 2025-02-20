@@ -24,7 +24,7 @@ vscode ()
 {
 	(
 		gitCdRoot
-		/local/AppData/Local/Programs/Microsoft\ VS\ Code/bin/code
+		/local/AppData/Local/Programs/Microsoft\ VS\ Code/bin/code .
 	)
 
 }
