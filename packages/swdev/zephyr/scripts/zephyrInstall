@@ -55,18 +55,11 @@ west update
 
 west zephyr-export
 
-#
-#	To date, these steps for "installing" the Zephyr SDK
-#	do not work. This might be due to the fact that we are
-#	now working with Zephyr 4.1, and the steps as listed in
-#	the Zephyr Project Getting Started document are out of date.
-#
-
-cd /tmp
+cd ${HOME}/.local
 wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.0/zephyr-sdk-0.17.0_linux-x86_64.tar.xz
 tar xvf zephyr-sdk-0.17.0_linux-x86_64.tar.xz
 cd zephyr-sdk-0.17.0
 ./setup.sh
-cd /tmp
-rm -rf zephyr-sdk-0.17.0*
+rm zephyr-sdk-0.17.0_linux-x86_64.tar.xz
+
 
