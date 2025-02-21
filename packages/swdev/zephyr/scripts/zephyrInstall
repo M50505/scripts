@@ -47,7 +47,7 @@ python3 uninstall -y west
 #. ~/zephyrproject/.venv/bin/activate
 
 pip3 install west
-
+pip3 install pyelftools
 
 west init ~/zephyrproject
 cd ~/zephyrproject
