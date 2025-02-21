@@ -34,6 +34,9 @@ then
 	gcc-multilib \
 	g++-multilib \
 	libsdl2-dev \
+	lzma \
+	liblzma-dev \
+	libbz2-dev \
 	libmagic1
 fi
 
@@ -48,6 +51,9 @@ python3 uninstall -y west
 
 pip3 install west
 pip3 install pyelftools
+pip3 install click
+pip3 install lzma
+pip3 install backports.lzma
 
 west init ~/zephyrproject
 cd ~/zephyrproject
