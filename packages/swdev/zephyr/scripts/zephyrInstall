@@ -53,6 +53,7 @@ pip3 install west
 pip3 install pyelftools
 pip3 install click
 pip3 install lzma
+pip3 install cbor2
 pip3 install backports.lzma
 
 west init ~/zephyrproject
