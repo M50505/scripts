@@ -70,3 +70,15 @@ cd zephyr-sdk-0.17.0
 rm zephyr-sdk-0.17.0_linux-x86_64.tar.xz
 
 
+#
+#	Add this as a rule in /usr/lib/udev/rules.d
+#	perhaps with the filename 60-usb-serial-mcuburner.rules
+#
+#SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", GROUP="tty", MODE="0660", SYMLINK+="mcuburner"
+
+#
+#	Ensure that the file: /etc/wsl.conf has this section, in order to ensure proper handling of udev as the service called systemd-udevd
+#
+#	[boot]
+#	systemd=true
+
