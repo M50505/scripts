@@ -82,3 +82,9 @@ rm zephyr-sdk-0.17.0_linux-x86_64.tar.xz
 #	[boot]
 #	systemd=true
 
+#
+#	For working with Espressif chips and boards, export the following in the WSL2 instance being used, in the .bashrc file, where "mcuburner" in this
+#	case is the symlink name used in the above udev rule.
+#
+#	export ESPTOOL_PORT=/dev/mcuburner
+#
