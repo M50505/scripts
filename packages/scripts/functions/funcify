@@ -1,0 +1,71 @@
+#!//usr/bin/bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+funcify () 
+{ 
+	_doc $1 20160729125024 "Prepends shbang and options parsing to the specified shell script" && return 0;
+
+	local editFlag=false name description;
+	
+	optionsFlag=true;
+	headerFlag=true;
+
+	while [[ "${1:0:1}" = "-" ]]; do
+		case "${1}" in 
+			-e)
+					editFlag=true;
+					shift
+			;;
+			-v)
+					optionsFlag=false;
+					headerFlag=false;
+					shift
+			;;
+			-n)
+					optionsFlag=false;
+					shift
+			;;
+			*)
+					echo "Unknown option: ${1}";
+					return 1
+			;;
+		esac;
+	done;
+
+	name="${1}";
+	shift;
+
+	description="${*}";
+
+	if ${optionsFlag}
+	then
+		prependFile "${name}"  <<EOF
+#_doc \${1} $(date +%Y%m%d%H%M%S) "${description} " && exit 0
+
+${name} ()
+{
+
+}
+EOF
+
+	fi
+
+	if ${headerFlag}
+	then
+		prependFile "${name}"  <<EOF
+#	
+# Author:              ${AUTHOR}
+# Revision history:
+#
+# $(date +%Y-%m-%d) - Initial version.
+#	
+EOF
+	fi
+
+	prependFile "${name}"  <<EOF
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+EOF
+
+	chmod +x "${name}";
+	${editFlag} && vim "${name}"
+}
