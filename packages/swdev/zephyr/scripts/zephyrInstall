@@ -55,10 +55,13 @@ pip3 install click
 pip3 install lzma
 pip3 install cbor2
 pip3 install backports.lzma
+pip3 install requests
 
 west init ~/zephyrproject
 cd ~/zephyrproject
 west update
+
+west blobs fetch hal_espressif
 
 west zephyr-export
 

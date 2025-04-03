@@ -8,8 +8,11 @@
 #	
 #_doc ${1} 20250302100238 " " && exit 0
 
-cdproj ()
+_cdproj ()
 {
-	cd ~/projects/${1}
-	
+	local prevCWD=${PWD}
+	cd ~/projects
+
+	COMPREPLY=($(compgen -d -- ${2}))
+
 }
