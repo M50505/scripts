@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-04-17 - Initial version.
+#	
+#_doc ${1} 20250417141516 " " && exit 0
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+ffind ()
+{
+	local opts=($*)
+
+	local start="."
+	local optCount=${#opts[@]}
+	local pattern=${opts[${optCount}-1]}
+	unset opts[${optCount}-1]
+	
+
+	[[ "${opts[0]:0:1}" = "-" ]] || start=""
+
+	find ${start} ${opts[@]} -name \*${pattern}\*
+}
