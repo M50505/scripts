@@ -22,6 +22,8 @@
 
 gitCdRoot ()
 {
+
+	local oldpwd="${PWD}"
 	local stopDir=$(dirname "${HOME}")
 
 	while [[ "${PWD}" != "${stopDir}" ]]
@@ -33,4 +35,8 @@ gitCdRoot ()
 
 		cd ..
 	done
+
+	cd ${oldpwd}
+
+	return 1
 }

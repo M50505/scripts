@@ -23,7 +23,7 @@
 vscode ()
 {
 	(
-		gitCdRoot
+		gitCdRoot 
 		/local/AppData/Local/Programs/Microsoft\ VS\ Code/bin/code .
 	)
 

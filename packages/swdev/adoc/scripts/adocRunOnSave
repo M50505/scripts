@@ -9,94 +9,42 @@
 _doc ${1} 20240810112648 "No documentation yet." && exit 0
 
 
-basename="${1%.adoc}"
+adocBaseFileName="${1%.adoc}"
 
-if [[ ! -f "${basename}.adoc" ]]
+if [[ -f "${adocBaseFileName}.adoc" ]]
 then
-	echo >&2 "Cannot find ${basename}.adoc"
+	echo "Using ${adocBaseFileName}.adoc"
+else
+	echo >&2 "Cannot find ${adocBaseFileName}.adoc"
 	exit 1
 fi
 
-if [[ ! -f "${basename}.css" ]]
+if [[ ! -f "${adocBaseFileName}.css" ]]
 then
-	echo >&2 "Cannot find ${basename}.css, generating a default version of the CSS file."
-	cat <<EOF > ${basename}.css
-@page {
-    margin: 1.5cm 1.5cm 1.5cm 1.5cm;
-  }
-  
-body {
-  font-family: 'Fira Sans', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeSpeed;
-  font-size: 10pt;
-  text-align: left;
-  height: 29.7cm;
-  width: 21cm;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
- 
-h1, h2, h3, h4, h5 {
-  font-family: 'Fira Sans', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-h1 {
-  font-size: 22pt;
-}
-
-h2 {
-  font-size: 16pt; 
-}
-
-h3 {
-  font-size: 14pt;
-}
-
-h4 {
-  font-size: 12pt;
-}
-
-h5 {
-  font-size: 10pt;
-}
-
-ul {
-  padding-inline-start: 12pt;
-}
-
-li p {
-  margin-top: 6pt;
-  margin-bottom: 0pt;
-}
-
-
-/* h3 + 
-:contains("Earlier")  {
-  color: blue;
-} */
-
-EOF
+	echo >&2 "There is no ${adocBaseFileName}.css, file, generating a default version of the file."
+	adocGenDefaultCss "${adocBaseFileName}"
 fi
 
 
 adocHtmlPdfCmd="asciidoctor-web-pdf"
 adocHtmlCmd="asciidoctor"
 
-adocHtmlPdfOpts="-a stylesheet -a stylesheet=${basename}.css"
-adocHtmlOpts="-a stylesheet -a stylesheet=${basename}.css"
+adocHtmlPdfOpts="-a stylesheet -a stylesheet=${adocBaseFileName}.css"
+adocHtmlOpts="-a stylesheet -a stylesheet=${adocBaseFileName}.css"
 
-while (inotifywait -e modify ${basename}.adoc ${basename}.css)
+declare -I num=101
+
+while (inotifywait -e modify ${adocBaseFileName}.adoc ${adocBaseFileName}.css)
 do
-    ${adocHtmlPdfCmd} ${adocHtmlPdfOpts} ${basename}.adoc
-    echo ${adocHtmlPdfCmd} ${adocHtmlPdfOpts} ${basename}.adoc
-    #${adocHtmlCmd} ${adocHtmlOpts} ${basename}.adoc
+    ${adocHtmlPdfCmd} ${adocHtmlPdfOpts} ${adocBaseFileName}.adoc
+    echo ${num} ${adocHtmlPdfCmd} ${adocHtmlPdfOpts} ${adocBaseFileName}.adoc
 
-    mv ${basename}.pdf /local/xfer
-    mv ${basename}.html /local/xfer
+    ${adocHtmlCmd} ${adocHtmlOpts} ${adocBaseFileName}.adoc
+
+    mv ${adocBaseFileName}.pdf /local/xfer
+    mv ${adocBaseFileName}.html /local/xfer
 
     [[ -f diag-plantuml ]] && rm diag-plantuml
+
+		((num++))
 done

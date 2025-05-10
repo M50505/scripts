@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2024-10-20 - Initial version.
+#	
+
+errorExit ()
+{
+	[[ $# -gt 0 ]] && echo $* >&2
+
+	exit 1
+}

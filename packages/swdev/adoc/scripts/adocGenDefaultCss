@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-05-07 - Initial version.
+#	
+#_doc ${1} 20250507130103 " " && exit 0
+
+
+[[ $# -lt 1 ]] && errorExit "No filename was given for the CSS file to create"
+
+adocCssFileName="${1}.css"
+
+cat <<EOF > ${adocCssFileName}
+@page {
+    margin: 1.5cm 1.5cm 1.5cm 1.5cm;
+  }
+  
+body {
+  font-family: 'Fira Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeSpeed;
+  font-size: 10pt;
+  text-align: left;
+  height: 29.7cm;
+  width: 21cm;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+ 
+h1, h2, h3, h4, h5 {
+  font-family: 'Fira Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1 {
+  font-size: 22pt;
+}
+
+h2 {
+  font-size: 16pt; 
+}
+
+h3 {
+  font-size: 14pt;
+}
+
+h4 {
+  font-size: 12pt;
+}
+
+h5 {
+  font-size: 10pt;
+}
+
+ul {
+  padding-inline-start: 12pt;
+}
+
+li p {
+  margin-top: 6pt;
+  margin-bottom: 0pt;
+}
+
+
+/* h3 + 
+:contains("Earlier")  {
+  color: blue;
+} */
+
+EOF
+
