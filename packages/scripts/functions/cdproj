@@ -8,6 +8,7 @@
 #	
 #_doc ${1} 20250302100238 " " && exit 0
 
+
 cdproj ()
 {
 	cd ~/projects/${1}
