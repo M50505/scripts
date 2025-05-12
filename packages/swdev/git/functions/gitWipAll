@@ -8,7 +8,9 @@ gitWipAll ()
 	local status=1
 	local newDir
 	local oldDir="${PWD}"
-	    
+	local previousGitUser=$(gitInit)
+
+
 	for newDir in *
 	do
         echo -n "${newDir}"
@@ -19,6 +21,8 @@ gitWipAll ()
 			
 			cd "${newDir}"
 
+			gitInit $(gitGetRepoUser)
+
 			gitWip
 
 			cd "${oldDir}"
@@ -26,5 +30,7 @@ gitWipAll ()
             echo " OK"
 		fi
 	done
+
+	gitInit ${previousGitUser}
 }
 

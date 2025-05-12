@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-05-12 - Initial version.
+#	
+#_doc ${1} 20250512095955 " " && exit 0
+
+
+gitGetRepoUser ()
+{
+	local user=$(git config --get remote.origin.url)
+	user=${user#*:}
+	user=${user%/*}
+
+	echo ${user}
+}

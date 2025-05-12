@@ -15,9 +15,6 @@ cdproj ()
 	
 	if [[ -d .git ]]
 	then
-		local user=$(git config --get remote.origin.url)
-		user=${user#*:}
-		user=${user%/*}
-		gitInit ${user}
+		gitInit $(gitGetRepoUser)
 	fi
 }
