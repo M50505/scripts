@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-05-14 - Initial version.
+#	
+#_doc ${1} 20250514094859 " " && exit 0
+#
+#	Because I never remember all of the little steps to get a T3 App
+
+if [[ $# -lt 1 ]]
+then
+	echo "Youi need to specify the name of the new app." >&2
+	exit 1
+fi
+
+appName="${1}"
+
+cd ~/projects
+
+#	Create the node.js application - this will create a new directory under ~/projects
+#	Remember to have the project directory for the new app already present and it must be
+# a local copy of an existing repository.
+#	It is recommended that before creating the T3 app, delete all contents of the app
+#	local repository directoty EXCEPT for .git and .gitignore.
+#	Whe t3 create asks what to do about the existing directory, tell it to overwrite the existing
+#	contents.
+#
+#	FInally, use pnpm to run the app either in dev mode or production mode:
+#
+#	pnpm dev
+#
+#	-- or --
+#
+#	pnpm run
+
+# ${appName}
+# TypeScript
+# Yes
+# No
+# None
+# Drizzle
+# Yes
+# PostgreSQL
+# No
+# Yes
+
+pnpm create t3-app@latest 
+

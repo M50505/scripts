@@ -21,6 +21,7 @@ packages/swdev/antora
 packages/swdev/git
 packages/swdev/tf
 packages/swdev/vscode
+packages/swdev/t3
 #packages/swdev/gradle
 #packages/swdev/java
 #packages/swdev/mvn

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-05-16 - Initial version.
+#	
+#_doc ${1} 20250516111343 " " && exit 0
+
+isFunction ()
+{
+	[[ $# -lt 1 ]] && return 1
+
+	local funcs=($(declare -F))
+
+	[[ "${funcs[*]}" =~ " ${1} " ]]
+}
+

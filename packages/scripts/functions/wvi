@@ -10,6 +10,8 @@ wvi ()
 		if file -b ${commandPath} | grep text 2>/dev/null >&2
 		then
 			vim ${commandPath}
+
+			isFunction ${1} && . ${commandPath}
 		else
 			echo "${commandPath} is not a text file."
 		fi

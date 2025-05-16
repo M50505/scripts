@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-05-16 - Initial version.
+#	
+#_doc ${1} 20250516095408 " " && exit 0
+
+if [[ $# -lt 1 ]]
+then
+	cat <<EOF >&2
+You must specify a local git repo directory that is
+a project, i.e. it is a git repository and you are
+able to use the "cdproj" command, and via that
+command you can cd to the project and automatically
+set the appropriate git remote service credentials.
+EOF
+	exit 1
+fi
+
+localRepoDir="${1}"
+
+if [[ ! -d "${localRepoDir}" ]]
+then
+	echo "The specifid local git repository is not a directory." >&2
+	exit 1
+fi
+
+cd "${localRepoDir}"
+
+if [[ ! -d ".git" ]]
+then
+	cat <<EOF >&2
+This local directory: ${localRepoDir} does NOT contain
+a .git directory, and therefore this is not a git repository.
+EOF
+
+	exit 1
+fi
+
+echo rm -rf .git
+
+cd ..
+
+repoName=$(basename "${localRepoDir}"}
+
+echo mv "${repoName}" /tmp
+
+echo gitClone "${repoName}"
+
+
+
