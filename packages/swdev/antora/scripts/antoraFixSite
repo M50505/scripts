@@ -20,12 +20,13 @@
 # file (which by default is named "antora-playbook.yml" .
 #
 
-newRootDirectory="${1:-documentation}"
+newRootDirectory="${1:-/documentation}"
+localDir="$(basename ${newRootDirectory})"
 
-if [[ ! -d "${newRootDirectory}" ]]
+if [[ ! -d "${localDir}" ]]
 then
 	cat <<EOF >&2
-The directory named "${newRootDirectory}" is not in this directory,
+The directory named "${localDir}" is not in this directory,
 indicating that we may not be in the correct location from which to
 run this script.
 
@@ -42,15 +43,15 @@ fi
 #	Move the _ directory, as well as the 404.html and search-index.js files
 # into the new root directory
 #
-mv 404.html documentation
-mv _ documentation
-mv search-index.js documentation
 rm index.html
+[[ -f 404.html ]] && mv 404.html ${localDir}
+mv _ ${localDir}
+mv search-index.js ${localDir}
 
 #
 #	Step 2:
 #
-#	Convert all href= references in HTML file which are relatively specifyin
+#	Convert all href= references in HTML file which are relatively specifying
 #	either "../" or "../../" into absolute references, substituting each
 #	indirect reference into href="/<newRootDirectory>" where <newRootDirectory>
 #	is the new root directory specified above.
@@ -59,7 +60,24 @@ rm index.html
 #	that eac affected file is to be updated in place. THe find command creates the list
 #	of HTML files for sed to operate on.
 #
-sed -r -i  "{
-	s,href=\"[.][.]/[.][.]/,href=\"../,g
-	s,href=\"[.][.]/,href=\"/${newRootDirectory},
-}" $(find . -name \*.html)
+	htmlFiles=$(find . -name \*.html)
+
+	set -x
+	sed -r -i "{
+		s,src=\"../_,src=\"${newRootDirectory}/_,g	
+		s,src=\"../../_,src=\"${newRootDirectory}/_,g	
+		s,src=\"../../search-index.js,src=\"${newRootDirectory}/search-index.js,g	
+		
+		s,stylesheet=\"../_,stylesheet=\"${newRootDirectory}/_,g	
+		s,stylesheet=\"../../_,stylesheet=\"${newRootDirectory}/_,g	
+
+		s,href=\"../_,href=\"${newRootDirectory}/_,g	
+		s,href=\"../../_,href=\"${newRootDirectory}/_,g	
+		s,href=\"./\",href=\"${newRootDirectory}/\",g	
+		s,href=\"..\",href=\"${newRootDirectory}\",g	
+		s,href=\"../,href=\"${newRootDirectory}/,g	
+		s,href=\"([^/]),href=\"${newRootDirectory}/\1,g	
+
+		s,href=\"(.+)/\",href=\"\1/index.html\",g	
+	}" ${htmlFiles}
+
