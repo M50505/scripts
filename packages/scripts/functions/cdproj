@@ -11,31 +11,42 @@
 
 cdproj ()
 {
+	local projectRoot="${HOME}/projects"
 	local repoUser
 
-	if [[ -d ${1} ]]
+	
+	if [[ -d ${projectRoot} ]]
 	then
-		if [[ -d ${1}/.git ]]
-		then
-			cd ~/projects/${1}
+		cd ${projectRoot}
 
-			if repoUser=$(gitGetRepoUser)
+		if [[ -d ${1} ]]
+		then
+			if [[ -d ${1}/.git ]]
 			then
-				if ! gitInit ${repoUser}
+				cd ${projectRoot}/${1}
+
+				if repoUser=$(gitGetRepoUser)
 				then
-					echo "Could not find credentials for the git service for the specified project" >&2
+					if ! gitInit ${repoUser}
+					then
+						echo "Could not find credentials for the git service for the specified project" >&2
+						return 1
+					fi
+				else
+					echo "The git user account cannot be found or is not valid." >&2
 					return 1
 				fi
 			else
-				echo "The git user account cannot be found or is not valid." >&2
+				echo "The specified project is not a git repository." >&2
 				return 1
 			fi
 		else
-			echo "The specified project is not a git repository." >&2
+			echo "The specified project directory does not exist." >&2
 			return 1
 		fi
 	else
-		echo "The specified project directory does not exist." >&2
+		echo "The project root ${projectRoot} cannot be located."
 		return 1
 	fi
+
 }
