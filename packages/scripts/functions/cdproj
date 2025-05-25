@@ -11,41 +11,118 @@
 
 cdproj ()
 {
-	local projectRoot="${HOME}/projects"
+	#
+	#	Customize to your liking: the locations of the projects root
+	# directory and the file containing the name of the previously
+	# visited project.
+	#
+	local projectsRoot="${HOME}/projects"
+
+	local currentProject="${HOME}/.config/cdproj/currentProject"
+	local previousProject="${HOME}/.config/cdproj/previousProject"
+
+	local allProjects
 	local repoUser
 
+	[[ -f "${currentProject}" ]] || touch "${currentProject}"
+	[[ -f "${previousProject}" ]] || touch "${previousProject}"
 	
-	if [[ -d ${projectRoot} ]]
+	#
+	#	Bail out if the projects root directory does not exist.
+	#
+	if [[ ! -d ${projectsRoot} ]]
 	then
-		cd ${projectRoot}
+		echo "The projects root directory ${projectsRoot} cannot be located." >&2
+		return 1
+	fi	
 
-		if [[ -d ${1} ]]
+	#
+	#	The first argument is "-", so we are looking
+	#	to go back to the previous project directory.
+	#
+	if [[ "${1}" = "-" ]]
+	then
+	
+		#	If this is the first time that "cdproj -" is being used,
+		#	then if the directory for the previous project file
+		#	does not exist, create it.`
+
+		if [[ ! -d "$(dirname ${previousProject})" ]]
 		then
-			if [[ -d ${1}/.git ]]
-			then
-				cd ${projectRoot}/${1}
 
-				if repoUser=$(gitGetRepoUser)
-				then
-					if ! gitInit ${repoUser}
-					then
-						echo "Could not find credentials for the git service for the specified project" >&2
-						return 1
-					fi
-				else
-					echo "The git user account cannot be found or is not valid." >&2
-					return 1
-				fi
-			else
-				echo "The specified project is not a git repository." >&2
+			# Attempt to create the directory, report and
+			#	return if that fails. 
+			
+			if ! mkdir -p $(dirname "${previousProject}")
+			then
+				echo "Failed to create the $(dirname "${previousProject}") directory." >&2
 				return 1
 			fi
+		fi
+
+		if cdproj "$(<${previousProject})"
+		then
+			return 0
 		else
-			echo "The specified project directory does not exist." >&2
 			return 1
 		fi
-	else
-		echo "The project root ${projectRoot} cannot be located."
+	fi
+
+	#
+	#	This is the beginning of the ordinary flow, attempting to
+	#	change directory to the specified project ...
+	#
+	local dstDir="${projectsRoot}/${1}"
+
+	if [[ ! -d "${dstDir}" ]]
+	then
+		echo "The project directory ${dstDir} cannot be located." >&2
+		return 1
+	fi	
+
+	#
+	#	Return in failure if the desired project is not a local git repo.
+	#
+	if [[ ! -d "${dstDir}/.git" ]]
+	then
+		echo "The project ${dstDir} is not a local git repository." >&2
+		return 1
+	fi
+
+
+	#
+	#	Finally, after all of the sanity checks, cd to
+	#	the desire project directory and call gitInit
+	#	to set the current git remote repository user.
+	#
+	cd "${dstDir}"
+
+	#
+	#	Copy what was the current project name into the
+	#	previous project name, and then record this project
+	#	name into the current project name file.
+	#
+	cp "${currentProject}" "${previousProject}" 
+
+	echo "$(basename ${PWD})" > "${currentProject}" 
+
+
+	#
+	#	After all of the above checks, it is still possible
+	#	that the credentials that are indicated in this local
+	#	git repo are not "valid" i.e. not in our list of git
+	#	credentials. If that is the case then simply return
+	#	failure.
+	#
+	if ! repoUser=$(gitGetRepoUser)
+	then
+		echo "The git user account cannot be found or is not valid." >&2
+		return 1
+	fi
+
+	if ! gitInit ${repoUser}
+	then
+		echo "Could not find credentials for the git service for the specified project" >&2
 		return 1
 	fi
 
