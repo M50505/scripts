@@ -5,10 +5,8 @@ isTrue ()
 	_doc $1 20160729125024 "Checks to see if the passed argument equates to a true condition" && return 0
 	if [[ "$(trueFalse ${1})" = "true" ]]
 	then
-		echo 0
 		return 0
 	else
-		echo 1
 		return 1
 	fi
 }
