@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+
+if [[ ! -d .git ]]
+then
+	echo "This script must be run from the root of a local git repository." >&2
+	exit 1
+fi
+
+
+repoUrl=$(git config --get remote.origin.url) 
+repoName=${repoUrl#*/}
+repoName=${repoName%.*}
+
+repoUrl=${repoUrl/:/\//}
+repoUrl=${repoUrl/git@/https:\/\/}
+
+mkdir -p docs/modules/${repoName}/pages
+
+cat <<EOF > docs/modules/${repoName}/nav.adoc
+** xref:${repoName}:index.adoc[]
+EOF
+
+cat <<EOF > docs/modules/${repoName}/pages/index.adoc
+= The ${repoName} documentation
+
+== Introduction
+
+TBD
+
+=== This documentation’s Git repository
+This document comes from the ${repoUrl}[${repoName}] git repository.
+
+EOF
+
+if [[ -f README.adoc ]]
+then
+	mv README.adoc README.adoc.orig
+
+	echo "Saved the original README.adoc to README.adoc.orig"
+fi
+
+ln -s docs/modules/${repoName}/pages/index.adoc README.adoc
+
+echo "Created a new README.adoc as a symbolic link to docs/modules/${repoName}/pages/index.adoc" 
