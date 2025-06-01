@@ -8,6 +8,12 @@
 #	
 #_doc ${1} 20250601074037 " " && exit 0
 
+if [[ $# -lt 1 ]]
+then
+	echo "You must specify the path to the compile_commands.json file." >&2
+	exit 1
+fi
+
 cat <<EOF
 {
     "configurations": [
@@ -32,8 +38,8 @@ sed -r "
 	s,/home/portable/zephyrproject_4.1.0/zephyr,\${env:ZEPHYR_BASE},
 	s,/home/portable/zephyrproject_4.1.0,\${env:ZEPHYR_PROJECT_ROOT},
 	s,${PWD},\${workspaceFolder},
-	s,^,	\",
-	s,$,\",
+	s/^/	\"/
+	s/\$/\",/
 }"
 
 cat <<EOF
