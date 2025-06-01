@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-06-01 - Initial version.
+#	
+#_doc ${1} 20250601074037 " " && exit 0
+
+cat <<EOF
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+EOF
+
+
+sed -rn '
+/-[iI]/ {
+	s/-[iI]/\nZZZ/g
+	p
+}' "${1}" | \
+sed -rn '
+/^ZZZ/ {
+	s/ZZZ(\S+)\s.*$/\1/
+	p
+}' | sort -u | \
+sed -r "
+{
+	s,/home/portable/zephyrproject_4.1.0/zephyr,\${env:ZEPHYR_BASE},
+	s,/home/portable/zephyrproject_4.1.0,\${env:ZEPHYR_PROJECT_ROOT},
+	s,${PWD},\${workspaceFolder},
+	s,^,	\",
+	s,$,\",
+}"
+
+cat <<EOF
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
+EOF
