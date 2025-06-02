@@ -31,3 +31,4 @@ packages/swdev/t3
 packages/swdev/vscode
 packages/swdev/vscode/runonsave
 packages/swdev/zephyr
+packages/device/usb

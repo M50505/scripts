@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-06-02 - Initial version.
+#	
+#_doc ${1} 20250602100643 " " && exit 0
+
+
+if [[ $# -lt 1 ]]
+then
+	echo "You must specify at least one vendor ID." >&2
+	exit 1
+fi
+
+for vendor in $*
+do
+	busDevice=$(dmesg | sed -rn "/idVendor=${vendor}/ {s/^.+usb\s+//;s/:.*$//;p}")
+
+	node=$(dmesg | sed -rn "/${busDevice}:.+tty/ {s,^.+(${busDevice}):.+(tty[a-zA-Z]+[0-9]+).*$,/dev/\2,;p}")
+
+	product=$(dmesg | sed -rn "/${busDevice}.+Product:/ {s/^.+Product:\s*//;p}")
+
+	echo "${busDevice} ${node} ${product}"
+done
+
