@@ -92,7 +92,7 @@ cdproj ()
 
 	#
 	#	Finally, after all of the sanity checks, cd to
-	#	the desire project directory and call gitInit
+	#	the desired project directory and call gitInit
 	#	to set the current git remote repository user.
 	#
 	cd "${dstDir}"

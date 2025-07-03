@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+
+
+harnessInit ()
+{
+	_doc ${1} 20241020102132 "Initializes the local Harness.io delegate and development environment." && return 0
+	
+	local accountId delegateToken
+
+	if [[ -f ${HARNESS_CONFIGS_IMPORT_FILE} ]]
+	then
+		accountId=$(jq -r ".fields[]| select(.label==\"AccountId\").value" "${HARNESS_CONFIGS_IMPORT_FILE}")
+		delegateToken=$(jq -r ".fields[]| select(.label==\"DelegateToken\").value" "${HARNESS_CONFIGS_IMPORT_FILE}")
+		
+		export HARNESS_ACCOUNT_ID=${accountId}
+		export HARNESS_DELEGATE_TOKEN=${delegateToken}
+	else
+		error Could not locate the ${HARNESS_CONFIGS_IMPORT_FILE} file
+	fi
+
+}
+
