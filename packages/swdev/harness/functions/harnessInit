@@ -16,6 +16,11 @@ harnessInit ()
 		
 		export HARNESS_ACCOUNT_ID=${accountId}
 		export HARNESS_DELEGATE_TOKEN=${delegateToken}
+
+		cat <<EOF > /local/bin/harnessInit.bat
+SET HARNESS_ACCOUNT_ID=${accountId}
+SET HARNESS_DELEGATE_TOKEN=${delegateToken}
+EOF
 	else
 		error Could not locate the ${HARNESS_CONFIGS_IMPORT_FILE} file
 	fi
