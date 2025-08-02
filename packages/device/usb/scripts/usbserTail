@@ -1,0 +1,28 @@
+targets=(${*:-"ser"})
+
+for target in ${targets[@]}
+do
+        case $(toLower ${target}) in
+            con*)
+                usbDev="/dev/ttyUSB0"
+                ;;
+                
+           ser*)
+                usbDev="/dev/ttyUSB0"
+                ;;
+                
+           jtag*)
+                usbDev="/dev/ttyACM0"
+                ;;
+                
+           acm*)
+                usbDev="/dev/ttyACM0"
+                ;;
+
+            *)
+                usbDev="/dev/ttyUSB0"
+                ;;
+        esac
+
+        echo "${usbDev} $(stty -F ${usbDev} | tr -d \\n)"
+done

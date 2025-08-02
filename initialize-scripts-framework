@@ -35,7 +35,7 @@ os=$(uname)
 #
 #	The test for MASTER_SCRIPTS_HOME is used in case
 # this script needs to be adjusted to be run from a location other than
-# where all of the other sccripts are located.
+# where all of the other scripts are located.
 #
 
 

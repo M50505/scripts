@@ -81,14 +81,17 @@ cdproj ()
 	fi	
 
 	#
-	#	Return in failure if the desired project is not a local git repo.
+	#	Expanding this to attempt to work with projects that are git collections
+	#	Return in failure if the neither the specified project, nor any of its subdirectories is a local git repo.
 	#
-	if [[ ! -d "${dstDir}/.git" ]]
+	if [[ "$(find ${dstDir} -type d -name .git )" = "" ]]
 	then
-		echo "The project ${dstDir} is not a local git repository." >&2
-		return 1
+		cat <<EOF
+Neither the project ${dstDir} nor any of its subdirectories is a local
+git repository. Proceeding in spite of this.
+EOF
+ 
 	fi
-
 
 	#
 	#	Finally, after all of the sanity checks, cd to
@@ -108,22 +111,23 @@ cdproj ()
 
 
 	#
-	#	After all of the above checks, it is still possible
-	#	that the credentials that are indicated in this local
-	#	git repo are not "valid" i.e. not in our list of git
-	#	credentials. If that is the case then simply return
-	#	failure.
+	#	We may be working with externally supplied repositiories whose
+	#	credentials will not match one that we have, or else are not required
+	#	to match, or else there are no credentials (no user key in the .git/config file)
+	#	specified.
+	#	
+	#	In these cases echo a warning to STDERR and return success.
 	#
 	if ! repoUser=$(gitGetRepoUser)
 	then
-		echo "The git user account cannot be found or is not valid." >&2
-		return 1
+		echo "The git user account cannot be found or is not valid. Proceeding anyway." >&2
+		return 0
 	fi
 
 	if ! gitInit ${repoUser}
 	then
 		echo "Could not find credentials for the git service for the specified project" >&2
-		return 1
+		return 0
 	fi
 
 }

@@ -3,7 +3,7 @@
 
 gitInit ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Displays or sets the credentials that are associated with the specified Git service user ID." && return 0
 
 	local gitCredFile="${HOME}/.git-credentials"
 	local gitConfigFile="${HOME}/.gitconfig"
@@ -39,5 +39,7 @@ gitInit ()
 			return 1
 		fi
 	fi
+
+	export GITHUB_TOKEN=$(gitGetToken)
 }
 

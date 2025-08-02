@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-08-02 - Initial version.
+#	
+#_doc ${1} 20250802090815 "Initializes environment variables and possibly other configuration elements for the local Espressif IDF installation." && exit 0
+
+idfInit ()
+{
+	. $HOME/esp/v5.4.1/esp-idf/export.sh
+}
+
+
