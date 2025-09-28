@@ -5,12 +5,15 @@ gitPub ()
 	_doc $1 20170525133155 "combines the steps of add, commit, and then push. Specify the commit comment as one or more arguments to this function." && return 0
 
 	local tag
-
+	local currentBranch
 
 	gitRepoIsAccessible || return 1
 
+	currentBranch=$(git branch --show-current)
+
 	git add .
 	git commit -m "$*"
-	git push 
+# git push 
+	git push --set-upstream origin ${currentBranch}
 }
 

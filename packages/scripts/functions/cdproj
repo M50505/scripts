@@ -84,7 +84,7 @@ cdproj ()
 	#	Expanding this to attempt to work with projects that are git collections
 	#	Return in failure if the neither the specified project, nor any of its subdirectories is a local git repo.
 	#
-	if [[ "$(find ${dstDir} -type d -name .git )" = "" ]]
+	if [[ "$(find -L ${dstDir} -type d -name .git )" = "" ]]
 	then
 		cat <<EOF
 Neither the project ${dstDir} nor any of its subdirectories is a local
