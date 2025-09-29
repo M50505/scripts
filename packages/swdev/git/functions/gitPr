@@ -42,7 +42,7 @@ fi
 			local title="${1}"
 			shift
 		
-			gh pr create --title "${title}" --body	"${*}"
+			gh pr create --base main --head ${currentBranch} --title "${title}" --body	"${*}"
 		;;
 
 		*)
