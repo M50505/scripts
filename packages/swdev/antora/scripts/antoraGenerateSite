@@ -39,7 +39,7 @@
 #	Testing status:
 #		UNTESTED
 
-_doc ${1} 20241020102132 "New function, no functionality yet. " && exit 0
+_doc ${1} 20241020102132 "Generates an Antora site, leveraging custom scripts if present." && exit 0
 
 MIN_NODE_VERSION=18
 

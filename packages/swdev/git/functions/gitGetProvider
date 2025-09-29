@@ -9,7 +9,7 @@
 
 gitGetProvider ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Returns the name of the Git cloud provider used by the current repository." && return 0
 
 
 	sed -rn '/\[url/ {s/^.*@//;s/:.*$//;p}' ${HOME}/.gitconfig

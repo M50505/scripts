@@ -1,6 +1,6 @@
 awsEnvToBat ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Extracts settings from the AWS Bash environment variables, translating them to Windows .BAT file format. " && return 0
 	showenv AWS | sed -r '
 {
 	s/^/set /

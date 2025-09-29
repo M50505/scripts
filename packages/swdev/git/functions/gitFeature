@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2021-07-10 - Initial version.
+#	
+_doc ${1} 20210710125553 "lists all respositories on the specified cloud Git provider." && exit 0
+
+gitFeature ()
+{
+	local gitProvider=$(gitGetProvider)
+
+	if [[ -z ${gitProvider} ]]
+	then
+		cat >&2 <<EOF
+The cloud Git provider cannot be determined.
+EOF
+	return 1
+fi
+
+	if [[ $# -lt 2 ]]
+	then
+		cat >&2 <<EOF
+Usage: gitPr "<Title>" "<Description>"
+EOF
+	return 1
+fi
+
+
+	local gitUser=$(gitGetUser)
+	local gitToken=$(gitGetToken)
+	local gitMainBranch=$(gitGetMainBranch)
+	local gitFullRepoName=$(gitGetFullRepoName)
+	local title="${1}"
+	local description="${2}"
+	local storyId="${agileGetStoryId}"
+
+	case ${gitProvider} in
+		github.com)
+			local title="${1}"
+			shift
+		
+			gh pr create --base main --head ${currentBranch} --title "${title}" --body	"${*}"
+		;;
+
+		*)
+			echo "No PR functionality defined for git provider ${gitProvider}"
+			return 1
+	esac
+
+}

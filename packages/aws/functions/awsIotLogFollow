@@ -1,5 +1,5 @@
 awsIotLogFollow ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Tails / follows the AWS IoT logs for the account defined in the AWS CLI configuration. " && return 0
 	aws logs tail AWSIotLogsV2 --follow
 }

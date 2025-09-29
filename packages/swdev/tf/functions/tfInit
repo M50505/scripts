@@ -8,12 +8,9 @@
 #	
 
 
-#[[ -n ${input} ]] && exec 0<${input}
-#[[ -n ${output} ]] && exec 1>${output}
-
 tfInit ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Extracts values from linux-configs to set Terraform CLI environment variables, in conjunction with AWS CLI configuration settings." && return 0
 	
 	local terraformRC="${HOME}/.terraformrc"
 	local terraformCachingRoot="/tmp/terraform"

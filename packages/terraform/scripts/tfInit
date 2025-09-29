@@ -8,7 +8,7 @@
 #	
 #_doc ${1} 20241013102640 " " && exit 0
 
-_doc ${1} 20241020102132 "New script, no functionality yet. " && exit 0
+_doc ${1} 20241020102132 "Initializes environment variables for Terraform by extracting values from linux-configs." && exit 0
 
 #terraformCredFile="/local/wsl/xfer/linux-configs"
 

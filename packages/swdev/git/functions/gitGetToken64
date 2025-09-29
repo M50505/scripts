@@ -7,7 +7,7 @@
 
 gitGetToken64 ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Returns the current Git cloud-based access token in base64 form." && return 0
 	gitGetToken | base64
 }
 

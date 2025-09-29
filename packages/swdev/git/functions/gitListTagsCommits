@@ -3,7 +3,7 @@
 
 gitListTagsCommits ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Lists all tag commits for the current repository." && return 0
 
 
 	gitRepoIsAccessible || return 1

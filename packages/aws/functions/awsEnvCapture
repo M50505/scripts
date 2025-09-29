@@ -3,7 +3,7 @@
 
 awsEnvCapture ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Loads AWS CLI-focused environment variables from the current configuration file." && return 0
 	eval $($* | sed -rn '
 
 /AccessKeyId/ {

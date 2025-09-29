@@ -3,7 +3,7 @@
 
 xmlfo ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Uses xmlstarlet to send a formatted copy of the spcified XML file to STDOUT." && return 0
 
 	local tmp=$(newTempFile)
 	xmlstarlet fo $(cygpath -m ${1}) > ${tmp}

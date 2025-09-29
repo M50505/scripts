@@ -6,7 +6,7 @@
 #
 # 2024-08-10 - Initial version.
 #	
-_doc ${1} 20240810112648 "No documentation yet." && exit 0
+_doc ${1} 20240810112648 "Launches asciidoctor-web-pdf each time a .adoc or .css file is updated." && exit 0
 
 
 adocBaseFileName="${1%.adoc}"

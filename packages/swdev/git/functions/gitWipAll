@@ -3,7 +3,7 @@
 
 gitWipAll ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Recursively decends from the current directory to call the gitWip for each Git repository in any subdirectories." && return 0
 
 	local status=1
 	local newDir

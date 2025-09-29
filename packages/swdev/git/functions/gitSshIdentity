@@ -3,7 +3,7 @@
 
 gitSshIdentity ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Lists (if no argument is given) or else sets the GIT_SSH_COMMAND and related environment variables." && return 0
 	if [[ $# -gt 0 ]]
 	then
 		upperID=$(toUpper ${1})

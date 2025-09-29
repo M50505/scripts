@@ -9,7 +9,7 @@
 
 gitGetToken ()
 {
-	_doc ${1} 20241020102132 "New function, no functionality yet. " && return 0
+	_doc ${1} 20241020102132 "Returns the Git cloud access token for the current repository." && return 0
 	sed -r 's/^.*://;s/@.*$//' ${HOME}/.git-credentials
 }
 
