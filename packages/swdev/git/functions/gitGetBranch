@@ -21,7 +21,7 @@
 #[[ -n ${output} ]] && exec 1>${output}
 
 
-gitGetMainBranch ()
+gitGetBranch ()
 {
-	git branch -r | sed -rn '/HEAD/ {s,^.*origin/,,;p}'
+	git branch | sed -rn '/^\*/ {s,^\*\s+,,;p}'
 }
