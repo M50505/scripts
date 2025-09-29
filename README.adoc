@@ -1,0 +1,18 @@
+= README
+
+== Extensible, vertical framework of and for Bash scripts.
+
+=== What is this repository for?
+
+- Provides an extensible foundation of 'packages' - a package contains scripts and functions that are targeted for a particular type of work.
+
+=== How do I get set up?
+
+- Simply extract the ZIP file provided by the author.
+. Add this statement to your .bashrc file: export MASTER_SCRIPTS_HOME=<scripts-root-dir>
+. Add this statement to the end of your .bashrc file: [[ -f ${MASTER_SCRIPTS_HOME}/initialize-scripts-framework ]] && . ${MASTER_SCRIPTS_HOME}/initialize-scripts-framework
+. Copy the file <scripts-root-dir>/packages/packageTable to your home directory
+. Comment out the packages you don't need
+. Source the .bashrc file.
+. Depends on Bash 5+
+
