@@ -14,8 +14,9 @@ gitGetRepoUser ()
 	local user
 	user=$(git config --get remote.origin.url) || return 1
 
-	user=${user#*:}
 	user=${user%/*}
+	user=${user##*:}
+	user=${user##*/}
 
 	echo ${user}
 }

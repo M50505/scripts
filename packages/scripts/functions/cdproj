@@ -6,7 +6,7 @@
 #
 # 2025-03-02 - Initial version.
 #	
-#_doc ${1} 20250302100238 " " && exit 0
+#_doc ${1} 20250302100238 "Changed the current working directory - 'cd's to' - a directory under the projects root directory. THe name of the destination project directory can be partially typed, and then autocompletion takes over. " && exit 0
 
 
 cdproj ()
