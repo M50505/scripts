@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+
+zephyrSetVersion ()
+{
+    if [[ $# -lt 1 ]]
+    then
+      echo "You must specify a version string" >>&2
+      return 1
+    fi
+
+    if [[ $# -lt 1 ]]
+    then
+      echo "You must specify a version string" >>&2
+      return 1
+    fi
+
+    local targetVersion=${1}
+
+    local zephyrBase="${HOME}/zephyr-${targetVersion}"
+
+    if [[ -d ${zephyrBase} ]]
+    then
+      export ZEPHYR_BASE="${zephyrBase}"
+      export ZEPHYR_VERSION="${ZEPHYR_BASE#*zephyr-}"
+      export ZEPHYR_PROJECT_ROOT=${ZEPHYR_BASE}
+      export ZEPHYR_SDK_VERSION=$(<${ZEPHYR_BASE}/SDK_VERSION)
+      export ZEPHYR_SDK_ROOT=${HOME}/.local/zephyr-sdk-${ZEPHYR_SDK_VERSION}
+      export ZEPHYR_SDK_ESP32S3_ROOT=${ZEPHYR_SDK_ROOT}/xtensa-espressif_esp32_zephyr-elf
+      export ZEPHYR_INCLUDE_ROOT=${ZEPHYR_BASE}/include
+    else
+      echo "There is no Zephyr distribution: ${zephyrBase}"
+    fi
+}
