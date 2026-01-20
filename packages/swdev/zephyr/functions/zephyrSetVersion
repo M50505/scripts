@@ -6,13 +6,7 @@ zephyrSetVersion ()
 {
     if [[ $# -lt 1 ]]
     then
-      echo "You must specify a version string" >>&2
-      return 1
-    fi
-
-    if [[ $# -lt 1 ]]
-    then
-      echo "You must specify a version string" >>&2
+      echo "You must specify a version string" >&2
       return 1
     fi
 
