@@ -10,7 +10,7 @@
 
 idfInit ()
 {
-	. $HOME/esp/v5.4.1/esp-idf/export.sh
+	. $HOME/esp/esp-idf/export.sh
 }
 
 
