@@ -117,6 +117,7 @@ then
   west blobs fetch hal_espressif
 fi
 
+
 ##################################################################
 #
 # The older version of this script follows as a reference.
