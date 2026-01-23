@@ -15,8 +15,29 @@
 #	packages is performed.
 #
 
-if [[ "${1}" = "apt" ]]
+args="$*"
+
+[[ -z "${args}" ]] && args="apt main sdk esp"
+
+
+installBase="${HOME}/zephyrproject"
+
+if [[ ${args} =~ remove ]] 
 then
+  msgWarning "Removing the current Zephyr installation."
+
+  cd ${HOME}
+  rm -rf zephyr*
+  rm -rf .local/bin/west
+  rm -rf .local/zep*
+
+  exit
+fi
+
+if [[ ${args} =~ apt ]] 
+then
+  msgInfo "Using sudo to run apt install for required packages, you will be prompted for the root password."
+
 	sudo apt update -y
 	sudo apt upgrade -y
 	
@@ -37,42 +58,87 @@ then
 	lzma \
 	liblzma-dev \
 	libbz2-dev \
-	libmagic1
+	libmagic1 \
+  python3-venv \
+  python3-tk \
+  wget
+
 fi
 
-rm -rf ~/zephyrproject
-rm -rf ~/.west
-rm -rf ~/.cmake
+if [[ ${args} =~ main ]]
+then
 
-python3 uninstall -y west
+  msgInfo "Performing the main installation of Zephyr-RTOS 4.3.99"
 
-#python3 -m venv ~/zephyrproject/.venv
-#. ~/zephyrproject/.venv/bin/activate
+  rm -rf "${installBase}"
+  rm -rf ~/.west
+  rm -rf ~/.cmake
 
-pip3 install west
-pip3 install pyelftools
-pip3 install click
-pip3 install lzma
-pip3 install cbor2
-pip3 install backports.lzma
-pip3 install requests
+  pip3 uninstall -y west
 
-west init ~/zephyrproject
-cd ~/zephyrproject
-west update
+  [[ -f ~/.local/bin/west ]] && rm ~/.local/bin/west
 
-west blobs fetch hal_espressif
+  pip3 install west
+  pip3 install pyelftools
+  pip3 install click
+  pip3 install pylzma
+  pip3 install jsonschema
+  pip3 install cbor2
+  pip3 install backports.lzma
+  pip3 install requests
 
-west zephyr-export
+  west init "${installBase}"
 
-cd ${HOME}/.local
-wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.0/zephyr-sdk-0.17.0_linux-x86_64.tar.xz
-tar xvf zephyr-sdk-0.17.0_linux-x86_64.tar.xz
-cd zephyr-sdk-0.17.0
-./setup.sh
-rm zephyr-sdk-0.17.0_linux-x86_64.tar.xz
+  cd "${installBase}"
+
+  west update
+  west zephyr-export
+
+  cd "${installBase}"/zephyr/scripts
+
+  pip3 install -r requirements.txt
+
+  cd "${installBase}"/zephyr
+fi
 
 
+if [[ ${args} =~ sdk ]]
+then
+  msgInfo "Performing the installation of Zephyr-RTOS SDK version $(<${installBase}/SDK_VERSION})"
+
+  west sdk install --install-base "${installBase}"
+fi
+
+if [[ ${args} =~ esp ]]
+then
+  msgInfo "Performing the installation of Espressif blobs for Zephyr"
+
+  cd "${installBase}"
+  west blobs fetch hal_espressif
+fi
+
+##################################################################
+#
+# The older version of this script follows as a reference.
+#
+##################################################################
+
+#west init "${installBase}"
+#cd "${installBase}"
+#west update
+#
+#west blobs fetch hal_espressif
+#
+#west zephyr-export
+#
+#cd ${HOME}/.local
+#wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.0/zephyr-sdk-0.17.0_linux-x86_64.tar.xz
+#tar xvf zephyr-sdk-0.17.0_linux-x86_64.tar.xz
+#cd zephyr-sdk-0.17.0
+#./setup.sh
+#rm zephyr-sdk-0.17.0_linux-x86_64.tar.xz
+#
+#
 #
 #	Add this as a rule in /usr/lib/udev/rules.d
 #	perhaps with the filename 60-usb-serial-mcuburner.rules

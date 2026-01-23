@@ -6,24 +6,39 @@ zephyrSetVersion ()
 {
     if [[ $# -lt 1 ]]
     then
-      echo "You must specify a version string" >&2
+      echo "You must specify a version string or -u to unset ZEPHYR environment variables." >&2
       return 1
+    fi
+
+    if [[ "${1}" = "-u" ]]
+    then
+
+      local var
+
+      for var in $(showenv ZEPHYR)
+      do
+        var=${var%=*}
+        unset ${var}
+      done
+
+      return 0
     fi
 
     local targetVersion=${1}
 
     local zephyrBase="${HOME}/zephyr-${targetVersion}"
 
-    if [[ -d ${zephyrBase} ]]
+    if [[ ! -d ${zephyrBase} ]]
     then
-      export ZEPHYR_BASE="${zephyrBase}"
-      export ZEPHYR_VERSION="${ZEPHYR_BASE#*zephyr-}"
-      export ZEPHYR_PROJECT_ROOT=${ZEPHYR_BASE}
-      export ZEPHYR_SDK_VERSION=$(<${ZEPHYR_BASE}/SDK_VERSION)
-      export ZEPHYR_SDK_ROOT=${HOME}/.local/zephyr-sdk-${ZEPHYR_SDK_VERSION}
-      export ZEPHYR_SDK_ESP32S3_ROOT=${ZEPHYR_SDK_ROOT}/xtensa-espressif_esp32_zephyr-elf
-      export ZEPHYR_INCLUDE_ROOT=${ZEPHYR_BASE}/include
-    else
       echo "There is no Zephyr distribution: ${zephyrBase}"
+      return 1
     fi
+
+    export ZEPHYR_BASE="${zephyrBase}"
+    export ZEPHYR_VERSION="${ZEPHYR_BASE#*zephyr-}"
+    export ZEPHYR_PROJECT_ROOT=${ZEPHYR_BASE}
+    export ZEPHYR_SDK_VERSION=$(<${ZEPHYR_BASE}/SDK_VERSION)
+    export ZEPHYR_SDK_ROOT=${HOME}/.local/zephyr-sdk-${ZEPHYR_SDK_VERSION}
+    export ZEPHYR_SDK_ESP32S3_ROOT=${ZEPHYR_SDK_ROOT}/xtensa-espressif_esp32_zephyr-elf
+    export ZEPHYR_INCLUDE_ROOT=${ZEPHYR_BASE}/include
 }
