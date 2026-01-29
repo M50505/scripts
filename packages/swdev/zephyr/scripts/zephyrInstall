@@ -15,12 +15,20 @@
 #	packages is performed.
 #
 
+if [[ $# -lt 1 ]]
+then
+	msgError "The first argument - the version of Zephyr to install - must be present, specified as Major.minor.micro"
+	exit 1
+fi 
+
+version="${1#v}"
+shift
+
 args="$*"
 
 [[ -z "${args}" ]] && args="apt main sdk esp"
 
-
-installBase="${HOME}/zephyrproject"
+installBase="${HOME}/zephyr-${version}"
 
 if [[ ${args} =~ remove ]] 
 then
@@ -87,7 +95,7 @@ then
   pip3 install backports.lzma
   pip3 install requests
 
-  west init "${installBase}"
+  west init --mr "v${version}" "${installBase}"
 
   cd "${installBase}"
 

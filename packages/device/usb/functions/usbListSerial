@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2026-01-29 - Initial version.
+#	
+#_doc ${1} 20260129143326 " " && exit 0
+
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd input string ""  "The input file to use."
+#optAdd output string ""  "The output file to use."
+#optAdd mark boolean false "A sample boolean option"
+#optParse $* 
+#optParseSuccess || exit 1
+
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+usbListSerial ()
+{
+
+	local candidate vendor vendorFromDB model
+
+	for candidate in $(ls /dev/ttyUSB* /dev/ttyACM* 2>/dev/null)
+	do
+		udevadm info --name=${candidate} | sed -n '
+		/DEVNAME=/ {
+				s/^.*=//
+				s/$/: /
+				h
+		}
+
+		/VENDOR_FROM_DATABASE=/ {
+			s/^.*=//
+			s/$/ / 
+			H
+		}
+
+		/ID_VENDOR=/ {
+			s/^.*=//
+			s/$/ / 
+			H
+		}
+
+		/ID_USB_MODEL=/ {
+			s/^.*=//
+			s/$/ / 
+			H
+		}
+
+		$ {
+			x
+			s/\n//g
+			p
+		}
+		'
+	done
+	
+	return 0
+}

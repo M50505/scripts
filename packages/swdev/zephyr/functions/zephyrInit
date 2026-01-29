@@ -1,0 +1,16 @@
+zephyrInit ()
+{
+	local version=${1:-4.3.0}
+	local presumedZephyrRoot="${HOME}/zephyr-${version}"
+
+	if [[ ! -d "${presumedZephyrRoot}" ]]
+	then
+		msgError "Cannot locate the base directory for Zephyr-RTOS version ${version}: ${presumedZephyrRoot}"
+
+		return 1
+	fi
+
+	. "${presumedZephyrRoot}/zephyr/zephyr-env.sh"
+
+	return 0
+}

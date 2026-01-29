@@ -11,6 +11,8 @@
 idfInit ()
 {
 	. $HOME/esp/esp-idf/export.sh
+
+	PATH=${PATH}:$HOME/esp/esp-idf/components/esptool_py
 }
 
 

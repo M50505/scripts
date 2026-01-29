@@ -7,12 +7,19 @@ gitInit ()
 
 	local gitCredFile="${HOME}/.git-credentials"
 	local gitConfigFile="${HOME}/.gitconfig"
+	local linuxConfigFile="/local/wsl/xfer/linux-configs.json"
 
 	if [[ $# -gt 0 ]]
 	then
-		local credKey="${1}"
+		if [[ "${1}" = "-l" ]]
+		then
+			jq ".fields[]| select(.label | startswith(\"gitcred\")).label" "/local/wsl/xfer/linux-configs.json" | \
+			sed -r 's/"gitcred-//;s/"//'
 
-		local linuxConfigFile="/local/wsl/xfer/linux-configs.json"
+			return 0
+		fi
+
+		local credKey="${1}"
 
 		jq ".fields[]| select(.label==\"gitcred-${credKey}\").value" "${linuxConfigFile}" | \
 		tr -d \" > "${gitCredFile}"
