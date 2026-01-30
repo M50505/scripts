@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-08-02 - Initial version.
+#	
+#_doc ${1} 20250802090815 "Initializes environment variables and possibly other configuration elements for the local Espressif IDF installation." && exit 0
+
+idfInstall ()
+{
+  local version=${1:-v5.5.2}
+  version="v${version#v}"
+
+  local gitRepoURL="https://github.com/espressif/esp-idf/releases/tag/${version}"
+
+  cd ${HOME}
+
+  msgInfo Cloning esp-idf version ${version} from GitHub
+
+  git clone -b ${version} --recursive https://github.com/espressif/esp-idf.git esp-idf-${version}
+
+  msgInfo launching the installation script that is provided in the IDF.
+
+  cd esp-idf-${version}
+
+  ./install.sh
+
+  msgInfo Sourcing the environment variables export script from the IDF.
+
+  . ./export.sh
+
+  msgInfo Ensuring tat the latest esptoolPython module is installed..
+
+  pip3 uninstall esptool
+  pip3 install esptool
+}
+
+
+
+# My script zephyrInstall within the scripts "zephyr" package now properly installs Zephyr 4.3.0 into its own directory: ${HOME}/zephyr-4.3.0
+# Trouble was encountered when the west command was then used to either build or flash, because the necessary use of the -b esp32s3_devkitc/esp32s3/procpu option meant that the west runner for ESP32 had to be invoked.
+# The west ESP32 runner was failing because it could not locate a clean installation of esptool - yes, WITHOUT the .py suffix - and therefore neither build nor flash would work.
+# Completely removing the ESP-IDF installation from /esp and removing /.espressif and removing ~/.local/bin/esptool* was required.
+# Ensured that there was:
+# No PATH entry that pointed to any previous form of esptool.py or esptool. Remaining
+# That the Python module esptool was removed.
+#  Then downloaded the ESP-IDF version 5.5.2 from https://https://github.com/espressif/esp-idf/releases/tag/v5.5.2
+# Ran the ESP-IDF script that comes with the package: ~/esp-idf-v5.5.2/install.sh
+# Ran the ~/esp-idf-v5.5.2/export.sh tool
+# Ran pip3 install esptool
+# Confirmed that simply typing esptool resulted in the tool running properly
