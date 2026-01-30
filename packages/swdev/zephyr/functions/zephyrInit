@@ -12,5 +12,6 @@ zephyrInit ()
 
 	. "${presumedZephyrRoot}/zephyr/zephyr-env.sh"
 
+
 	return 0
 }
