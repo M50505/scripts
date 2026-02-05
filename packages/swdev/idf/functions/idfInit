@@ -10,9 +10,39 @@
 
 idfInit ()
 {
-	. $HOME/esp/esp-idf/export.sh
+  local version=${1:-v5.5.2}
+  
+  version=v${version#v}
 
-	PATH=${PATH}:$HOME/esp/esp-idf/components/esptool_py
+
+  local espRootDir=${HOME}/esp-idf-${version}
+
+	if [[ ! -d ${espRootDir} ]]
+  then
+    msgError "The directory ${espRootDir} for version ${version} does not exist, please correct the provided version."
+    return 1
+  fi
+
+
+	if [[ ! -f ${espRootDir}/export.sh ]]
+  then
+    msgError "Cannot locate the ESP/IDF environment exportation script: ${espRootDir}/export.sh"
+
+      return 1
+  fi
+
+	. ${espRootDir}/export.sh
+
+  return 0
+
+	if [[ ! -f ${espRootDir}/components/esptool_py ]]
+  then
+    msgError "Cannot locate the Python module (and executable) ${espRootDir}/components/esptool_py"
+
+    return 1
+  fi
+
+	PATH=${PATH}:${espRootDir}/components/esptool_py
 }
 
 

@@ -13,6 +13,8 @@ idfInstall ()
   local version=${1:-v5.5.2}
   version="v${version#v}"
 
+  local exportsFile="${HOME}/esp-idf-env.sh"
+
   local gitRepoURL="https://github.com/espressif/esp-idf/releases/tag/${version}"
 
   cd ${HOME}
@@ -35,6 +37,12 @@ idfInstall ()
 
   pip3 uninstall esptool
   pip3 install esptool
+
+  msgInfo "Creating the ${exporrtsFile} file for the .bashrc file to source."
+
+  showenv ESP > ${exportsFile}
+  showenv IDF >> ${exportsFile}
+
 }
 
 

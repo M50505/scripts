@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2026-01-29 - Initial version.
+#	
+#_doc ${1} 20260129143326 " " && exit 0
+
+#optInit
+#optAdd sample string "test"  "A sample string option"
+#optAdd input string ""  "The input file to use."
+#optAdd output string ""  "The output file to use."
+#optAdd mark boolean false "A sample boolean option"
+#optParse $* 
+#optParseSuccess || exit 1
+
+
+#[[ -n ${input} ]] && exec 0<${input}
+#[[ -n ${output} ]] && exec 1>${output}
+
+usbTailSerial ()
+{
+
+	local node="${1:-/dev/ttyUSB0}"
+
+
+  node="${node#/dev/}"
+  node="${node#tty}"
+  node="/dev/tty${node}"
+
+  echo stty -F ${node} 115200
+  tail -f ${node}
+
+  return 0
+
+}
