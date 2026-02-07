@@ -20,9 +20,45 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-# Test ZEPHYR_BASE
-# Test ZEPHYR_PROJECT_ROOT
 # Test log file speified
 # Use msgError <<EOF
 # sed translates -I and -isystem and -imacros to use ${env:ZEPHYR_PROJECT_ROOT}
 
+if [[ -z ${ZEPHYR_PROJECT_ROOT} ]]
+then
+	msgError <<EOF
+The ZEPHYR_PROJECT_ROOT environment variable must be set. This variable points to
+the installation directory of the desired version of Zephyr-RTOS.
+EOF
+
+	exit 1
+fi
+
+if [[ $# -lt 1 ]]
+then
+	msgError << EOF
+You must specify a log file, which captured the *successful* build of your project.
+The west command should include the '-vvv' option in this case, in order to ensure
+that the full list of include command line options that were used for C/CPP were captured.
+EOF
+
+	exit 1
+fi
+
+if [[ ! -f "${1}" ]]
+then
+	msgError The log file ${1} cannot be found.
+
+	exit 1
+fi
+
+logFile="${1}"
+
+sed -rn "
+
+/-I/	{
+	s/(-I\S+)\s*/\n\1/g
+	#s,${ZEPHYR_PROJECT_ROOT},\${env}:,g
+	p
+}
+" ${logFile}
