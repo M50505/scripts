@@ -10,6 +10,13 @@
 msgInfo ()
 {
   tput setaf 6
-	echo $*
+
+	if [[ $# -gt 0 ]]
+	then
+		echo $* >&2
+	else
+		cat >&2
+	fi
+
   tput sgr0
 }

@@ -10,6 +10,14 @@
 msgError ()
 {
   tput setaf 1
-	echo $* >&2
+
+	
+	if [[ $# -gt 0 ]]
+	then
+		echo $* >&2
+	else
+		cat >&2
+	fi
+
   tput sgr0
 }
