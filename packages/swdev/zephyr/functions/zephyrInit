@@ -12,6 +12,7 @@ zephyrInit ()
 
 	. "${presumedZephyrRoot}/zephyr/zephyr-env.sh"
 
+	export ZEPHYR_PROJECT_ROOT=${ZEPHYR_BASE%/zephyr}
 
 	return 0
 }
