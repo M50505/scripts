@@ -56,9 +56,9 @@ logFile="${1}"
 
 sed -rn "
 
-/-I/	{
-	s/(-I\S+)\s*/\n\1/g
-	#s,${ZEPHYR_PROJECT_ROOT},\${env}:,g
+/-I|-isystem\s|-imacros\s\S+/	{
+	s/(-I\S+|-isystem\s\S+|-imacros\s\S+)\s*/\n\1/g
+	s,${ZEPHYR_PROJECT_ROOT},\${env:ZEPHYR_PROJECT_ROOT},g
 	p
 }
 " ${logFile}

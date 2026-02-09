@@ -16,7 +16,21 @@ cdproj ()
 	# directory and the file containing the name of the previously
 	# visited project.
 	#
-	local projectsRoot="${HOME}/projects"
+
+	local projectsRoot
+
+	if [[ -z ${PROJECTS_ROOT} ]]
+	then
+		projectsRoot="${HOME}/projects"
+
+		msgInfo <<EOF
+The PROJECTS_ROOT environment variable is not set, so the root
+directory \${HOME}/projects is assumed.
+EOF
+	else
+		projectsRoot="${PROJECTS_ROOT}"
+	fi
+
 
 	local currentProject="${HOME}/.config/cdproj/currentProject"
 	local previousProject="${HOME}/.config/cdproj/previousProject"

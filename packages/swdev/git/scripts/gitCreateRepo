@@ -19,7 +19,9 @@ title="$*"
 
 case ${provider} in
 	github.com)
+		set -x
 		result=$(curl -s -u ${user}:${token} --data "{\"name\":\"${repo}\",\"private\":\"true\",\"auto_init\":\"true\"}" https://api.github.com/user/repos)
+		set +x
 
 		successID=$(echo ${result} | jq ".id")
 
