@@ -25,7 +25,20 @@ then
 	msgError <<EOF
 You must specify a relative project path - either a single directory name, or 
 a multi-directory path. The path will be relative to the location indicated by
-the PROJECT_ROOT environment variable.
+the PROJECTS_ROOT environment variable.
 EOF
 	exit 1
 fi
+
+projectsRoot="${PROJECTS_ROOT:-${HOME}/projects}"
+
+projectDir="${projectsRoot}/${1}"
+
+
+if [[ -d "${projectDir}" ]]
+then
+	msgError The project directory ${prjectDir} already exists, please double-check.
+	exit 1
+fi
+
+
