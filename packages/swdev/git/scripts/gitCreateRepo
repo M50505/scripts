@@ -8,34 +8,50 @@
 #	
 _doc ${1} 20210710125553 "creates a new respository on the specified cloud Git provider, if it does not already exist. The Git provider is specified either as the first argument, otherwise it is obtained from the value of the GITPROVIDER environment variable." && exit 0
 
-repo=${1}
+repoDir=${1}
 provider=$(gitGetProvider)
-user=$(gitGetUser)
 token=$(gitGetToken)
+
+user=$(gitGetUser)
 
 shift
 
+if [[ -z ${user} ]]
+then
+	msgError <<EOF
+There is no git user currently set. Please use gitInit <user> to establish the
+desired user and its credentials.
+EOF
+
+	exit 1
+fi
+
 title="$*"
+
+if [[ ! -d "${repoDir}" ]]
+then
+	mkdir "${repoDir}"
+fi
+
+cd "${repoDir}"
+
+repo=$(basename ${repoDir})
 
 case ${provider} in
 	github.com)
-		set -x
 		result=$(curl -s -u ${user}:${token} --data "{\"name\":\"${repo}\",\"private\":\"true\",\"auto_init\":\"true\"}" https://api.github.com/user/repos)
-		set +x
 
 		successID=$(echo ${result} | jq ".id")
 
 		if [[ ${successID} = null ]]
 		then
-			cat>&2 <<EOF
+			msgError <<EOF
 Failed to create remote repository ${repo} for user ${user} on ${provider}:
 $(echo ${result} | jq ".message,.errors[0].message" | tr -d \" | tr \\n ' ')
 EOF
 		else
-			echo "Remote repository ${repo} created for user ${user} on ${provider}, cloning new empty repository."
-			git clone git@github.com:${user}/${repo}.git
-
-			cd ${repo}
+			msgInfo "Remote repository ${repo} created for user ${user} on ${provider}, cloning new empty repository."
+			git clone git@github.com:${user}/${repo}.git .
 
 			cat <<EOF > README.md
 = ${title}

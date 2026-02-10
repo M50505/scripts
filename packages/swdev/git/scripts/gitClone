@@ -22,14 +22,25 @@ fi
 
 gitRepo=${1}
 gitProvider=$(gitGetProvider)
-gitUser=$(gitGetUser)
 gitToken=$(gitGetToken)
+
+gitUser=$(gitGetUser)
+
+if [[ -d ${gitUser} ]]
+then
+	msgError <<EOF
+There is no git user currently set. Please use gitInit <user> to establish the
+desired user and its credentials.
+EOF
+
+	exit 1
+fi
+
 
 if [[ -z ${gitProvider} ]]
 then
-	cat >&2 <<EOF
-The cloud Git provider cannot be determined.
-EOF
+	msgError The cloud Git provider cannot be determined.
+
 	exit 1
 fi
 
