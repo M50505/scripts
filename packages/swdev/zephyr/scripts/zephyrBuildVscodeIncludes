@@ -20,9 +20,15 @@
 #[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
-# Test log file speified
-# Use msgError <<EOF
-# sed translates -I and -isystem and -imacros to use ${env:ZEPHYR_PROJECT_ROOT}
+# This script extracts and filters -I and -isystem and -imacros C/CPP command line arguments 
+#	from a log of a zephyr build result, using sed.
+#	The command line arguments are then piped to sort -u for de-duplication, and then piped
+#	to sed one last time to substitute occurrences of the current Zephyr project root and the
+#	current vscode project directory into ${env:ZEPHYR_PROJECT_ROOT} ... and ${workspaceFolder}
+#	instances.
+#
+#	The resulting text is translated into an entry for the vscode project's c_cpp_properties.json file.
+#	
 
 if [[ -z ${ZEPHYR_PROJECT_ROOT} ]]
 then
@@ -55,10 +61,46 @@ fi
 logFile="${1}"
 
 sed -rn "
+	/-I/ {
+		s/-I/\n-I/g
+		
+		p
+	}
 
-/-I|-isystem\s|-imacros\s\S+/	{
-	s/(-I\S+|-isystem\s\S+|-imacros\s\S+)\s*/\n\1/g
-	s,${ZEPHYR_PROJECT_ROOT},\${env:ZEPHYR_PROJECT_ROOT},g
+	/-isystem/ {
+		s/-isystem/\n-isystem/g
+		p
+	}
+
+	/-imacros/ {
+		s/-imacros/\n-imacros/g
+		p
+	}
+" ${logFile} | sed -rn "
+
+/^-I/	{
+	s/(-I\S+).*$/\1/
 	p
 }
-" ${logFile}
+
+/^-isystem/	{
+	s/(-isystem\s\S+).*$/\1/
+	p
+}
+
+/^-imacros/	{
+	s/(-imacros\s\S+).*$/\1/
+	p
+}" | \
+sort -u | \
+sed -r "
+	1,1	{
+		s/^/\t\t\"zephyrIncludes\": [\n/
+	}
+
+	s,${ZEPHYR_PROJECT_ROOT},\${env:ZEPHYR_PROJECT_ROOT},g
+
+	$	{
+		s/$/\n\t\t\t],\n/
+	}
+"
