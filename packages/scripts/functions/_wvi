@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# vim:tabstop=2:shiftwidth=2:nu:filetype=sh
+#	
+# Author:              Martin Cribbins
+# Revision history:
+#
+# 2025-03-02 - Initial version.
+#	
+#_doc ${1} 20250302100238 " " && exit 0
+
+_wvi ()
+{
+	COMPREPLY=($(compgen -d -- ${2}))
+
+}
