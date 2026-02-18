@@ -136,9 +136,7 @@ EOF
 	then
 		msgWarning "The git user account cannot be found or is not valid. Proceeding anyway."
 		return 0
-	fi
-
-	if ! gitInit ${repoUser}
+	elif ! gitInit ${repoUser}
 	then
 		msgWarning "Could not find credentials for the git service for the specified project."
 		return 0
