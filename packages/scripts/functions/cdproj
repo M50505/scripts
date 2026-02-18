@@ -95,25 +95,39 @@ EOF
 	fi	
 
 	#
-	#	Expanding this to attempt to work with projects that are git collections
-	#	Return in failure if the neither the specified project, nor any of its subdirectories is a local git repo.
-	#
-	if [[ "$(find -L ${dstDir} -type d -name .git )" = "" ]]
-	then
-		msgWarning <<EOF
-Warning: neither the project ${dstDir} nor any of its subdirectories is a local
-git repository. Proceeding in spite of this.
-EOF
- 
-	fi
-
-	#
 	#	Finally, after all of the sanity checks, cd to
 	#	the desired project directory and call gitInit
 	#	to set the current git remote repository user.
 	#
 	cd "${dstDir}"
 
+	#
+	#	Expanding this to attempt to work with projects that are git collections
+	#	Return in failure if the neither the specified project, nor any of its subdirectories is a local git repo.
+	#
+	if [[ "$(find -L . -type d -name .git )" = "" ]]
+	then
+		msgWarning <<EOF
+Warning: neither the project ${dstDir} nor any of its subdirectories is a local
+git repository. Proceeding in spite of this.
+EOF
+	#
+	#	We may be working with externally supplied repositiories whose
+	#	credentials will not match one that we have, or else are not required
+	#	to match, or else there are no credentials (no user key in the .git/config file)
+	#	specified.
+	#	
+	#	In these cases echo a warning to STDERR and return success.
+	#
+	elif ! repoUser=$(gitGetRepoUser)
+	then
+		msgWarning "The git user account cannot be found or is not valid. Proceeding anyway."
+	elif ! gitInit ${repoUser}
+	then
+		msgWarning "Could not find credentials for the git service for the specified project."
+	fi
+
+ 
 	#
 	#	Copy what was the current project name into the
 	#	previous project name, and then record this project
@@ -123,23 +137,5 @@ EOF
 
 	echo "$(basename ${PWD})" > "${currentProject}" 
 
-
-	#
-	#	We may be working with externally supplied repositiories whose
-	#	credentials will not match one that we have, or else are not required
-	#	to match, or else there are no credentials (no user key in the .git/config file)
-	#	specified.
-	#	
-	#	In these cases echo a warning to STDERR and return success.
-	#
-	if ! repoUser=$(gitGetRepoUser)
-	then
-		msgWarning "The git user account cannot be found or is not valid. Proceeding anyway."
-		return 0
-	elif ! gitInit ${repoUser}
-	then
-		msgWarning "Could not find credentials for the git service for the specified project."
-		return 0
-	fi
 
 }
