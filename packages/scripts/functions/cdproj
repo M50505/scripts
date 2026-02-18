@@ -23,7 +23,7 @@ cdproj ()
 	then
 		projectsRoot="${HOME}/projects"
 
-		msgWarn <<EOF
+		msgWarning <<EOF
 The PROJECTS_ROOT environment variable is not set, so the root
 directory \${HOME}/projects is assumed.
 EOF
@@ -100,7 +100,7 @@ EOF
 	#
 	if [[ "$(find -L ${dstDir} -type d -name .git )" = "" ]]
 	then
-		msgWarn <<EOF
+		msgWarning <<EOF
 Warning: neither the project ${dstDir} nor any of its subdirectories is a local
 git repository. Proceeding in spite of this.
 EOF
@@ -134,13 +134,13 @@ EOF
 	#
 	if ! repoUser=$(gitGetRepoUser)
 	then
-		msgWarn "The git user account cannot be found or is not valid. Proceeding anyway."
+		msgWarning "The git user account cannot be found or is not valid. Proceeding anyway."
 		return 0
 	fi
 
 	if ! gitInit ${repoUser}
 	then
-		msgWarn "Could not find credentials for the git service for the specified project."
+		msgWarning "Could not find credentials for the git service for the specified project."
 		return 0
 	fi
 
