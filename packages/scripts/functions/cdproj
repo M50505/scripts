@@ -23,7 +23,7 @@ cdproj ()
 	then
 		projectsRoot="${HOME}/projects"
 
-		msgInfo <<EOF
+		msgWarn <<EOF
 The PROJECTS_ROOT environment variable is not set, so the root
 directory \${HOME}/projects is assumed.
 EOF
@@ -46,7 +46,7 @@ EOF
 	#
 	if [[ ! -d ${projectsRoot} ]]
 	then
-		echo "The projects root directory ${projectsRoot} cannot be located." >&2
+		msgError "The projects root directory ${projectsRoot} cannot be located." 
 		return 1
 	fi	
 
@@ -69,7 +69,7 @@ EOF
 			
 			if ! mkdir -p $(dirname "${previousProject}")
 			then
-				echo "Failed to create the $(dirname "${previousProject}") directory." >&2
+				msgError "Failed to create the $(dirname "${previousProject}") directory."
 				return 1
 			fi
 		fi
@@ -90,7 +90,7 @@ EOF
 
 	if [[ ! -d "${dstDir}" ]]
 	then
-		echo "The project directory ${dstDir} cannot be located." >&2
+		msgError "The project directory ${dstDir} cannot be located."
 		return 1
 	fi	
 
@@ -100,8 +100,8 @@ EOF
 	#
 	if [[ "$(find -L ${dstDir} -type d -name .git )" = "" ]]
 	then
-		cat <<EOF
-Neither the project ${dstDir} nor any of its subdirectories is a local
+		msgWarn <<EOF
+Warning: neither the project ${dstDir} nor any of its subdirectories is a local
 git repository. Proceeding in spite of this.
 EOF
  
@@ -134,13 +134,13 @@ EOF
 	#
 	if ! repoUser=$(gitGetRepoUser)
 	then
-		echo "The git user account cannot be found or is not valid. Proceeding anyway." >&2
+		msgWarn "The git user account cannot be found or is not valid. Proceeding anyway."
 		return 0
 	fi
 
 	if ! gitInit ${repoUser}
 	then
-		echo "Could not find credentials for the git service for the specified project" >&2
+		msgWarn "Could not find credentials for the git service for the specified project."
 		return 0
 	fi
 
