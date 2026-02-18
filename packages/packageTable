@@ -21,6 +21,7 @@ packages/swdev/tf
 packages/swdev/vscode
 packages/swdev/t3
 packages/swdev/idf
+packages/swdev/esp
 #packages/swdev/gradle
 #packages/swdev/java
 #packages/swdev/mvn

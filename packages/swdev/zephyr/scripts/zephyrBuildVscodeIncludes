@@ -83,24 +83,18 @@ sed -rn "
 	p
 }
 
-/^-isystem/	{
+/^ZZZ-isystem/	{
 	s/(-isystem\s\S+).*$/\1/
 	p
 }
 
-/^-imacros/	{
+/^ZZZ-imacros/	{
 	s/(-imacros\s\S+).*$/\1/
 	p
 }" | \
 sort -u | \
 sed -r "
-	1,1	{
-		s/^/\t\t\"zephyrIncludes\": [\n/
-	}
-
 	s,${ZEPHYR_PROJECT_ROOT},\${env:ZEPHYR_PROJECT_ROOT},g
 
-	$	{
-		s/$/\n\t\t\t],\n/
-	}
+	s/-I(.+$)/\"\1\",/
 "

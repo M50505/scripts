@@ -8,18 +8,6 @@
 #	
 #_doc ${1} 20260209100808 " " && exit 0
 
-#optInit
-#optAdd sample string "test"  "A sample string option"
-#optAdd input string ""  "The input file to use."
-#optAdd output string ""  "The output file to use."
-#optAdd mark boolean false "A sample boolean option"
-#optParse $* 
-#optParseSuccess || exit 1
-
-
-#[[ -n ${input} ]] && exec 0<${input}
-#[[ -n ${output} ]] && exec 1>${output}
-
 if [[ $# -lt 1 ]]
 then
 	msgError <<EOF
@@ -29,6 +17,8 @@ the PROJECTS_ROOT environment variable.
 EOF
 	exit 1
 fi
+
+projectName="${1}"
 
 projectsRoot="${PROJECTS_ROOT:-${HOME}/projects}"
 
@@ -40,5 +30,66 @@ then
 	msgError The project directory ${prjectDir} already exists, please double-check.
 	exit 1
 fi
+
+mkcd "${projectDir}"
+
+cat <<EOF > CMakeLists.txt
+cmake_minimum_required(VERSION 3.20.0)
+
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+
+project(${projectName})
+
+target_sources(app PRIVATE src/main.c)
+
+EOF
+
+cat <<EOF > prj.conf
+#	CONFIG_x... options, derived from external docuentation
+#	or from trial-and-error use of menuconfig will go here
+#	to ensure that certain Zephyr components are included
+#	and/or properly configured. NOTE: some device drivers
+#	in Zephyr sneak come configuration into device tree
+#	source includes (.dtsi files), creating the need for
+#	overlay files in one's project.
+
+EOF
+
+mkdir .vscode
+
+cat <<EOF > .vscode/c_cpp_properties.json
+{
+	"configurations": [
+		{
+			"name": "ZephyrIncludes",
+			"includePath": [
+				"REPLACE THIS LINE WITH THE OUTPUT CREATED BY THE zephyrCreateProject SCRIPT",
+				"macros",
+				"nt",
+				"system"
+			],
+			"defines": [],
+			"cStandard": "c17",
+			"cppStandard": "gnu++17",
+			"intelliSenseMode": "linux-gcc-x64"
+		}
+	],
+	"version": 4
+}
+EOF
+
+mkcd src
+
+cat <<EOF > main.c
+#include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+
+int main(void) {
+	printk("Hello from %s\n","${projectName}");
+
+	return 0;
+}
+
+EOF
 
 
