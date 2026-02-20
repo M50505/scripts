@@ -32,10 +32,7 @@ espSetUsbPorts ()
 
 		msgInfo The ESPTOOL_PORT environment variable is now set to ${ESPTOOL_PORT}
 	else
-		msgError <<EOF
-Could not identify the esp32 serial communications-over-USB port,
-therefore the ESPTOOL_PORT environment variable is not exported.
-EOF
+		msgWarning "No esp32 serial communications-over-USB port was found."
 	fi
 
 	port=$(usbListSerial  | egrep -i 'JTAG' | head -1)
@@ -46,11 +43,7 @@ EOF
 
 		msgInfo The ESPTOOL_JTAG_PORT environment variable is now set to ${ESPTOOL_JTAG_PORT}
 	else
-		msgError <<EOF
-Could not identify the esp32 serial JTAG-over-USB port,
-therefore the ESPTOOL_JTAG_PORT environment variable is not exported.
-EOF
-
+		msgWarning "No esp32 serial JTAG-over-USB port was found."
 	fi
 
 }
