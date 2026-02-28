@@ -12,7 +12,13 @@
 gitGetRepoUser ()
 {
 	local user
-	user=$(git config --get remote.origin.url) || return 1
+
+	#	Previously this function used the git config command (commented out below).
+	#	For some reason it is no longer reliably parsing the local configuration to
+	#	report the remote URL, therefore the egrep method is now used.
+
+	#user=$(git config --get remote.origin.url) || return 1
+	user=$(sed -rn '/^\s*url/ {s,^.*:,,;s,/.*$,,;p}' .git/config)
 
 	user=${user%/*}
 	user=${user##*:}
