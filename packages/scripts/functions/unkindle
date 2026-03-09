@@ -17,10 +17,11 @@
 #optParseSuccess || exit 1
 
 
-#[[ -n ${input} ]] && exec 0<${input}
 #[[ -n ${output} ]] && exec 1>${output}
 
 unkindle ()
 {
-	tr -d \\302 | tr \\240 \\n
+
+	[[ -n ${1} ]] && exec 0<${1}
+	cat -v | sed -r '{s/M-BM-/\n/g}'	
 }

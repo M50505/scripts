@@ -78,6 +78,10 @@ cat <<EOF > .vscode/c_cpp_properties.json
 }
 EOF
 
+cat > .gitignore <<EOF
+**/build/**/*
+EOF
+
 mkcd src
 
 cat <<EOF > main.c
