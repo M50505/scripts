@@ -54,16 +54,26 @@ fi
 
 msgInfo "Remote repository ${repo} created for user ${user} on ${provider}, cloning new empty repository."
 
-exit
-
 git init
 
-git remote add origin https://github.com/${user}/${repo}.git
+cat <<EOF > .git/config
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github.com:${user}/${repo}.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+[push]
+	default = current
+	autoSetupRemote = true
+EOF
 
-#git config --global --add push.default current
-#git config --global --add push.autoSetupRemote true
-#git config --global init.defaultBranch main
-
+git pull
 
 cat <<EOF > README.md
 = ${repo}

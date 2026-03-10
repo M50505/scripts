@@ -20,9 +20,7 @@ fi
 
 projectName="${1}"
 
-projectsRoot="${PROJECTS_ROOT:-${HOME}/projects}"
-
-projectDir="${projectsRoot}/${1}"
+projectDir="${1}"
 
 
 if [[ -d "${projectDir}" ]]
